@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -21,16 +20,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements
-        ExplanationScreen.OnExplanationScreenInteractionListener,
+        WelcomeScreen.OnExplanationScreenInteractionListener,
         ActivityCompat.OnRequestPermissionsResultCallback,
-        ScanDocument.ScanDocumentInterface{
+        ScanDocument.ScanDocumentInterface,
+        TranslationRequestConfirmation.onTranslationRequestConfirmationInteraction,
+        ScannedDocumentsList.onScannedDocumentListInteraction {
 
     private User user;
     private ReportingEvent reportingEvent;
     private final static boolean DEBUG = true;
     private final static String LOG_TAG = "MainActivity";
-    private ExplanationScreen explanationScreen;
+
+    // Variables to hold the fragments instances
+    private WelcomeScreen explanationScreen;
     private ScanDocument scanDocument;
+    private TranslationRequestConfirmation translationRequestConfirmation;
+    private ScannedDocumentsList scannedDocumentsList;
+
     private final static int min_number_before_no_explanation=99999;
     static final int REQUEST_CAMERA_PERMISSION=1;
 
@@ -54,20 +60,24 @@ public class MainActivity extends AppCompatActivity implements
             FragmentTransaction fmg = getSupportFragmentManager().beginTransaction();
             if (user.getNumber_prompts() > min_number_before_no_explanation) {
                 if (DEBUG) Log.i(LOG_TAG, "onCreate - user already registered");
-//                scanDocument = ScanDocument.newInstance();
+                scanDocument = ScanDocument.newInstance();
                 fmg.add(R.id.main_activity, scanDocument, "scanDocument");
             } else {
                 if (DEBUG) Log.i(LOG_TAG, "onCreate - user not registered");
-                explanationScreen = ExplanationScreen.newInstance();
+                explanationScreen = WelcomeScreen.newInstance();
                 fmg.add(R.id.main_activity, explanationScreen, "explanationScreen");
             }
             fmg.commit();
         } else {
             if (DEBUG) Log.i(LOG_TAG, "OnCreate - savedInstanceState not null");
-            explanationScreen = (ExplanationScreen)
+            explanationScreen = (WelcomeScreen)
                     getSupportFragmentManager().findFragmentByTag("explanationScreen");
             scanDocument = (ScanDocument)
                     getSupportFragmentManager().findFragmentByTag("scanDocument");
+            translationRequestConfirmation = (TranslationRequestConfirmation)
+                    getSupportFragmentManager().findFragmentByTag("translationRequestConfirmation");
+            scannedDocumentsList = (ScannedDocumentsList)
+                    getSupportFragmentManager().findFragmentByTag("scannedDocumentsList");
         }
 
         if (DEBUG) Log.i(LOG_TAG, "onCreate - Exit");
@@ -97,6 +107,14 @@ public class MainActivity extends AppCompatActivity implements
             return "explanationScreen";
         }
 
+        if (translationRequestConfirmation != null && translationRequestConfirmation.isVisible()) {
+            return "translationRequestConfirmation";
+        }
+
+        if (scannedDocumentsList != null && scannedDocumentsList.isVisible()) {
+            return "scannedDocumentsList";
+        }
+
         return "Unknown";
     }
 
@@ -106,10 +124,18 @@ public class MainActivity extends AppCompatActivity implements
         }
 
         if (scanDocument != null && scanDocument.isVisible()) {
-//            return scanDocument.getFragmentStartTime();
+            return scanDocument.getFragmentStartTime();
         }
 
-        return 0;
+        if (translationRequestConfirmation != null && translationRequestConfirmation.isVisible()) {
+            return translationRequestConfirmation.getFragmentStartTime();
+        }
+
+        if (scannedDocumentsList != null && scannedDocumentsList.isVisible()) {
+            return scannedDocumentsList.getFragmentStartTime();
+        }
+
+        return Utilities.CurrentTimeMS();
     }
 
     @Override
@@ -117,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements
         if (DEBUG) Log.i(LOG_TAG, "onStart - Enter");
 
         super.onStart();
-
 
         reportingEvent = ReportingEvent.getInstance();
         reportingEvent.setActivityName("MainActivity");
@@ -203,8 +228,17 @@ public class MainActivity extends AppCompatActivity implements
         if (explanationScreen != null && explanationScreen.isAdded()) {
             getSupportFragmentManager().putFragment(outState, "explanationScreen", explanationScreen);
         }
+
         if (scanDocument != null && scanDocument.isAdded()) {
             getSupportFragmentManager().putFragment(outState, "scanDocument", scanDocument);
+        }
+
+        if (translationRequestConfirmation != null && translationRequestConfirmation.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, "translationRequestConfirmation", translationRequestConfirmation);
+        }
+
+        if (scannedDocumentsList != null && scannedDocumentsList.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, "scannedDocumentsList", scannedDocumentsList);
         }
 
         super.onSaveInstanceState(outState);
@@ -275,7 +309,21 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void goToScannedDocuments() {
+        // Create report
+        reportingEvent = ReportingEvent.getInstance();
+        reportingEvent.setFragmentName("scannedDocuments");
+        reportingEvent.setFragmentStart(scanDocument.getFragmentStartTime());
+        reportingEvent.addEvent("Action","goToScannedDocumentList");
 
+        if (scannedDocumentsList == null) {
+            scannedDocumentsList = ScannedDocumentsList.newInstance();
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_activity, scannedDocumentsList, "scannedDocumentsList")
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -284,6 +332,47 @@ public class MainActivity extends AppCompatActivity implements
 //        ErrorDialog.newInstance(errorMessage)
 //                .show(getChildFragmentManager(), FRAGMENT_DIALOG);
     }
+
+    @Override
+    public void scanSuccessful(String filename) {
+        Log.i(LOG_TAG, "scanSuccessful - file name = "+filename);
+        // Create report
+        reportingEvent = ReportingEvent.getInstance();
+        reportingEvent.setFragmentName("scanDocument");
+        reportingEvent.setFragmentStart(scanDocument.getFragmentStartTime());
+        reportingEvent.addEvent("Action","takePicture");
+
+        if (translationRequestConfirmation == null) {
+            translationRequestConfirmation = TranslationRequestConfirmation.newInstance();
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_activity, translationRequestConfirmation, "translationRequestConfirmation")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onRequestAutomaticTranslation() {
+
+    }
+
+    @Override
+    public void onRequestProfessionalTranslation() {
+
+    }
+
+    @Override
+    public void onOpenDocument() {
+
+    }
+
+    @Override
+    public void onSendDocument() {
+
+    }
+
     /**
      * Shows OK/Cancel confirmation dialog about camera permission.
      */

@@ -70,7 +70,23 @@ public class ScanDocument extends Fragment
      * Conversion from screen rotation to JPEG orientation.
      */
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+
+    /**
+     * Interface to allow communication with the hosting activity
+     */
     private ScanDocumentInterface scanDocumentInterface;
+
+    /**
+     * File name that will be used for the scans
+     */
+    private String filename = Utilities.generateScanFileName();
+
+    private Context context;
+
+    /**
+     * Fragment start time for reporting
+     */
+    private long fragmentStartTime;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -82,7 +98,7 @@ public class ScanDocument extends Fragment
     /**
      * Tag for the {@link Log}.
      */
-    private static final String TAG = "Camera2BasicFragment";
+    private static final String TAG = "ScanDocument";
 
     /**
      * Camera state: Showing camera preview.
@@ -234,7 +250,7 @@ public class ScanDocument extends Fragment
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
+            mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile, scanDocumentInterface));
         }
 
     };
@@ -409,6 +425,14 @@ public class ScanDocument extends Fragment
         return new ScanDocument();
     }
 
+    public ScanDocument() {
+        fragmentStartTime = Utilities.CurrentTimeMS();
+    }
+
+    long getFragmentStartTime() {
+        return fragmentStartTime;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -425,13 +449,17 @@ public class ScanDocument extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
+        mFile = new File(getActivity().getExternalFilesDir(null), filename);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         startBackgroundThread();
+
+        if (context == null) {return;}
+
+        scanDocumentInterface = (ScanDocumentInterface) context;
 
         // When the screen is turned off and turned back on, the SurfaceTexture is already
         // available, and "onSurfaceTextureAvailable" will not be called. In that case, we can open
@@ -442,12 +470,14 @@ public class ScanDocument extends Fragment
         } else {
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
         }
+
     }
 
     @Override
     public void onPause() {
         closeCamera();
         stopBackgroundThread();
+        scanDocumentInterface = null;
         super.onPause();
     }
 
@@ -890,9 +920,12 @@ public class ScanDocument extends Fragment
          */
         private final File mFile;
 
-        ImageSaver(Image image, File file) {
+        private final ScanDocumentInterface scanDocumentInterface;
+
+        ImageSaver(Image image, File file, ScanDocumentInterface scanDocumentInterface) {
             mImage = image;
             mFile = file;
+            this.scanDocumentInterface = scanDocumentInterface;
         }
 
         @Override
@@ -904,6 +937,7 @@ public class ScanDocument extends Fragment
             try {
                 output = new FileOutputStream(mFile);
                 output.write(bytes);
+                scanDocumentInterface.scanSuccessful(mFile.getPath());
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -937,17 +971,19 @@ public class ScanDocument extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context = context;
         if (context instanceof ScanDocumentInterface) {
             scanDocumentInterface = (ScanDocumentInterface) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement onTranslationRequestConfirmationInteraction");
         }
     }
 
-    public interface ScanDocumentInterface {
+    interface ScanDocumentInterface {
         boolean hasCameraPermission();
         void goToScannedDocuments();
         void cameraApiIncompatibility(String errorMessage);
+        void scanSuccessful(String filename);
     }
 }

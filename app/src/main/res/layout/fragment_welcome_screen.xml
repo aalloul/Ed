@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.app.ed.android.ExplanationScreen">
+    tools:context="com.app.ed.android.WelcomeScreen">
 
     <Button
-        android:id="@+id/explanation_screen_button"
+        android:id="@+id/welcome_screen_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button" />

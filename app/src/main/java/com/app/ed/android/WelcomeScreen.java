@@ -8,18 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-public class ExplanationScreen extends Fragment {
+public class WelcomeScreen extends Fragment {
 
     private OnExplanationScreenInteractionListener mListener;
     private View view;
     private long fragmentStartTime;
 
-    public ExplanationScreen() {
+    public WelcomeScreen() {
         fragmentStartTime = Utilities.CurrentTimeMS();
     }
 
-    static ExplanationScreen newInstance() {
-        return new ExplanationScreen();
+    static WelcomeScreen newInstance() {
+        return new WelcomeScreen();
     }
 
     @Override
@@ -31,14 +31,14 @@ public class ExplanationScreen extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_explanation_screen, container, false);
+        view = inflater.inflate(R.layout.fragment_welcome_screen, container, false);
         setButton();
 
         return view;
     }
 
     void setButton() {
-        Button button = (Button) view.findViewById(R.id.explanation_screen_button);
+        Button button = (Button) view.findViewById(R.id.welcome_screen_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

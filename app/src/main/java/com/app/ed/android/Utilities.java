@@ -109,5 +109,9 @@ final class Utilities {
         snackbar.show();
     }
 
+    static String generateScanFileName() {
+        return "scan_" + Epoch2Date(CurrentTimeMS(), "yyyy-MM-dd HH:mm:ss")+".jpg";
+    }
+
 
 }
