@@ -6,4 +6,6 @@
     <string name="scan_document_document_list">Scanned documents</string>
     <string name="camera_error">Your phone is not compatible with our app</string>
     <string name="request_permission">Please I need permission</string>
+    <string name="request_confirmation_professional_translation">Professional translation</string>
+    <string name="request_confirmation_automatic_translation">Automatic translation</string>
 </resources>

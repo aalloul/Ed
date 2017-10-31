@@ -15,6 +15,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +30,8 @@ public class MainActivity extends AppCompatActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,
         ScanDocument.ScanDocumentInterface,
         TranslationRequestConfirmation.onTranslationRequestConfirmationInteraction,
-        ScannedDocumentsList.onScannedDocumentListInteraction {
+        ScannedDocumentsList.onScannedDocumentListInteraction,
+        ScannedDocumentPreview.onScannedDocumentPreviewInteraction{
 
     private User user;
     private ReportingEvent reportingEvent;
@@ -36,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements
     private ScanDocument scanDocument;
     private TranslationRequestConfirmation translationRequestConfirmation;
     private ScannedDocumentsList scannedDocumentsList;
+    private ScannedDocumentPreview scannedDocumentPreview;
 
     private final static int min_number_before_no_explanation=99999;
     static final int REQUEST_CAMERA_PERMISSION=1;
@@ -61,11 +69,13 @@ public class MainActivity extends AppCompatActivity implements
             if (user.getNumber_prompts() > min_number_before_no_explanation) {
                 if (DEBUG) Log.i(LOG_TAG, "onCreate - user already registered");
                 scanDocument = ScanDocument.newInstance();
-                fmg.add(R.id.main_activity, scanDocument, "scanDocument");
+                scannedDocumentPreview = ScannedDocumentPreview.newInstance();
+                fmg.add(R.id.main_picture_holder, scanDocument, "scanDocument");
+                fmg.add(R.id.main_document_preview, scannedDocumentPreview, "documentPreview");
             } else {
                 if (DEBUG) Log.i(LOG_TAG, "onCreate - user not registered");
                 explanationScreen = WelcomeScreen.newInstance();
-                fmg.add(R.id.main_activity, explanationScreen, "explanationScreen");
+                fmg.add(R.id.main_picture_holder, explanationScreen, "explanationScreen");
             }
             fmg.commit();
         } else {
@@ -257,10 +267,14 @@ public class MainActivity extends AppCompatActivity implements
         if (scanDocument == null) {
             scanDocument = ScanDocument.newInstance();
         }
+        if (scannedDocumentPreview == null) {
+            scannedDocumentPreview = ScannedDocumentPreview.newInstance();
+        }
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.main_activity, scanDocument, "scanDocument")
+                .add(R.id.main_picture_holder, scanDocument, "scanDocument")
+                .add(R.id.main_document_preview, scannedDocumentPreview, "scannedDocumentPreview")
                 .addToBackStack(null)
                 .commit();
     }
@@ -307,24 +321,6 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-    @Override
-    public void goToScannedDocuments() {
-        // Create report
-        reportingEvent = ReportingEvent.getInstance();
-        reportingEvent.setFragmentName("scannedDocuments");
-        reportingEvent.setFragmentStart(scanDocument.getFragmentStartTime());
-        reportingEvent.addEvent("Action","goToScannedDocumentList");
-
-        if (scannedDocumentsList == null) {
-            scannedDocumentsList = ScannedDocumentsList.newInstance();
-        }
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_activity, scannedDocumentsList, "scannedDocumentsList")
-                .addToBackStack(null)
-                .commit();
-    }
 
     @Override
     public void cameraApiIncompatibility(String errorMessage) {
@@ -346,15 +342,60 @@ public class MainActivity extends AppCompatActivity implements
             translationRequestConfirmation = TranslationRequestConfirmation.newInstance();
         }
 
+        user = User.getInstance();
+        user.incrementNumberScannerDocuments();
+        user.addScannedDocumentToList(filename);
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.main_activity, translationRequestConfirmation, "translationRequestConfirmation")
+                .replace(R.id.main_picture_holder, translationRequestConfirmation, "translationRequestConfirmation")
+                .detach(scannedDocumentPreview)
                 .addToBackStack(null)
                 .commit();
     }
 
     @Override
-    public void onRequestAutomaticTranslation() {
+    public void onRequestAutomaticTranslationPressed() {
+        // get a reference to the already created main layout
+        Log.i(LOG_TAG, "onRequestAutomaticTranslationPressed - Enter");
+        FrameLayout mainLayout = (FrameLayout) findViewById(R.id.main_picture_holder);
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_confirm_email_address, null);
+
+        // create the popup window
+        int width = FrameLayout.LayoutParams.WRAP_CONTENT;
+        int height = FrameLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        popupWindow.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
+
+        View container = (View) popupWindow.getContentView().getParent();
+        WindowManager wm = (WindowManager) getSystemService(this.WINDOW_SERVICE);
+        WindowManager.LayoutParams p = (WindowManager.LayoutParams) container.getLayoutParams();
+        p.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        p.dimAmount = 0.8f;
+        try{
+            wm.updateViewLayout(container, p);
+         } catch (NullPointerException np ) {
+           Log.i(LOG_TAG, "onRequestAutomaticTranslationPressed - updateViewLayout throws NP");
+        }
+
+        // dismiss the popup window when touched
+//        popupView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                popupWindow.dismiss();
+//                return true;
+//            }
+//        });
+        }
+
+    @Override
+    public void onRequestProfessionalTranslationPressed() {
 
     }
 
@@ -371,6 +412,15 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onSendDocument() {
 
+    }
+
+    @Override
+    public void onScannedDocumentPreviewOpenDocument() {
+    }
+
+    @Override
+    public User getUserInstanceForTranslationRequestConfirmation() {
+        return User.getInstance();
     }
 
     /**

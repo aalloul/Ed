@@ -4,21 +4,24 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 
 class User {
-    private static User ourInstance = new User();
+    private static User userInstance = new User();
     private Context context;
     private String share_pref_file_name = "com.app.ed.android.SharePrefUser";
     private String firstname, surname, email, preferred_language, deviceId, deviceType;
-    private int number_prompts;
+    private int number_prompts, numberScannedDocuments;
+    private ArrayList<String> scannedDocumentsList;
 
     static User getInstance() {
-        return ourInstance;
+        return userInstance;
     }
 
     private User() {
+        scannedDocumentsList = new ArrayList<>();
     }
 
     void setContext(Context context) {
@@ -36,8 +39,34 @@ class User {
         setDeviceId(sharedPreferences.getString("deviceId", null));
         setDeviceType(sharedPreferences.getString("deviceType", null));
         setNumber_prompts(sharedPreferences.getInt("number_prompts", 0));
+        setNumberScannedDocuments(sharedPreferences.getInt("numberScannedDocuments", 0));
+
+        for (int i=1; i<=getNumberScannedDocuments(); i++ ) {
+            addScannedDocumentToList(sharedPreferences.getString("Scanned_"+i, null));
+        }
+
     }
 
+    void addScannedDocumentToList(String path_to_document) {
+        scannedDocumentsList.add(path_to_document);
+    }
+
+    ArrayList<String> getScannedDocumentsList() {
+        return scannedDocumentsList;
+    }
+    void setNumberScannedDocuments(int integer) {
+        numberScannedDocuments = integer;
+    }
+
+    void incrementNumberScannerDocuments() {
+        numberScannedDocuments++;
+    }
+
+    int getNumberScannedDocuments() {return numberScannedDocuments;}
+
+    void setScannedDocumentsList(ArrayList<String> list_paths) {
+        scannedDocumentsList = list_paths;
+    }
     void saveDetails() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(share_pref_file_name,
                 Context.MODE_PRIVATE);
@@ -49,6 +78,12 @@ class User {
         editor.putString("deviceId", deviceId);
         editor.putString("deviceType", deviceType);
         editor.putInt("number_prompts", number_prompts+1);
+        editor.putInt("numberScannedDocuments", getNumberScannedDocuments());
+        int i = 0;
+        for (String mypath: getScannedDocumentsList()) {
+            i ++;
+            editor.putString("Scanned_"+i, mypath);
+        }
         editor.apply();
     }
 
@@ -86,10 +121,6 @@ class User {
 
     void setNumber_prompts(int number_prompts) {
         this.number_prompts = number_prompts;
-    }
-
-    static User getOurInstance() {
-        return ourInstance;
     }
 
     String getFirstname() {

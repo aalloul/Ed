@@ -211,6 +211,7 @@ public class ScanDocument extends Fragment
         @Override
         public void onError(@NonNull CameraDevice cameraDevice, int error) {
             mCameraOpenCloseLock.release();
+            mCameraOpenCloseLock.release();
             cameraDevice.close();
             mCameraDevice = null;
             Activity activity = getActivity();
@@ -442,7 +443,6 @@ public class ScanDocument extends Fragment
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.scan_document_take_picture).setOnClickListener(this);
-        view.findViewById(R.id.scan_document_goto_scanned_documents).setOnClickListener(this);
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
     }
 
@@ -892,10 +892,6 @@ public class ScanDocument extends Fragment
                 takePicture();
                 break;
             }
-            case R.id.scan_document_goto_scanned_documents: {
-                scanDocumentInterface.goToScannedDocuments();
-                break;
-            }
         }
     }
 
@@ -982,7 +978,6 @@ public class ScanDocument extends Fragment
 
     interface ScanDocumentInterface {
         boolean hasCameraPermission();
-        void goToScannedDocuments();
         void cameraApiIncompatibility(String errorMessage);
         void scanSuccessful(String filename);
     }

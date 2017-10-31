@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="4"
+    tools:context="com.app.ed.android.ScannedDocumentPreview">
+
+
+    <ImageView
+        android:id="@+id/scanned_document_preview_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:src="@mipmap/document" />
+
+    <ImageView
+        android:id="@+id/scanned_document_preview_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:src="@mipmap/document" />
+
+    <ImageView
+        android:id="@+id/scanned_document_preview_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:src="@mipmap/document" />
+
+    <ImageView
+        android:id="@+id/scanned_document_preview_goto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/more_previews" />
+</LinearLayout>
