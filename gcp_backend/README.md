@@ -9,7 +9,7 @@ The application is expected to generate a `POST` call towards the back-end follo
  - `image`: Base64 representation of the picture taken by the user.
  - `timestamp`: Long representing the epoch time (ms) at which the request was generated on the phone.
  - `device`: String representing which phone model (`ios`, `android`) generated the request.
- - `version`: Float to indicate the version of the app.
+ - `version`: Float to indicate the version of the app (0.1, alpha, ...etc).
  - `user_id`: UUID to uniquely identify a phone.
 
 For the future, we foresee the following fields might be needed:
@@ -17,3 +17,24 @@ For the future, we foresee the following fields might be needed:
  - `input_language`: String indicating the input language. For the 1st version, this field will be ignored and we will assume `nl`.
  - `output_language`: String indicating the output language for the translation. For the 1st version, we will ignore this field and assume `en`.
  - `extract_reminder`: Boolean to indicate whether the user would like an automated extraction of the reminders attached to the mail he scanned. Ignored for the 1st version
+
+Example call:
+```bash
+curl -XPOST https://linear-asset-184705.appspot.com/request_translation -H "Content-Type: text/json" --data-binary "@fixture/test_request.json"
+```
+
+This call should return (the request was for automated translation only)
+```javascript
+{
+  "original_text": "Sommige vertalingstekst komt hier",
+  "translated_text": "Some translation text goes here",
+  "reminder": 1513071050000,
+  "set_reminder": true,
+}
+```
+where:
+
+  - `original_text` is the text extracted from the picture
+  - `translated_text`: is the translated text.
+  - `set_reminder`: boolean to indicate whether a reminder is returned.
+  - `reminder`: Epoch time in milliseconds to indicate when the reminder should be triggered
