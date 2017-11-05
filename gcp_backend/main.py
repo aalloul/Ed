@@ -19,6 +19,7 @@ logger.setLevel(logging.DEBUG)
 # Flask app
 app = Flask(__name__)
 
+
 @app.route('/request_translation', methods=['POST'])
 def translate():
     logger.info("Received a request")
@@ -43,7 +44,7 @@ def request_automatic_translation(parsed_request):
     ocr = Ocr(parsed_request.get_image(),
               parsed_request.get_input_language(),
               parsed_request.get_output_language())
-    translator = AutomaticTranslator(ocr)
+    translator = AutomaticTranslator(ocr.get_full_text())
     return Answer().get_answer()
 
 #
