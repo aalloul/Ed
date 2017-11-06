@@ -36,17 +36,17 @@ def translate():
 
 
 def request_human_translation(parsed_request):
-    translator = HumanTranslator(parsed_request)
-    return Answer().get_answer()
+    translator = HumanTranslator(parsed_request.get_input_language(),
+                                 parsed_request.get_output_language())
+    return Answer(human_requested=True).get_answer()
 
 
 def request_automatic_translation(parsed_request):
-    ocr = Ocr(parsed_request.get_image(),
-              parsed_request.get_input_language(),
-              parsed_request.get_output_language())
-    translator = AutomaticTranslator(ocr.get_full_text())
-    return Answer().get_answer()
+    ocr = Ocr(parsed_request.get_image(), parsed_request.get_input_language())
+    translator = AutomaticTranslator(parsed_request.get_input_language(),
+                                     parsed_request.get_output_language())
+    translator.set_text(ocr.get_full_text())
+    translation = translator.get_translation()
 
-#
-# if __name__ == "__main__":
-#     app.run()
+    return Answer(original_text=ocr.get_full_text(),
+                  translated_text=translation).get_answer()

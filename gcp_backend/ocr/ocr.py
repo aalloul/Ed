@@ -15,18 +15,17 @@ class Ocr(object):
     Class to handle the OCR process
     """
 
-    def __init__(self, img, in_language, out_language):
+    def __init__(self, img, in_language):
         self.DEBUG = True
         self.image = img
         self.in_language = in_language
-        self.out_language = out_language
         self.api_key = "AIzaSyB5KLbSquVl7pYsYjVpCOhOsrqjYTbuf-8"
 
         self._payload = self._get_payload()
         logger.debug("Payload constructed")
         self._ocr_text = self._get_ocr_answer()
         logger.debug(("OCR answer received. Text follows"))
-        logger.debug(self._ocr_text.get_full_text())
+        logger.debug(self._ocr_text.get_full_text()[0:20])
 
     def _get_payload(self):
         return {
@@ -46,11 +45,14 @@ class Ocr(object):
             ]
         }
 
+    def _get_fixture(self):
+        logger.debug("DEBUG Mode enabled: reading ocr answer from fixture")
+        with open("fixture/test_response_ocr.json", "r") as f:
+            return Ocr_text(f.read())
+
     def _get_ocr_answer(self):
         if self.DEBUG:
-            logger.debug("DEBUG Mode enabled: reading ocr answer from fixture")
-            with open("fixture/test_response_ocr.json", "r") as f:
-                return Ocr_text(f.read())
+            return self._get_fixture()
 
         response = fetch(
             "https://vision.googleapis.com/v1/images:annotate?key=" +

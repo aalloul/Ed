@@ -6,5 +6,5 @@ class HumanTranslator(Translator):
 
     """
 
-    def __init__(self, request):
-        super(HumanTranslator, self).__init__(request)
+    def __init__(self, input_language, output_language):
+        super(HumanTranslator, self).__init__(input_language, output_language)

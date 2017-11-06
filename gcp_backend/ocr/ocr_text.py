@@ -15,7 +15,7 @@ class Ocr_text(object):
 
     def __init__(self, answer_content):
         logger.debug("Parsing full text")
-        self.answer_content = loads(answer_content)
+        self.answer_content = loads(answer_content, encoding='utf-8')
         self.full_text = self._parse_full_text()
         logger.debug("Full text parsed")
 
@@ -24,4 +24,4 @@ class Ocr_text(object):
             'text']
 
     def get_full_text(self):
-        return self.full_text
+        return self.full_text.encode("utf-8")
