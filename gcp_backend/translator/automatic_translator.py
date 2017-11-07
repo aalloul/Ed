@@ -36,7 +36,7 @@ class AutomaticTranslator(Translator):
         with open("/Users/adamalloul/Ed/gcp_backend/fixture/test_translation"
                   ".json", "r") as f:
             resp = load(f)
-        return resp['data']['translations'][0]['translatedText']
+        return resp['data']['translations'][0]['translatedText'].encode("utf-8")
 
     def get_translation(self):
         logger.debug("Requesting translation from {} to {}".format(
@@ -63,7 +63,8 @@ class AutomaticTranslator(Translator):
         logger.debug("Got an answer back")
         logger.debug("Translation received {}".format(resp_json))
 
-        return resp_json['data']['translations'][0]['translatedText']
+        return resp_json['data']['translations'][0]['translatedText'].encode(
+            "utf-8")
 
     def _build_payload(self):
         logger.debug("Building payload")

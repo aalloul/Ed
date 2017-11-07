@@ -7,6 +7,7 @@ from request_parser.request_parser import RequestParser
 from ocr.ocr import Ocr
 from translator.human_translator import HumanTranslator
 from translator.automatic_translator import AutomaticTranslator
+from email_generator.sendgrid_mailer import Sendgrid
 from answer.answer import Answer
 import logging
 from sys import stdout
@@ -48,5 +49,9 @@ def request_automatic_translation(parsed_request):
     translator.set_text(ocr.get_full_text())
     translation = translator.get_translation()
 
+    sg = Sendgrid(parsed_request, ocr.get_full_text(), translation)
+    status_code, body, headers = sg.send()
+
     return Answer(original_text=ocr.get_full_text(),
-                  translated_text=translation).get_answer()
+                  translated_text=translation,
+                  email_status=True).get_answer()
