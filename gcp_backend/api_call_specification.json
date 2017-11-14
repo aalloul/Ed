@@ -1,0 +1,13 @@
+{
+  "output": ["email", "google_drive", "app"],
+  "email": "empty string or email to which to send the translation",
+  "input_language": "nl",
+  "output_language": "en",
+  "human_translation_requested": true,
+  "image": "base64 representation of the image",
+  "timestamp": 1509792892000,
+  "device": "ios",
+  "version": 0.1,
+  "user_id": "uuid specific to the user",
+  "extract_reminder": false
+}
