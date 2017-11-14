@@ -1,4 +1,4 @@
-# This directory contains the code supporting the back-end of the app Ed
+# OCR and translation endpoint
 
 ## API call specification
 The application is expected to generate a `POST` call towards the back-end following the specification outlined in the document _api_call_specification.json_. In particular, the following fields are mandatory
@@ -38,3 +38,55 @@ where:
   - `translated_text`: is the translated text.
   - `set_reminder`: boolean to indicate whether a reminder is returned.
   - `reminder`: Epoch time in milliseconds to indicate when the reminder should be triggered
+
+# Data reporting and tracking endpoint.
+To enable us to track how our potential users interact with our app, it is important for us to:
+  - define a data model that clearly indicates user behaviour
+  - collect data following this data model and store it in a cloud data store
+  - create dashboards to allow tracking the various KPIs
+
+## Data model definition
+The fields/columns expected to be reported on by the app are the following:
+  - datamodel_version (double): Version of the data model, independent of both the client and back-end versions. It allows to track the updates to the data model.
+  - app_version (double): Version of the app that is installed on the user's device.
+  - phone_maker (string): Indicates the manufacturer of the phone.
+
+
+
+
+```javascript
+[
+    {
+        "datamodel_version": 0.1,
+        "app_version": 0.2,
+        "phone_maker": "Apple",
+        "phone_model": "Iphone7",
+        "os_version": "11.0.3",
+        "user_id": "08fb1184-d74e-42f0-a4ae-ad65438a3dcc"
+        "timestamp": 1510556219358,
+        "type": "data",
+        "screen": "scan_document",
+        "action": "open_list_documents",
+        "screen_start": 1510556217358,
+        "screen_end": 1510556219358,
+        "session_start": 1510556210358
+    },
+    {
+        "datamodel_version": 0.1,
+        "app_version": 0.2,
+        "phone_maker": "LG",
+        "phone_model": "G7",
+        "os_version": "6",
+        "user_id": "08fb1184-d74e-42f0-a4ae-ad65438a3dcc"
+        "timestamp": 1510556219358,
+        "type": "exception",
+        "screen": "scan_document",
+        "action": "open_list_documents",
+        "exception_code": "NullPointerException",
+        "stack_tracke": "...."
+        "screen_start": 1510556217358,
+        "screen_end": 1510556219358,
+        "session_start": 1510556210358
+    }
+]
+```
