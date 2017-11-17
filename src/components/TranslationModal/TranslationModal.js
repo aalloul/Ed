@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Modal, Text } from 'react-native';
+import { View, Modal } from 'react-native';
 
-import RoundButton from '../Buttons/RoundButton';
+import TranslationForm from '../TranslationForm/TranslationForm';
 
-const TranslationModal = ({ onPress, visible }) => (
+const TranslationModal = ({ onPress, visible, navigation, language, onLanguageChange }) => (
   <Modal
     animationType="slide"
     transparent={false}
@@ -14,17 +14,12 @@ const TranslationModal = ({ onPress, visible }) => (
     }}
   >
     <View style={{ marginTop: 22 }}>
-      <View>
-        <Text>How do want your translation?</Text>
-
-        <Text>Choose language (English by default)</Text>
-
-        <Text>Human translation &mdash; €1 (price depends on the number of chars)</Text>
-        <RoundButton
-          onPress={onPress}
-          iconSource={require('../../screens/ScanScreen/ScanIcon.png')}
-        />
-      </View>
+      <TranslationForm
+        onHumanTranslationPress={() => navigation.navigate('Email')}
+        onMachineTranslationPress={() => navigation.navigate('Email')}
+        onLanguageChange={onLanguageChange}
+        language={language}
+      />
     </View>
   </Modal>
 );

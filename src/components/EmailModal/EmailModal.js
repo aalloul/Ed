@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'react-native';
 
-import ChooseEmail from '../ChooseEmail/ChooseEmail';
+import EmailForm from '../EmailForm/EmailForm';
 
-const EmailModal = ({ onPress, visible }) => (
+const EmailModal = ({ onPress, visible, navigation }) => (
   <Modal
     animationType="slide"
     transparent={false}
@@ -13,7 +13,9 @@ const EmailModal = ({ onPress, visible }) => (
       alert("Modal has been closed.")
     }}
   >
-    <ChooseEmail onPressSend={onPress} />
+    <EmailForm
+      onPress={() => navigation.navigate('Success')}
+    />
   </Modal>
 );
 

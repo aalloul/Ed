@@ -3,24 +3,17 @@ import { StyleSheet, View, Modal, Text, Button, Image } from 'react-native';
 
 import Camera from 'react-native-camera';
 
-import TranslationModal from '../../components/TranslationModal/TranslationModal';
-import EmailModal from '../../components/EmailModal/EmailModal';
 import RoundButton from '../../components/Buttons/RoundButton';
 
 export default class ScanScreen extends React.Component {
   constructor() {
     super();
 
-    this.state = {
-      translationModal: false,
-      emailModal: false,
-    };
-
     this.scan = this.scan.bind(this);
   }
 
   scan() {
-    this.props.navigate('Language');
+    this.props.navigate('Translation');
 
     return; // TODO for development only, DO NOT MERGE
 
@@ -35,20 +28,6 @@ export default class ScanScreen extends React.Component {
         this.showTranslationModal();
       })
       .catch(err => console.error(err));
-  }
-
-  showTranslationModal() {
-    this.setState({
-      translationModal: true,
-      emailModal: false,
-    });
-  }
-
-  showEmailModal() {
-    this.setState({
-      translationModal: false,
-      emailModal: true,
-    });
   }
 
   render() {
@@ -67,7 +46,7 @@ export default class ScanScreen extends React.Component {
             <Text style={styles.text}>List of scanned letters goes here</Text>
             <RoundButton
               iconSource={require('./ScanIcon.png')}
-              onPress={() => navigate('Language')}
+              onPress={() => navigate('Translation')}
             />
           </View>
         </Camera>

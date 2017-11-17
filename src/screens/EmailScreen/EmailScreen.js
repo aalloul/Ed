@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import ChooseEmail from '../../components/ChooseEmail/ChooseEmail';
+import EmailForm from '../../components/EmailForm/EmailForm';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ export default class EmailScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        <ChooseEmail
+        <EmailForm
           onPress={() => navigate('Success')}
         />
       </View>

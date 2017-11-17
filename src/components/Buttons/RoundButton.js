@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const RoundButton = ({ onPress, iconSource }) => (
+const RoundButton = ({ onPress, iconSource, iconStyle, buttonProps }) => (
   <ActionButton
     buttonColor="rgba(80, 210, 194, 1)"
-    icon={<Image source={iconSource} style={styles.fabIcon} />}
+    icon={<Image source={iconSource} style={[styles.fabIcon, iconStyle]} />}
     onPress={onPress}
     position="center"
-    style={styles.fabButton}
+    {...buttonProps}
   />
 );
 
@@ -30,7 +30,14 @@ RoundButton.displayName = 'RoundButton';
 
 RoundButton.propTypes = {
   onPress: PropTypes.func.isRequired,
-  iconSource: PropTypes.object.isRequired,
+  iconSource: PropTypes.number.isRequired,
+  iconStyle: PropTypes.object,
+  buttonProps: PropTypes.object,
+};
+
+RoundButton.defaultProps = {
+  iconStyle: {},
+  buttonProps: {},
 };
 
 export default RoundButton;
