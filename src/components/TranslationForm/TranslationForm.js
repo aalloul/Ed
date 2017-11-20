@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   actions: {
+    alignItems: 'stretch',
     flexDirection: 'row',
     justifyContent: 'space-around',
     height: 180,
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
   actionButton: {
     alignItems: 'center',
     flexDirection: 'column',
-    height: 80,
+    height: 180,
     width: 150,
   },
   actionIcon: {

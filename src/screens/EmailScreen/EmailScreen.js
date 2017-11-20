@@ -13,13 +13,23 @@ const styles = StyleSheet.create({
 });
 
 export default class EmailScreen extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      email: ''
+    };
+  }
+
   render() {
     const { navigate } = this.props.navigation;
 
     return (
       <View style={styles.container}>
         <EmailForm
+          onInput={email => this.setState({ email })}
           onPress={() => navigate('Success')}
+          email={this.state.email}
         />
       </View>
     );

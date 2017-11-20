@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     backgroundColor: '#50D2C2',
-    flex: 1,
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -20,12 +20,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const IconButton = ({ onPress, buttonStyle, iconSource, iconStyle, title, price, titleStyle }) => (
+const IconButton = ({ onPress, buttonStyle, iconSource, iconStyle, title, titleStyle, price }) => (
   <TouchableHighlight onPress={onPress}>
     <View style={[styles.button, buttonStyle]}>
       <Image style={[styles.icon, iconStyle]} source={iconSource} />
       <Text style={[styles.title, titleStyle]}>{title}</Text>
-      <Text style={[styles.title, titleStyle]}>{price}</Text>
+      {price ? <Text style={[styles.title, titleStyle]}>{price}</Text> : null}
     </View>
   </TouchableHighlight>
 );
@@ -33,12 +33,19 @@ const IconButton = ({ onPress, buttonStyle, iconSource, iconStyle, title, price,
 IconButton.displayName = 'IconButton';
 
 IconButton.propTypes = {
-
+  btnStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+  iconSource: PropTypes.number.isRequired,
+  iconStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+  onPress: PropTypes.func.isRequired,
+  price: PropTypes.string,
+  title: PropTypes.string.isRequired,
+  titleStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
 };
 
 IconButton.defaultProps = {
   btnStyle: {},
   iconStyle: {},
+  price: '',
   titleStyle: {},
 };
 
