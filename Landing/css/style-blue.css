@@ -62,8 +62,8 @@ button[type="button"]{ border:none; background:none;}
 
 
 /* PARALLAX CONTET */
-.parallax-content{ width:100%; float:left; position:relative;}
-.parallax-content .parallax-object{ position:absolute; left:0;}
+.parallax-content{ width:100%; float:right; position:static; right:0;}
+.parallax-content .parallax-object{ position:relative; left:0;}
 
 
 /* VERTICAL MIDDLE */
@@ -90,8 +90,8 @@ button[type="button"]{ border:none; background:none;}
 
 /* NAVBAR */
 .navbar-default{ background:none; border:none; padding:10px 0;}
-.navbar-default{transition-delay:0.7s !important; -webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -ms-transform:all 0.4s ease; transition: all 0.4s ease;}
-.navbar-default{transform: translateY(-100%); -moz-transform:translateY(-100%); -ms-transform:translateY(-100%); -o-transform:translateY(-100%); -webkit-transform:translateY(-100%);}
+.navbar-default{ transition-delay:0.7s !important; -webkit-transition: all 0.4s ease; -moz-transition: all 0.4s ease; -ms-transform:all 0.4s ease; transition: all 0.4s ease;}
+.navbar-default{ transform: translateY(-100%); -moz-transform:translateY(-100%); -ms-transform:translateY(-100%); -o-transform:translateY(-100%); -webkit-transform:translateY(-100%);}
 .navbar-default .navbar-brand{ height:auto;}
 .navbar-default .navbar-brand img{ height:38px;}
 .navbar-default .social-media{ float:right; margin:10px 0; padding:0;}
@@ -157,7 +157,7 @@ button[type="button"]{ border:none; background:none;}
 
 
 /* SCREENSHOT */
-.screenshots{ width:100%; float:left; padding:100px 0; text-align:center;}
+.screenshots{ width:100%; float:left; padding:100px 0px 50px 0; text-align:center;}
 .screenshots .title{ font-weight:900; font-size:80px; margin-bottom:50px;}
 .screenshots .nav-tabs{ display:inline-block; border:none; margin-bottom:10px;}
 .screenshots .nav-tabs li{ float:left;}
@@ -170,13 +170,13 @@ button[type="button"]{ border:none; background:none;}
 .screenshots .screenshot-carousel{ width:100%; float:left; margin:0; padding:0;}
 .screenshots .screenshot-carousel li{ list-style:none; margin:0; padding:140px 0; text-align:center;}
 .screenshots .screenshot-carousel li img{ width:200px; display:inline-block;}
-.screenshots .screenshot-carousel .center{ padding:0; background:url(../images/screenshot-iphone-mockup.jpg) center no-repeat; background-size:cover; background-size:400px 717px;}
-.screenshots .screenshot-carousel .center img{ width:251px;}
+.screenshots .screenshot-carousel .center{ padding:0;}
+.screenshots .screenshot-carousel .center img{ height:500px;width:251px;}
 .screenshots .screenshot-carousel2{ width:100%; float:left; margin:0; padding:0;}
 .screenshots .screenshot-carousel2 li{ list-style:none; margin:0; padding:140px 0; text-align:center;}
 .screenshots .screenshot-carousel2 li img{ width:200px; display:inline-block;}
-.screenshots .screenshot-carousel2 .center{ padding:0; background:url(../images/screenshot-samsung-mockup.jpg) center no-repeat; background-size:cover; background-size:400px 717px;}
-.screenshots .screenshot-carousel2 .center img{ width:265px; transform:translateY(-20px);}
+.screenshots .screenshot-carousel2 .center{ padding:0;}
+.screenshots .screenshot-carousel2 .center img{ height:500px;width:265px; transform:translateY(-20px);}
 .screenshots .owl-controls{ width:100%; float:left; text-align:center; position:relative; z-index:9;}
 .screenshots .owl-controls .owl-nav{ width:380px; display:inline-block; margin-right:10px;}
 .screenshots .owl-controls .owl-prev{ float:left; text-indent:-9999px; font-size:50px; color:#c6c7d8; margin-top:-100%;}
@@ -212,8 +212,8 @@ button[type="button"]{ border:none; background:none;}
 .how-it-work .tab-content{ width:100%; float:left;}
 .how-it-work .tab-content .tab-pane{ width:100%; float:left;}
 .how-it-work .tab-content .tab-pane h3{ font-size:30px; font-weight:900; position:relative; margin-bottom:40px;}
-.how-it-work .tab-content .tab-pane h3:after{content:attr(data-title); font-size:130px; color:#77778c; opacity:0.10; position:absolute; left:-52px; top:-62px;}
-.how-it-work .tab-content .tab-pane p{color:#77778c; font-size:22px; line-height:29px; margin-bottom:40px;}
+.how-it-work .tab-content .tab-pane h3:after{ content:attr(data-title); font-size:130px; color:#77778c; opacity:0.10; position:absolute; left:-52px; top:-62px;}
+.how-it-work .tab-content .tab-pane p{ color:#77778c; font-size:22px; line-height:29px; margin-bottom:40px;}
 .how-it-work .tab-content .tab-pane a{ float:left;}
 
 

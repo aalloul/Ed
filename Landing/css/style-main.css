@@ -223,17 +223,21 @@ button[type="button"]{ border:none; background:none;}
 .header{-webkit-transition: all 0.7s ease; -moz-transition: all 0.7s ease; -ms-transform:all 0.7s ease; transition: all 0.7s ease;}
 .header{transform: translateY(50%); -moz-transform:translateY(50%); -ms-transform:translateY(50%); -o-transform:translateY(50%); -webkit-transform:translateY(50%); }
 .header .iphone-mockup{ height:100%; position:absolute; left:-22%; bottom:-25%;}
-.header h1{ color:#fff; font-size:100px; font-weight:900; line-height:100px; margin-bottom:50px;}
-.header .btn-appstore{ height:78px; display:inline-block; background:#7570ff; border-radius:5px; padding:0 30px; box-shadow:0 20px 55px rgba(0,0,0,0.33); margin-right:50px; color:#fff; text-align:left; margin-bottom:5%;}
+.header h1{ color:#fff; font-size:80px; font-weight:700; line-height:100px; margin-bottom:50px;margin-top:50px;}
+.header .btn-appstore{ height:78px; display:inline-block; background:#50D2C2; border-radius:5px; padding:0 30px; box-shadow:0 20px 55px rgba(0,0,0,0.33); margin-right:50px; color:#fff; text-align:left; margin-bottom:5%;}
 .header .btn-appstore img{ float:left; height:38px; margin:20px 0; margin-right:15px;}
 .header .btn-appstore span{ display:inline-block; margin-top:15px; opacity:0.55;}
-.header .btn-appstore h3{ width:186px; display:block; font-size:23px; font-weight:900;margin:0; letter-spacing:1px;}
+.header .btn-appstore h3{ width:186px; display:block; font-size:23px; font-weight:900;margin:0; letter-spacing:1px; position: relative; top:35%;}
 .header .btn-appstore:hover{ text-decoration:none; background:#8a8aff; color:#171838;}
-.header .btn-googleplay{ height:78px; display:inline-block; background:#1ad5b1; border-radius:5px; padding:0 30px; box-shadow:0 20px 55px rgba(0,0,0,0.33); color:#fff; text-align:left;}
+.header .btn-googleplay{ height:78px; display:inline-block; background:#50D2C2; border-radius:5px; padding:0 30px; box-shadow:0 20px 55px rgba(0,0,0,0.33); color:#fff; text-align:left;}
 .header .btn-googleplay img{ float:left; height:38px; margin:20px 0; margin-right:15px;}
 .header .btn-googleplay span{ display:inline-block; margin-top:15px; opacity:0.55;}
-.header .btn-googleplay h3{ width:220px; display:block;font-size:23px;font-weight:900;margin:0; letter-spacing:1px;}
+.header .btn-googleplay h3{ width:220px; display:block;font-size:23px;font-weight:900;margin:0; letter-spacing:1px; position: relative; top:35%;}
 .header .btn-googleplay:hover{ text-decoration:none; background:#1efcd0; color:#171838;}
+.header .social-media { display:inline-block; margin:20px 0px 0px 0px; padding:0; height:0;}
+.header .social-media li{ position: relative; float:left; margin:0 6px; padding:0; list-style:none;}
+.header .social-media li a{ width:42px; height:42px; float:left; text-align:center; line-height:38px; border:2px solid #3d3d58; border-radius:50%; color:#fff;}
+.header .social-media li a:hover{ background:#5d5acd; border:2px solid #5d5acd;}
 
 
 /* ABOUT APP */
@@ -365,6 +369,24 @@ button[type="button"]{ border:none; background:none;}
 .why-choose-us .mockup-bg{ width:100%; height:271px; float:left; margin-bottom:40px; background:url(../images/why-choose-us-bg.jpg) top center no-repeat;}
 .why-choose-us h4{ font-size:24px; font-weight:900; margin-bottom:20px;}
 .why-choose-us p{ font-size:17px; color:#77778c; line-height:29px;}
+
+
+/* HOW IT WORK */
+.how-it-work{ width:100%; float:left; padding-bottom:100px;}
+.how-it-work .title{ font-size:80px; font-weight:900; margin-bottom:50px;}
+.how-it-work .nav-tabs{ width:100%; float:left; border:none; margin-bottom:62px;}
+.how-it-work .nav-tabs li{ float:left;}
+.how-it-work .nav-tabs li.active a{ border-bottom:3px solid #1ad5b1; color:#171838;}
+.how-it-work .nav-tabs li.active a:hover{ background:none; border:none; border-bottom:3px solid #1ad5b1; color:#171838;}
+.how-it-work .nav-tabs li.active a:focus{ background:none; border:none; border-bottom:3px solid #1ad5b1; }
+.how-it-work .nav-tabs li a{ color:#bdbdce; font-size:17px; font-weight:900; background:none; border:none; border-bottom:3px solid transparent;}
+.how-it-work .nav-tabs li a:hover{ color:#1ad5b1;}
+.how-it-work .tab-content{ width:100%; float:left;}
+.how-it-work .tab-content .tab-pane{ width:100%; float:left;}
+.how-it-work .tab-content .tab-pane h3{ font-size:30px; font-weight:900; position:relative; margin-bottom:40px;}
+.how-it-work .tab-content .tab-pane h3:after{content:attr(data-title); font-size:130px; color:#77778c; opacity:0.10; position:absolute; left:-52px; top:-62px;}
+.how-it-work .tab-content .tab-pane p{color:#77778c; font-size:22px; line-height:29px; margin-bottom:40px;}
+.how-it-work .tab-content .tab-pane a{ float:left;}
 
 
 /* DOWNLOAD APP FOR FREE */
