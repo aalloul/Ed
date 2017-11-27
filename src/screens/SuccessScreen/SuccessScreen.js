@@ -1,35 +1,10 @@
 import React from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
+import { connect } from 'react-redux';
 
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
-
-export default class SuccessScreen extends React.Component {
-  render() {
-    const { navigate } = this.props.navigation;
-
-    return (
-      <View style={styles.container}>
-        <PrimaryText>
-          Success!
-        </PrimaryText>
-        <Image source={require('./TickIcon.png')} style={styles.image} />
-        <SecondaryText>
-          <Text style={styles.bold}>English</Text> translation{"\n"}
-          has been sent to{"\n"}
-          <Text style={styles.bold}>paulcodiny@gmail.com</Text>
-        </SecondaryText>
-        <RectangularButton
-          accessibilityLabel="Continue scanning the paper mails"
-          onPress={() => navigate('Scan')}
-          style={styles.bottom}
-          title="Scan more"
-        />
-      </View>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -52,3 +27,47 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
 });
+
+class SuccessScreen extends React.Component {
+  computeLanguageLabel(language) {
+    const lang = this.props.languages.find(({ code }) => code === language);
+    if (!lang) {
+      throw new Error(`Language ${language} is not found.`);
+    }
+
+    return lang.label;
+  }
+
+  render() {
+    const { navigate } = this.props.navigation;
+
+    return (
+      <View style={styles.container}>
+        <PrimaryText>
+          Success!
+        </PrimaryText>
+        <Image source={require('./TickIcon.png')} style={styles.image} />
+        <SecondaryText>
+          <Text style={styles.bold}>{this.computeLanguageLabel(this.props.language)}</Text> translation{"\n"}
+          has been sent to{"\n"}
+          <Text style={styles.bold}>{this.props.email}</Text>
+        </SecondaryText>
+        <RectangularButton
+          accessibilityLabel="Continue scanning the paper mails"
+          onPress={() => navigate('Scan')}
+          style={styles.bottom}
+          title="Scan more"
+        />
+      </View>
+    );
+  }
+}
+
+export default connect(
+  state => ({
+    language: state.language,
+    languages: state.languages,
+    translation: state.translation,
+    email: state.email,
+  })
+)(SuccessScreen);

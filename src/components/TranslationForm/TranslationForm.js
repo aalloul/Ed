@@ -46,7 +46,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const TranslationForm = ({ onHumanTranslationPress, onMachineTranslationPress, onLanguageChange, language }) => (
+const TranslationForm = ({
+  onHumanTranslationPress,
+  onMachineTranslationPress,
+  onLanguageChange,
+  language,
+  languages,
+}) => (
   <View style={styles.container}>
     <PrimaryText>
       How do want{'\n'}
@@ -58,11 +64,7 @@ const TranslationForm = ({ onHumanTranslationPress, onMachineTranslationPress, o
       selectedValue={language}
       onValueChange={language => onLanguageChange(language)}
     >
-      <Picker.Item label="English" value="en" />
-      <Picker.Item label="Dutch / Nederlands" value="nl" />
-      <Picker.Item label="French / Français" value="fr" />
-      <Picker.Item label="Spanish / Español" value="es" />
-      <Picker.Item label="Russian / Русский" value="ru" />
+      {languages.map(({ label, code }) => <Picker.Item label={label} value={code} key={code} />)}
     </Picker>
 
     <View style={styles.actions}>
@@ -105,6 +107,7 @@ TranslationForm.propTypes = {
   onMachineTranslationPress: PropTypes.func.isRequired,
   onLanguageChange: PropTypes.func.isRequired,
   language: PropTypes.oneOf(['en', 'es', 'ru', 'fr', 'nl']),
+  languages: PropTypes.array.isRequired,
 };
 
 TranslationForm.defaultProps = {

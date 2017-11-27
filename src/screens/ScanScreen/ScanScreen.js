@@ -1,59 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Modal, Text, Button, Image } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+import { connect } from 'react-redux';
 
 import Camera from 'react-native-camera';
 
 import RoundButton from '../../components/Buttons/RoundButton';
-
-export default class ScanScreen extends React.Component {
-  constructor() {
-    super();
-
-    this.scan = this.scan.bind(this);
-  }
-
-  scan() {
-    this.props.navigate('Translation');
-
-    return; // TODO for development only, DO NOT MERGE
-
-    const options = {};
-    //options.location = ...
-    this.camera
-      .capture({ metadata: options })
-      .then((data) => {
-        // @property {String} data.path: Returns the path of the captured image or video file on disk
-        console.log(data);
-
-        this.showTranslationModal();
-      })
-      .catch(err => console.error(err));
-  }
-
-  render() {
-    const { navigate } = this.props.navigation;
-
-    return (
-      <View style={styles.container}>
-        <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
-          style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}
-        >
-          <View style={styles.camera}>
-            <Text style={styles.text}>List of scanned letters goes here</Text>
-            <RoundButton
-              iconSource={require('./ScanIcon.png')}
-              onPress={() => navigate('Translation')}
-            />
-          </View>
-        </Camera>
-      </View>
-    );
-  }
-} 
+import { takePhoto } from '../../actions/index';
 
 const styles = StyleSheet.create({
   container: {
@@ -87,3 +39,60 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
+
+class ScanScreen extends React.Component {
+  constructor() {
+    super();
+
+    this.scan = this.scan.bind(this);
+  }
+
+  scan() {
+    const { navigation, takePhoto } = this.props;
+
+    navigation.navigate('Translation');
+
+    return; // TODO for development only, DO NOT MERGE
+
+    const options = {};
+    //options.location = ...
+    this.camera
+      .capture({ metadata: options })
+      .then((data) => {
+        // @property {String} data.path: Returns the path of the captured image or video file on disk
+        console.log(data);
+
+        takePhoto(data);
+        navigation.navigate('Translation');
+      })
+      .catch(err => console.error(err));
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Camera
+          ref={(cam) => {
+            this.camera = cam;
+          }}
+          style={styles.preview}
+          aspect={Camera.constants.Aspect.fill}
+        >
+          <View style={styles.camera}>
+            <Text style={styles.text}>List of scanned letters goes here</Text>
+            <RoundButton
+              iconSource={require('./ScanIcon.png')}
+              onPress={this.scan}
+            />
+          </View>
+        </Camera>
+      </View>
+    );
+  }
+}
+
+export default connect(null, dispatch => ({
+  takePhoto(photo) {
+    dispatch(takePhoto(photo))
+  }
+}))(ScanScreen);
