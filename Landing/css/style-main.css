@@ -223,8 +223,8 @@ button[type="button"]{ border:none; background:none;}
 .header{-webkit-transition: all 0.7s ease; -moz-transition: all 0.7s ease; -ms-transform:all 0.7s ease; transition: all 0.7s ease;}
 .header{transform: translateY(50%); -moz-transform:translateY(50%); -ms-transform:translateY(50%); -o-transform:translateY(50%); -webkit-transform:translateY(50%); }
 .header .iphone-mockup{ height:100%; position:absolute; left:-22%; bottom:-25%;}
-.header h1{ color:#fff; font-size:80px; font-weight:700; line-height:100px; margin-bottom:50px;margin-top:50px;}
-.header .btn-appstore{ height:78px; display:inline-block; background:#50D2C2; border-radius:5px; padding:0 30px; box-shadow:0 20px 55px rgba(0,0,0,0.33); margin-right:50px; color:#fff; text-align:left; margin-bottom:5%;}
+.header h1{ width: 1000px; margin-left:500px; color:#fff; font-size:80px; font-weight:700; line-height:70px; margin-bottom:50px; margin-top:120px; position:relative; left:150px;}
+.header .btn-appstore{ height:78px; display:inline-block; background:#50D2C2; border-radius:5px; padding:0 30px; box-shadow:0 20px 55px rgba(0,0,0,0.33); margin-right:50px; color:#fff; text-align:left; margin-bottom:5%; margin-left:380px; margin-top:50px;}
 .header .btn-appstore img{ float:left; height:38px; margin:20px 0; margin-right:15px;}
 .header .btn-appstore span{ display:inline-block; margin-top:15px; opacity:0.55;}
 .header .btn-appstore h3{ width:186px; display:block; font-size:23px; font-weight:900;margin:0; letter-spacing:1px; position: relative; top:35%;}
@@ -238,6 +238,7 @@ button[type="button"]{ border:none; background:none;}
 .header .social-media li{ position: relative; float:left; margin:0 6px; padding:0; list-style:none;}
 .header .social-media li a{ width:42px; height:42px; float:left; text-align:center; line-height:38px; border:2px solid #3d3d58; border-radius:50%; color:#fff;}
 .header .social-media li a:hover{ background:#5d5acd; border:2px solid #5d5acd;}
+.Apple{ float:left; position:fixed; top:120px; left:200px; height:650px; width:350px;}
 
 
 /* ABOUT APP */
@@ -259,15 +260,15 @@ button[type="button"]{ border:none; background:none;}
 
 
 /* DOWNLOAD FOR FREE */
-.download-for-free{ width:100%; float:left; padding:160px 0; background:url(../images/hero1.jpg) center no-repeat;}
-.download-for-free h2{ font-size:50px; font-weight:900; color:#fff; margin-top:0; margin-bottom:25px;}
-.download-for-free p{ font-size:22px; line-height:29px; opacity:0.83; color:#fff; margin-bottom:70px;}
-.download-for-free .btn-appstore{ height:78px; display:inline-block; border-radius:5px; padding:0 20px; margin-right:50px; color:#fff; border:2px solid #fff;}
+.download-for-free{ width:100%; float:left; padding:350px 0; background:url(../images/cloud_image.jpg) center no-repeat;}
+.download-for-free h2{ font-size:50px; font-weight:900; color:#15164b; margin-top:0; margin-bottom:25px;}
+.download-for-free p{ font-size:22px; font-weight:600; line-height:29px; opacity:0.83; color:#15164b; margin-bottom:70px;}
+.download-for-free .btn-appstore{ height:78px; display:inline-block; background:#50D2C2;border-radius:5px; padding:0 20px; margin-right:50px; color:#fff; border:2px solid #fff;}
 .download-for-free .btn-appstore img{ float:left; height:38px; margin:18px 0; margin-right:15px; -webkit-filter: brightness(1) invert(1); filter: brightness(1) invert(1); }
 .download-for-free .btn-appstore span{ display:inline-block; margin-top:14px; opacity:0.55;}
 .download-for-free .btn-appstore h3{ width:186px; display:block; font-size:23px; font-weight:900; margin:0; letter-spacing:1px;}
 .download-for-free .btn-appstore:hover{ text-decoration:none; background:#171838; border:2px solid #171838;  box-shadow:0 20px 55px rgba(0,0,0,0.33);}
-.download-for-free .btn-googleplay{ height:78px; display:inline-block; border-radius:5px; padding:0 20px; margin-right:50px; color:#fff; border:2px solid #fff;}
+.download-for-free .btn-googleplay{ height:78px; display:inline-block; background:#50D2C2; border-radius:5px; padding:0 20px; margin-right:50px; color:#fff; border:2px solid #fff;}
 .download-for-free .btn-googleplay img{ float:left; height:38px; margin:18px 0; margin-right:15px; -webkit-filter: brightness(1) invert(1); filter: brightness(1) invert(1); }
 .download-for-free .btn-googleplay span{ display:inline-block; margin-top:14px; opacity:0.55;}
 .download-for-free .btn-googleplay h3{ width:220px; display:block; font-size:23px; font-weight:900; margin:0; letter-spacing:1px;}
@@ -387,10 +388,11 @@ button[type="button"]{ border:none; background:none;}
 .how-it-work .tab-content .tab-pane h3:after{content:attr(data-title); font-size:130px; color:#77778c; opacity:0.10; position:absolute; left:-52px; top:-62px;}
 .how-it-work .tab-content .tab-pane p{color:#77778c; font-size:22px; line-height:29px; margin-bottom:40px;}
 .how-it-work .tab-content .tab-pane a{ float:left;}
+.how-it-work .text-center{ text-align:left;}
 
 
 /* DOWNLOAD APP FOR FREE */
-.download-app-for-free{ width:100%; float:left; padding-top:50px; text-align:center; background:url(../images/download-app-pattern-bg.png) center no-repeat;}
+.download-app-for-free{ width:100%; float:left; padding-top:50px; text-align:center; background:url(../images/download-app-pattern-bg.png) center no-repeat; margin-top:250px}
 .download-app-for-free .title{font-size:60px; font-weight:900; margin-top:0; margin-bottom:70px;}
 .download-app-for-free .mockup{ max-width:100%; display:inline-block; margin-top:150px;}
 .download-app-for-free .btn-appstore{ height:78px; display:inline-block; background:#1ad5b1; border-radius:5px; padding:0 30px; box-shadow:0 20px 55px rgba(26,213,177,0.33); margin-right:50px; color:#fff; text-align:left;}
@@ -513,4 +515,5 @@ button[type="button"]{ border:none; background:none;}
 .pagination li.active{display:inline-block;}
 .header-blog .navbar-default .navbar-toggle{ margin-top:20px;}
 .header-blog .navbar-default .navbar-nav li{ width:100%; text-align:center;}
+.how-it-work .title{ font-size:50px;}
 }
