@@ -33,9 +33,3 @@ export function changeEmail(email) {
     email,
   };
 }
-
-export function sendLetter() {
-  return {
-    type: SEND_LETTER,
-  };
-}
