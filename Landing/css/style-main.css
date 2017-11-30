@@ -239,7 +239,7 @@ button[type="button"]{ border:none; background:none;}
 .header .social-media li a{ width:42px; height:42px; float:left; text-align:center; line-height:38px; border:2px solid #3d3d58; border-radius:50%; color:#fff;}
 .header .social-media li a:hover{ background:#5d5acd; border:2px solid #5d5acd;}
 .Apple{ float:left; position:fixed; top:120px; left:200px; height:650px; width:350px;}
-
+.Success{ float:left; position:relative; left:242px; bottom:562px; height:454px; width:266px;}
 
 /* ABOUT APP */
 .about-app{ width:100%; float:left; padding-top:50px; padding-bottom:200px;}
@@ -373,8 +373,8 @@ button[type="button"]{ border:none; background:none;}
 
 
 /* HOW IT WORK */
-.how-it-work{ width:100%; float:left; padding-bottom:100px;}
-.how-it-work .title{ font-size:80px; font-weight:900; margin-bottom:50px;}
+.how-it-work{ width:100%; height:800px; float:left; padding-bottom:100px;}
+.how-it-work .title{ font-size:80px; font-weight:900; margin-bottom:50px; margin-top:80px;}
 .how-it-work .nav-tabs{ width:100%; float:left; border:none; margin-bottom:62px;}
 .how-it-work .nav-tabs li{ float:left;}
 .how-it-work .nav-tabs li.active a{ border-bottom:3px solid #1ad5b1; color:#171838;}
@@ -385,10 +385,16 @@ button[type="button"]{ border:none; background:none;}
 .how-it-work .tab-content{ width:100%; float:left;}
 .how-it-work .tab-content .tab-pane{ width:100%; float:left;}
 .how-it-work .tab-content .tab-pane h3{ font-size:30px; font-weight:900; position:relative; margin-bottom:40px;}
-.how-it-work .tab-content .tab-pane h3:after{content:attr(data-title); font-size:130px; color:#77778c; opacity:0.10; position:absolute; left:-52px; top:-62px;}
-.how-it-work .tab-content .tab-pane p{color:#77778c; font-size:22px; line-height:29px; margin-bottom:40px;}
+.how-it-work .tab-content .tab-pane h3:after{ content:attr(data-title); font-size:130px; color:#77778c; opacity:0.10; position:absolute; left:-52px; top:-62px;}
+.how-it-work .tab-content .tab-pane p{ color:#77778c; font-size:22px; line-height:29px; margin-bottom:40px;}
 .how-it-work .tab-content .tab-pane a{ float:left;}
 .how-it-work .text-center{ text-align:left;}
+.how-it-work .screen-position-apple{ position:relative; left:689px; bottom:1107px; height:461px; width:275px;}
+.how-it-work .screen-position-samsung{ position:relative; left:671px; bottom:1188px; height:536px; width:308px;}
+.how-it-work .screen-position-pixel{ position:relative; left:673px; bottom:1085px; height:478px; width:295px;}
+.Apple1{ float:left; position:relative; bottom:548px; left:490px; height:650px; width:350px;}
+.Samsung1{ float:left; position:relative; bottom:595px; left:650px; height:650px; width:350px;}
+.Pixel1{ float:left; position:relative; bottom:527px; left:463px; height:610px; width:350px;}
 
 
 /* DOWNLOAD APP FOR FREE */
