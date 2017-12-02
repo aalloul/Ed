@@ -279,3 +279,7 @@ fabric.properties
 .idea/sonarlint
 
 # End of https://www.gitignore.io/api/macos,webstorm,reactnative
+
+reporting/service_account.json
+reporting/project.secret
+.idea/*

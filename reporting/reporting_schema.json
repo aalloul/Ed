@@ -1,0 +1,116 @@
+[
+  {
+    "description": "Version of the data model that is reported on",
+    "name": "datamodel_version",
+    "type": "FLOAT",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "Version of the app that created this data",
+    "name": "app_version",
+    "type": "FLOAT",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "Maker of the phone where the app is running",
+    "name": "phone_maker",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "Model of the phone where the app is running",
+    "name": "phone_model",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "Version of the OS running on the phone",
+    "name": "os_version",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "UUID4 uniquely identifying a phone where the app is running",
+    "name": "user_id",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "Timestamp in epoch milliseconds when the data was generated",
+    "name": "timestamp",
+    "type": "TIMESTAMP",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "String identifying the type of data this record is about",
+    "name": "type",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "String identifying the name of the screen that was visible when this record was generated",
+    "name": "screen",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "String identifying the action performed by the user that led to the record generation",
+    "name": "action",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "Timestamp in milliseconds identifying when the current screen was created",
+    "name": "screen_start",
+    "type": "TIMESTAMP",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "Timestamp in milliseconds identifying when the current screen ended",
+    "name": "screen_end",
+    "type": "TIMESTAMP",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "Timestamp in milliseconds identifying when the current session started",
+    "name": "session_start",
+    "type": "TIMESTAMP",
+    "mode": "REQUIRED"
+  },
+  {
+    "description": "String identifying an exception that was caught",
+    "name": "exception_code",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "String containing the stack trace that was caught",
+    "name": "stack_trace",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "Timestamp in milliseconds identifying when the session was about to end",
+    "name": "session_end",
+    "type": "TIMESTAMP",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "Duration of the session in milliseconds",
+    "name": "session_duration",
+    "type": "FLOAT",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "Number of scans that were realized during the session",
+    "name": "number_scans",
+    "type": "INTEGER",
+    "mode": "NULLABLE"
+  },
+  {
+    "description": "Hash of the entire row to allow for an easy deduplication",
+    "name": "_hash",
+    "type": "STRING",
+    "mode": "REQUIRED"
+  }
+]
