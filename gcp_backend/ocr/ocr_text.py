@@ -20,8 +20,7 @@ class Ocr_text(object):
         logger.debug("Full text parsed")
 
     def _parse_full_text(self):
-        return self.answer_content['responses'][0]['fullTextAnnotation'][
-            'text']
+        return self.answer_content['responses'][0]['fullTextAnnotation']['text']
 
     def get_full_text(self):
         return self.full_text.encode("utf-8")

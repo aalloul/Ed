@@ -1,4 +1,11 @@
 from json import loads, dumps
+import logging
+from sys import stdout
+
+# Logging
+logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 class RequestParser(object):
@@ -8,17 +15,29 @@ class RequestParser(object):
 
     def __init__(self, request):
         request = loads(request)
+        logging.debug("Request loaded to JSON")
         self._set_output(request)
+        logging.debug("_set_output done")
         self._set_email(request)
+        logging.debug("_set_email done")
         self._set_input_language(request)
+        logging.debug("_set_input_language done")
         self._set_output_language(request)
+        logging.debug("_set_output_language done")
         self._set_human_translation_requested(request)
+        logging.debug("_set_human_translation_requested")
         self._set_image(request)
+        logging.debug("_set_image")
         self._set_timestamp(request)
+        logging.debug("_set_timestamp")
         self._set_device(request)
+        logging.debug("_set_device")
         self._set_version(request)
+        logging.debug("_set_version")
         self._set_user_id(request)
+        logging.debug("_set_user_id")
         self._set_extract_reminder(request)
+        logging.debug("Request parsing done")
 
     def _set_output(self, request):
         if "output" not in request:

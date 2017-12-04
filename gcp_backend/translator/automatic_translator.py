@@ -21,20 +21,24 @@ class AutomaticTranslator(Translator):
 
         self.input_language = input_language
         self.out_language = output_language
+        logger.debug("Input language = {}, output language = {}".format(
+            input_language, output_language
+        ))
         self.text = ""
         self.api_key = "AIzaSyB5KLbSquVl7pYsYjVpCOhOsrqjYTbuf-8"
         self.url = "https://translation.googleapis.com/language/translate/v2" \
                    "?key={}".format(self.api_key)
         self.DEBUG = True
+        logger.debug("Init done")
 
     def set_text(self, text):
+        logger.debug("Text to translate is (50 chars): {}".format(text[0:50]))
         self.text = text
 
     def _fixture(self):
         logger.debug("DEBUG mode enabled. Returning translation result from "
                      "fixture")
-        with open("/Users/adamalloul/Ed/gcp_backend/fixture/test_translation"
-                  ".json", "r") as f:
+        with open("fixture/test_translation.json", "r") as f:
             resp = load(f)
         return resp['data']['translations'][0]['translatedText'].encode("utf-8")
 
