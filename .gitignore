@@ -285,3 +285,7 @@ reporting/project.secret
 android/app/smail-release.keystore
 .idea/*
 .idea/misc.xml
+*.pyc
+gcp_backend/lib/*
+package-lock.json
+reporting/lib/
