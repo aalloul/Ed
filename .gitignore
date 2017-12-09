@@ -283,5 +283,5 @@ fabric.properties
 reporting/service_account.json
 reporting/project.secret
 android/app/smail-release.keystore
-.idea/*
-.idea/misc.xml
+#.idea/*
+#.idea/misc.xml
