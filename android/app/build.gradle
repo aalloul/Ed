@@ -98,7 +98,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.mailapprn"
+        applicationId "com.smail.app.android"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
