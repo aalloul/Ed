@@ -12,7 +12,7 @@ end
 
 platform :android do
   # Android Lanes
-  json_key_file "/path/to/your/downloaded/key.json"
+  
   private_lane :build do
     gradle(task: 'clean', project_dir: 'android/')
     gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/')
@@ -20,6 +20,7 @@ platform :android do
   desc 'Ship to Playstore Beta.'
   lane :beta do
     build
+    json_key_file "/path/to/your/downloaded/key.json"
     supply(track: 'beta', track_promote_to: 'beta')
     git_commit(path: ['./android/gradle.properties'], message: 'Bump versionCode')
     push_to_git_remote
