@@ -2,16 +2,27 @@ from flask import jsonify
 
 
 class Answer(object):
-    def __init__(self, original_text=None, translated_text=None,
+    def __init__(self, original_text=None, translated_text=None, exception=None,
                  reminder=None, human_requested=False, email_status=False):
+
+        self.exception = exception
         self.original_text = original_text
         self.translated_text = translated_text
         self.reminder = reminder
         self.human_requested = human_requested
         self.email_status = email_status
 
+
     def get_answer(self):
-        return jsonify(self._build_answer())
+        if self.exception is not None:
+            return jsonify(self._build_exception_answer())
+        else:
+            return jsonify(self._build_answer())
+
+    def _build_exception_answer(self):
+        return {
+            "exception": str(self.exception)
+        }
 
     def _build_answer(self):
         if self.human_requested:

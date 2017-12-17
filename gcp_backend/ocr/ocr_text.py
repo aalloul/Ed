@@ -1,6 +1,7 @@
 import logging
 from sys import stdout
-from json import loads
+from json import loads, dumps
+from custom_exceptions.custom_exceptions import NoTextFoundException
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -20,7 +21,13 @@ class Ocr_text(object):
         logger.debug("Full text parsed")
 
     def _parse_full_text(self):
+
+        if self.answer_content['responses'][0].keys() == []:
+            raise NoTextFoundException("No text found")
+
         return self.answer_content['responses'][0]['fullTextAnnotation']['text']
 
     def get_full_text(self):
+        logger.debug("Length of answer is {}".format(len(
+            self.full_text.encode("utf-8"))))
         return self.full_text.encode("utf-8")
