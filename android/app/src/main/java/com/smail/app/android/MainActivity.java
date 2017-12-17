@@ -1,4 +1,4 @@
-package com.mailapprn;
+package com.smail.app.android;
 
 import com.facebook.react.ReactActivity;
 
