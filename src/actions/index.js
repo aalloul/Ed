@@ -1,4 +1,10 @@
-export const TAKE_PHOTO = 'TAKE_PHOTO';
+import RNFetchBlob from 'react-native-fetch-blob'
+import { NavigationActions } from 'react-navigation';
+
+export const TAKE_PHOTO_PROMISE = 'TAKE_PHOTO_PROMISE';
+export const TAKE_PHOTO_RESOLVE = 'TAKE_PHOTO_RESOLVE';
+export const TAKE_PHOTO_REJECT = 'TAKE_PHOTO_REJECT';
+
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SELECT_TRANSLATION = 'SELECT_TRANSLATION';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
@@ -6,10 +12,115 @@ export const SEND_LETTER = 'CHANGE_EMAIL';
 
 // todo:pavlik store information about the User locally (to phone database)
 
-export function takePhoto(photo) {
+function takePhotoPromise() {
   return {
-    type: TAKE_PHOTO,
+    type: TAKE_PHOTO_PROMISE,
+    loading: true,
+  };
+}
+
+function takePhotoResolve(photo) {
+  return {
+    type: TAKE_PHOTO_RESOLVE,
+    loading: false,
     photo,
+  };
+}
+
+function takePhotoReject(err) {
+  return {
+    type: TAKE_PHOTO_REJECT,
+    loading: false,
+    err,
+  };
+}
+
+export function takePhotoRoutine(camera) {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      dispatch(takePhotoPromise());
+
+      camera
+        .capture()
+        .then((data) => {
+          // @property {String} data.path: Returns the path of the captured image or video file on disk
+          console.log(data);
+
+          return RNFetchBlob.fs.readStream(data.path, 'base64');
+        })
+        .then((ifstream) => {
+          let buffer = '';
+
+          ifstream.open();
+          ifstream.onData(chunk => buffer += chunk);
+          ifstream.onError((err) => {
+            throw err;
+          });
+          ifstream.onEnd(() => {
+            dispatch(takePhotoResolve(buffer));
+            dispatch(NavigationActions.navigate({ routeName: 'Translation' }));
+
+            resolve(buffer);
+          })
+        })
+        .catch(err => {
+          dispatch(takePhotoReject(err));
+
+          console.error(err);
+
+          reject(err);
+        });
+    });
+  };
+}
+
+function requestTranslationPromise() {
+
+}
+
+function requestTranslationResolve() {
+
+}
+
+function requestTranslationReject() {
+
+}
+
+
+
+export function requestTranslationRoutine() {
+  return (dispatch, getState) => {
+    const { email, language, translation, photo } = getState();
+
+    dispatch(requestTranslationPromise());
+
+    fetch('https://linear-asset-184705.appspot.com/request_translation', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        language,
+        human_translation_requested: translation === 'human',
+        image: photo,
+        timestamp: Date.now(),
+        device: '', // todo:pavlik the device info, version and the user id
+        version: 1,
+        user_id: '',
+      }),
+    })
+      .then(response => response.json())
+      .then(response => {
+        dispatch(requestTranslationResolve(response));
+      })
+      .catch(err => {
+        // todo:pavlik check the error here
+        dispatch(requestTranslationReject(err));
+
+        console.error(err);
+      });
   };
 }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -28,7 +28,15 @@ const styles = StyleSheet.create({
   },
 });
 
-class SuccessScreen extends React.Component {
+class SuccessScreen extends Component {
+  static navigationOptions = {
+    title: "Success",
+    headerStyle: {
+      color: '#fff',
+      backgroundColor: '#50D2C2',
+    },
+  };
+
   computeLanguageLabel(language) {
     const lang = this.props.languages.find(({ code }) => code === language);
     if (!lang) {

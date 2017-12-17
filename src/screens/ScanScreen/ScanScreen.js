@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import Camera from 'react-native-camera';
 
 import RoundButton from '../../components/Buttons/RoundButton';
-import { takePhoto } from '../../actions/index';
+import { takePhotoRoutine } from '../../actions/index';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,7 +40,15 @@ const styles = StyleSheet.create({
   },
 });
 
-class ScanScreen extends React.Component {
+class ScanScreen extends Component {
+  static navigationOptions = {
+    title: "Take a picture",
+    headerStyle: {
+      color: '#fff',
+      backgroundColor: '#50D2C2',
+    },
+  };
+
   constructor() {
     super();
 
@@ -48,24 +56,9 @@ class ScanScreen extends React.Component {
   }
 
   scan() {
-    const { navigation, takePhoto } = this.props;
+    const { navigation } = this.props;
 
-    navigation.navigate('Translation');
-
-    return; // TODO for development only, DO NOT MERGE
-
-    const options = {};
-    //options.location = ...
-    this.camera
-      .capture({ metadata: options })
-      .then((data) => {
-        // @property {String} data.path: Returns the path of the captured image or video file on disk
-        console.log(data);
-
-        takePhoto(data);
-        navigation.navigate('Translation');
-      })
-      .catch(err => console.error(err));
+    this.props.takePhotoRoutine(this.camera)//.then(() => navigation.navigate('Translation'));
   }
 
   render() {
@@ -80,10 +73,15 @@ class ScanScreen extends React.Component {
         >
           <View style={styles.camera}>
             <Text style={styles.text}>List of scanned letters goes here</Text>
-            <RoundButton
-              iconSource={require('./ScanIcon.png')}
-              onPress={this.scan}
-            />
+            {
+              this.props.loading
+                ? <Text style={styles.text}>Loading</Text>
+                : <RoundButton
+                    iconSource={require('./ScanIcon.png')}
+                    onPress={this.scan}
+                  />
+            }
+
           </View>
         </Camera>
       </View>
@@ -92,7 +90,7 @@ class ScanScreen extends React.Component {
 }
 
 export default connect(null, dispatch => ({
-  takePhoto(photo) {
-    dispatch(takePhoto(photo))
+  takePhotoRoutine(photo) {
+    dispatch(takePhotoRoutine(photo))
   }
 }))(ScanScreen);
