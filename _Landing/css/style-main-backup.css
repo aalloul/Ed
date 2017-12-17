@@ -223,8 +223,9 @@ button[type="button"]{ border:none; background:none;}
 .header{-webkit-transition: all 0.7s ease; -moz-transition: all 0.7s ease; -ms-transform:all 0.7s ease; transition: all 0.7s ease;}
 .header{transform: translateY(50%); -moz-transform:translateY(50%); -ms-transform:translateY(50%); -o-transform:translateY(50%); -webkit-transform:translateY(50%); }
 .header .iphone-mockup{ height:100%; position:absolute; left:-22%; bottom:-25%;}
-.header h1{ width: 1000px; margin-left:500px; color:#fff; font-size:80px; font-weight:700; line-height:70px; margin-bottom:50px; margin-top:120px; position:relative; left:150px;}
-.header .btn-appstore{ height:78px; display:inline-block; background:#50D2C2; border-radius:5px; padding:0 30px; box-shadow:0 20px 55px rgba(0,0,0,0.33); margin-right:50px; color:#fff; text-align:left; margin-bottom:5%; margin-left:380px; margin-top:50px;}
+.header h1{ color:#fff; font-size:60px; font-weight:700; position:relative; margin: 0 auto; }
+.header h2{ width: 80%; color:#fff; font-size:40px; font-weight:700; position:relative; margin: 30px auto 0; }
+.header .btn-appstore{ height:78px; display:inline-block; background:#50D2C2; border-radius:5px; padding:0 30px; box-shadow:0 20px 55px rgba(0,0,0,0.33); margin-right:50px; color:#fff; text-align:left; }
 .header .btn-appstore img{ float:left; height:38px; margin:20px 0; margin-right:15px;}
 .header .btn-appstore span{ display:inline-block; margin-top:15px; opacity:0.55;}
 .header .btn-appstore h3{ width:186px; display:block; font-size:23px; font-weight:900;margin:0; letter-spacing:1px; position: relative; top:35%;}
