@@ -1,6 +1,4 @@
 from __future__ import print_function
-# import sys
-# sys.path.append("lib")
 from flask import Flask, request
 from request_parser.request_parser import RequestParser
 from ocr.ocr import Ocr
@@ -11,6 +9,7 @@ import logging
 from sys import stdout
 from analytics.analytics import Analytics
 from time import time
+from custom_exceptions.custom_exceptions import NoTextFoundException
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -41,7 +40,14 @@ def request_human_translation(parsed_request, reporter):
 def request_automatic_translation(parsed_request, reporter):
     logger.info("Call OCR service")
     start_ocr = time()
-    ocr = Ocr(parsed_request.get_image(), parsed_request.get_input_language())
+    try:
+        ocr = Ocr(parsed_request.get_image(),
+                  parsed_request.get_input_language())
+    except NoTextFoundException as ex:
+        logger.error("No text was found in the provided image")
+        reporter.add_event("exception", "no_text_found_in_image")
+        return Answer(exception=ex).get_answer()
+
     reporter.add_event("ocr_processing_time", time() - start_ocr)
     reporter.add_event("n_chars_image", len(ocr.get_full_text()))
 
