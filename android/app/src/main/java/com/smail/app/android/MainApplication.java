@@ -1,4 +1,4 @@
-package com.mailapprn;
+package com.smail.app.android;
 
 import android.app.Application;
 
