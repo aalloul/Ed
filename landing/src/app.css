@@ -3,13 +3,13 @@ body {
   padding: 0;
   font-family: 'Lato', sans-serif;
   font-size: 15px;
-  background: #f6f6f6;
-  color: #171838;
+  background: #f5f2f1;
+  color: #714f4f;
   -webkit-font-smoothing: antialiased;
 }
 
 .header {
-  background: #171838;
+  background: #172438;
   display: flex;
   position: relative;
   transition-delay: 0.7s;
@@ -75,7 +75,7 @@ body {
 }
 
 .mobile-frame--success::before {
-  background: url('containers/img/4-Success.jpg') 0 78px no-repeat;
+  background: url('/img/4-Success.jpg') 0 78px no-repeat;
   background-size: contain;
   height: 100%;
   left: 20px;
@@ -84,11 +84,11 @@ body {
 }
 
 .mobile-frame--success::after {
-  background-image: url('containers/img/Apple iPhone 8 Space Grey.jpg');
+  background-image: url('/img/Apple iPhone 8 Space Grey.jpg');
 }
 
 .mobile-frame--scan::before {
-  background: url('containers/img/1-Scan.png') -34px -50px no-repeat;
+  background: url('/img/1-Scan.png') -34px -50px no-repeat;
   height: 83%;
   left: 18px;
   top: 57px;
@@ -96,11 +96,11 @@ body {
 }
 
 .mobile-frame--scan::after {
-  background-image: url('containers/img/Samsung Galaxy S8 Midnight Black.jpg');
+  background-image: url('/img/Samsung Galaxy S8 Midnight Black.jpg');
 }
 
 .mobile-frame--translation::before {
-  background: #fff url('containers/img/2-Translation.jpg') 0 0 no-repeat;
+  background: #fff url('/img/2-Translation.jpg') 0 0 no-repeat;
   background-size: contain;
   height: 80%;
   left: 24px;
@@ -109,11 +109,11 @@ body {
 }
 
 .mobile-frame--translation::after {
-  background-image: url('containers/img/Apple iPhone 8 Space Grey.jpg');
+  background-image: url('/img/Apple iPhone 8 Space Grey.jpg');
 }
 
 .mobile-frame--email::before {
-  background: url('containers/img/3-Email.jpg') -34px -50px no-repeat;
+  background: url('/img/3-Email.jpg') -34px -50px no-repeat;
   height: 80%;
   left: 7px;
   top: 80px;
@@ -121,7 +121,7 @@ body {
 }
 
 .mobile-frame--email::after {
-  background-image: url('containers/img/Google Pixel 2 Just Black.png');
+  background-image: url('/img/Google Pixel 2 Just Black.png');
 }
 
 .buttons {
@@ -182,6 +182,35 @@ body {
   position: absolute;
   left: -85px;
   top: -60px;
+}
+
+.price {
+  background: url('/img/cloud_image.jpg') center top no-repeat;
+  padding: 350px 0 250px;
+}
+
+.price--item {
+  margin: 0 auto;
+  text-align: center;
+  width: 800px;
+}
+
+.price--price {
+  font-size: 60px;
+  color: #844728;
+  mix-blend-mode: difference;
+}
+
+.price--trial {
+  font-size: 48px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 125px;
+}
+
+.price--condition {
+  display: inline;
+  font-size: 24px;
 }
 
 .footer {

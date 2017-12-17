@@ -6,7 +6,7 @@ export default {
     return [
       {
         path: '/',
-        component: 'src/containers/Home',
+        component: 'src/containers/Home/Home',
       },
       {
         is404: true,

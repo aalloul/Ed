@@ -1,7 +1,7 @@
 import React from 'react'
 import { getSiteProps } from 'react-static'
-import Buttons from '../components/Buttons/Buttons';
-import HiwStep from '../components/HiwStep/HiwStep';
+import Buttons from '../../components/Buttons/Buttons';
+import HiwStep from '../../components/HiwStep/HiwStep';
 
 export default getSiteProps(() => (
   <div>
@@ -46,14 +46,18 @@ export default getSiteProps(() => (
       </HiwStep>
     </section>
 
-    <footer className="footer transition">
-      <div className="social-media">
-        <li>
-          <a href="https://fb.me/smailrocks" target="_blank">
-            <i className="fa fa-facebook-official">Smail.rocks Facebook Group</i>
-          </a>
-        </li>
+    <section className="price">
+      <div className="price--item">
+        <h2 className="price--price">€5 per month</h2>
+
+        <ul className="price--trial">
+          <li className="price--condition">First letter is free trial</li>
+          <li className="price--condition">No credit card required</li>
+          <li className="price--condition">Cancel anytime</li>
+        </ul>
+
+        <Buttons />
       </div>
-    </footer>
+    </section>
   </div>
 ))
