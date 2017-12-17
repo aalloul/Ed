@@ -141,7 +141,7 @@ class RequestParser(object):
 
     def get_debug(self):
         return {
-            "e-mail": self.get_email(),
+            "email": self.get_email(),
             "input_language": self.get_input_language(),
             "output_language": self.get_output_language(),
             "request_timestamp": self.get_timestamp(),
@@ -152,9 +152,9 @@ class RequestParser(object):
             "user_id": self.get_user_id()
         }
 
-    def __str__(self):
-        return dumps({
-            "e-mail": self.get_email(),
+    def get_request_summary(self):
+        return {
+            "email": self.get_email(),
             "input_language": self.get_input_language(),
             "output_language": self.get_output_language(),
             "request_timestamp": self.get_timestamp(),
@@ -162,5 +162,9 @@ class RequestParser(object):
             "extract_reminder": self.get_extract_reminder(),
             "humman_translation_requested":
                 self.get_human_translation_requested(),
-            "user_id": self.get_user_id()
-        }, indent=4)
+            "user_id": self.get_user_id(),
+            "device": self.get_device()
+        }
+
+    def __str__(self):
+        return dumps(self.get_request_summary(), indent=4)

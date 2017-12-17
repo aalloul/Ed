@@ -26,6 +26,7 @@ class Sendgrid(object):
         self.human_translation = human_translation
         self.extracted_text = extracted_text
         self.translated_text = translated_text
+        self.DEBUG = False
 
     def _build_message_for_auto_translation(self):
         """Builds the message when the required translation is automatic"""
@@ -128,6 +129,9 @@ class Sendgrid(object):
         return message
 
     def send(self):
+        if self.DEBUG:
+            return 200, "", ""
+
         sg = sendgrid.SendGridAPIClient(apikey=self.api_key)
         response = sg.client.mail.send.post(
             request_body=self._build_message().get())
