@@ -10,9 +10,9 @@ import EmailScreen from './src/screens/EmailScreen/EmailScreen';
 import SuccessScreen from './src/screens/SuccessScreen/SuccessScreen';
 
 const AppNavigator = StackNavigator({
-  // Home: { screen: SplashScreen },
-  // Scan: { screen: ScanScreen },
-  // Translation: { screen: TranslationScreen },
+  Home: { screen: SplashScreen },
+  Scan: { screen: ScanScreen },
+  Translation: { screen: TranslationScreen },
   Email: { screen: EmailScreen },
   Success: { screen: SuccessScreen },
 });
