@@ -56,9 +56,8 @@ class ScanScreen extends Component {
   }
 
   scan() {
-    const { navigation } = this.props;
-
-    this.props.takePhotoRoutine(this.camera)//.then(() => navigation.navigate('Translation'));
+    this.props.takePhotoRoutine(this.camera);
+    this.props.navigation.navigate('Translation');
   }
 
   render() {

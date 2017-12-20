@@ -8,9 +8,10 @@ export const TAKE_PHOTO_REJECT = 'TAKE_PHOTO_REJECT';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SELECT_TRANSLATION = 'SELECT_TRANSLATION';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
-export const SEND_LETTER = 'CHANGE_EMAIL';
 
-// todo:pavlik store information about the User locally (to phone database)
+export const SEND_LETTER_PROMISE = 'SEND_LETTER_PROMISE';
+export const SEND_LETTER_RESOLVE = 'SEND_LETTER_RESOLVE';
+export const SEND_LETTER_REJECT = 'SEND_LETTER_REJECT';
 
 function takePhotoPromise() {
   return {
@@ -75,15 +76,23 @@ export function takePhotoRoutine(camera) {
 }
 
 function requestTranslationPromise() {
-
+  return {
+    type: SEND_LETTER_PROMISE,
+  };
 }
 
-function requestTranslationResolve() {
-
+function requestTranslationResolve(response) {
+  return {
+    type: SEND_LETTER_RESOLVE,
+    payload: response,
+  };
 }
 
-function requestTranslationReject() {
-
+function requestTranslationReject(error) {
+  return {
+    type: SEND_LETTER_REJECT,
+    payload: error,
+  };
 }
 
 
@@ -106,7 +115,7 @@ export function requestTranslationRoutine() {
         human_translation_requested: translation === 'human',
         image: photo,
         timestamp: Date.now(),
-        device: '', // todo:pavlik the device info, version and the user id
+        device: '', // todo:pavlik the device info, version and the user id | maybe `react-native-device-info`
         version: 1,
         user_id: '',
       }),
@@ -133,7 +142,7 @@ export function changeLanguage(language) {
 
 export function selectTranslation(translation) {
   return {
-    type: TAKE_PHOTO,
+    type: SELECT_TRANSLATION,
     translation,
   };
 }

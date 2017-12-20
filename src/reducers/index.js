@@ -1,5 +1,5 @@
-export default (state = {
-  photo: null,
+const initialState = {
+  email: '',
   language: 'en',
   languages: [
     { label: 'English', code: 'en' },
@@ -8,6 +8,8 @@ export default (state = {
     { label: 'Spanish / Español', code: 'es' },
     { label: 'Russian / Русский', code: 'ru' },
   ],
-  email: '',
+  photo: null,
   translation: null,
-}, action) => Object.assign({}, state, action);
+};
+
+export default (state = initialState, action) => Object.assign({}, state, action);
