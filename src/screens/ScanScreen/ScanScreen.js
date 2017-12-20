@@ -44,7 +44,6 @@ class ScanScreen extends Component {
   static navigationOptions = {
     title: "Take a picture",
     headerStyle: {
-      color: '#fff',
       backgroundColor: '#50D2C2',
     },
   };

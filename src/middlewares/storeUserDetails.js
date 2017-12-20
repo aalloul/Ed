@@ -1,11 +1,11 @@
 import { AsyncStorage } from 'react-native';
-import { SEND_LETTER_PROMISE, TAKE_PHOTO_PROMISE } from '../actions/index';
+import { REQUEST_TRANSLATION_PROMISE, TAKE_PHOTO_PROMISE } from '../actions/index';
 
 export default function storeUserDetails({ getState, dispatch }) {
   return next => async (action) => {
     const { language, email } = getState();
 
-    if (action.type === SEND_LETTER_PROMISE) {
+    if (action.type === REQUEST_TRANSLATION_PROMISE) {
       try {
         await AsyncStorage.setItem('userDetails', JSON.stringify({ language, email }));
         const storedItem = await AsyncStorage.getItem('userDetails');
