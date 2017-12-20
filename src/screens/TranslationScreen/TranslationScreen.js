@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
@@ -14,10 +14,17 @@ const styles = StyleSheet.create({
   },
 });
 
-class TranslationScreen extends React.Component {
+class TranslationScreen extends Component {
+  static navigationOptions = {
+    title: "Select your language",
+    headerStyle: {
+      backgroundColor: '#50D2C2',
+    },
+  };
+
   selectTranslation(translation) {
     this.props.selectTranslation(translation);
-    this.props.navigation.navigate('Email')
+    this.props.navigation.navigate('Email');
   }
 
   render() {

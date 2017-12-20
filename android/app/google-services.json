@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "760586241273",
+    "project_id": "linear-asset-184705"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760586241273:android:81de7dd265808df9",
+        "android_client_info": {
+          "package_name": "com.smail.app.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760586241273-b60ilqosevhhjphvctptb8nc6pfkvuhh.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "760586241273-35m626kpmcu727kalovbjq667o59ro0t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smail.app.android",
+            "certificate_hash": "c9697c6b96e6c9537028f46f49b13a5e4acb86e0"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7fEATiOltMDz9wkdAwHv82vPSxwt7Sd4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

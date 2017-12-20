@@ -1,0 +1,222 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  background: #f5f2f1;
+  color: #714f4f;
+  -webkit-font-smoothing: antialiased;
+}
+
+.header {
+  background: #172438;
+  display: flex;
+  position: relative;
+  transition-delay: 0.7s;
+  text-align: center;
+  justify-content: space-evenly;
+}
+
+.hero-title {
+  color: #fff;
+  font-size: 60px;
+  font-weight: 700;
+  position: relative;
+  margin: 0 auto;
+}
+
+.hero-text {
+  width: 80%;
+  color: #fff;
+  font-size: 40px;
+  font-weight: 700;
+  position: relative;
+  margin: 30px auto 0;
+}
+
+.phone {
+  width: 350px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 650px;
+  text-align: center;
+}
+
+.mobile-frame {
+  height: 650px;
+  min-width: 350px;
+  position: relative;
+  width: 350px;
+}
+
+.mobile-frame::before {
+  content: '';
+  position: absolute;
+}
+
+.mobile-frame::after {
+  background-repeat: no-repeat;
+  background-size: contain;
+  content: '';
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.mobile-frame--success::before {
+  background: url('/img/4-Success.jpg') 0 78px no-repeat;
+  background-size: contain;
+  height: 100%;
+  left: 20px;
+  top: 20px;
+  width: 82%;
+}
+
+.mobile-frame--success::after {
+  background-image: url('/img/Apple iPhone 8 Space Grey.jpg');
+}
+
+.mobile-frame--scan::before {
+  background: url('/img/1-Scan.png') -34px -50px no-repeat;
+  height: 83%;
+  left: 18px;
+  top: 57px;
+  width: 75%;
+}
+
+.mobile-frame--scan::after {
+  background-image: url('/img/Samsung Galaxy S8 Midnight Black.jpg');
+}
+
+.mobile-frame--translation::before {
+  background: #fff url('/img/2-Translation.jpg') 0 0 no-repeat;
+  background-size: contain;
+  height: 80%;
+  left: 24px;
+  top: 97px;
+  width: 79%;
+}
+
+.mobile-frame--translation::after {
+  background-image: url('/img/Apple iPhone 8 Space Grey.jpg');
+}
+
+.mobile-frame--email::before {
+  background: url('/img/3-Email.jpg') -34px -50px no-repeat;
+  height: 80%;
+  left: 7px;
+  top: 80px;
+  width: 83%;
+}
+
+.mobile-frame--email::after {
+  background-image: url('/img/Google Pixel 2 Just Black.png');
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 70px;
+  width: 100%;
+}
+
+.btn {
+  font-size: 30px;
+  text-decoration: none;
+  line-height: 78px;
+  height: 78px;
+  display: inline-block;
+  background: #50D2C2;
+  border-radius: 5px;
+  padding: 0 30px;
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.33);
+  color: #fff;
+  text-align: left;
+}
+
+.btn:hover {
+  background: #1efcd0;
+  color: #171838;
+  text-decoration: none;
+}
+
+.btn--icon {
+  float: left;
+  height: 38px;
+  margin: 20px 15px 20px 0;
+}
+
+.hiw-step {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 30px 0;
+}
+
+.hiw-step--title {
+  font-size: 50px;
+  font-weight: 900;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.hiw-step--text {
+  font-size: 36px;
+  position: relative;
+}
+
+.hiw-step--number {
+  color: #77778c;
+  font-size: 100px;
+  opacity: .1;
+  position: absolute;
+  left: -85px;
+  top: -60px;
+}
+
+.price {
+  background: url('/img/cloud_image.jpg') center top no-repeat;
+  padding: 350px 0 250px;
+}
+
+.price--item {
+  margin: 0 auto;
+  text-align: center;
+  width: 800px;
+}
+
+.price--price {
+  font-size: 60px;
+  color: #844728;
+  mix-blend-mode: difference;
+}
+
+.price--trial {
+  font-size: 48px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 125px;
+}
+
+.price--condition {
+  display: inline;
+  font-size: 24px;
+}
+
+.footer {
+  width: 100%;
+  float: left;
+  background: #171838;
+  text-align: center;
+  padding: 30px 0;
+}

@@ -12,7 +12,8 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "test": "node node_modules/jest/bin/jest.js --watch"
+    "test": "node node_modules/jest/bin/jest.js --watch",
+    "android-create-input-android-bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "jest": {
     "preset": "jest-expo"
@@ -23,6 +24,8 @@
     "react-native": "^0.49.5",
     "react-native-action-button": "^2.8.1",
     "react-native-camera": "^0.10.0",
+    "react-native-fetch-blob": "^0.10.8",
+    "react-native-google-sign-in": "^1.0.16",
     "react-native-google-signin": "^0.12.0",
     "react-navigation": "^1.0.0-beta.19",
     "react-redux": "^5.0.6",

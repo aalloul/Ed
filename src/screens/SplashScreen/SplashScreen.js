@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text, Button } from 'react-native';
 
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
 
-export default class SplashScreen extends React.Component {
+export default class SplashScreen extends Component {
+  static navigationOptions = {
+    title: "Smail.rocks",
+    headerStyle: {
+      backgroundColor: '#50D2C2',
+    },
+  };
+
   constructor() {
     super();
 

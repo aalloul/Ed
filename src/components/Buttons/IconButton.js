@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     width: 30,
   },
   title: {
+    color: '#fff',
     marginLeft: 10,
     flex: 1,
     fontFamily: 'Avenir',
