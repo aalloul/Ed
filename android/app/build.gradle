@@ -116,7 +116,7 @@ android {
         }
     }
     signingConfigs {
-        debug {
+        pavlik {
             storeFile file('/Users/pavlik/.android/debug.keystore')
             keyAlias 'androiddebugkey'
             keyPassword 'android'
@@ -136,7 +136,7 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             /*signingConfig signingConfigs.release*/
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
