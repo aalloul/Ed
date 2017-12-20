@@ -7,21 +7,42 @@ import GoogleSignIn from 'react-native-google-sign-in';
 import PrimaryText from '../Texts/PrimaryText';
 import IconButton from '../Buttons/IconButton';
 import DividerText from '../Texts/DividerText';
-import RoundButton from '../Buttons/RoundButton';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
   },
-  input: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#999',
+  signInButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#999',
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    width: 250,
+  },
+  signInIcon: {
+    height: 45,
+    width: 45,
+    marginBottom: 20,
+    marginTop: 20,
+    marginLeft: 5,
+  },
+  signInTitle: {
     color: '#999',
     fontSize: 24,
-    height: 40,
+    flex: 1,
+    textAlign: 'center',
+    paddingRight: 50,
+  },
+  input: {
+    color: '#999',
+    fontSize: 24,
+    height: 50,
     marginBottom: 30,
     textAlign: 'center',
     width: 260,
@@ -46,23 +67,41 @@ const styles = StyleSheet.create({
   },
 });
 
-function signIn() {
-  console.log('sign in');
+function createSignIn(onInput, onPress) {
+  return function() {
+    console.log('sign in');
 
-  GoogleSignIn
-    .configure({
-      // iOS
-      //clientID: 'yourClientID',
+    GoogleSignIn
+      .configure({
+        // iOS
+        //clientID: 'yourClientID',
 
-      // what API you want to access on behalf of the user, default is email and profile
-      //scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-      shouldFetchBasicProfile: true,
-    })
-    .then(GoogleSignIn.signInPromise)
-    .then((user) => {
-      console.log('signed in user is ', user);
-      // you can now call currentUserAsync()
-    });
+        // what API you want to access on behalf of the user, default is email and profile
+        //scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+        shouldFetchBasicProfile: true,
+      })
+      .then(GoogleSignIn.signInPromise)
+      .then((user) => {
+        // user: {
+        //   userID: String,
+        //   email: String,
+        //   name: String,
+        //   givenName: String,
+        //   familyName: String,
+        //   photoUrlTine: String,
+        //   accessToken: String,
+        //   idToken: null, ?
+        //   accessibleScopes: String[],
+        //   serverAuthCode: String,
+        // }
+
+        console.log('signed in user is ', user);
+
+        // set user email
+        onInput(user.email);
+        onPress();
+      });
+  }
 }
 
 const EmailForm = ({ onPress, onInput, email }) => (
@@ -72,9 +111,13 @@ const EmailForm = ({ onPress, onInput, email }) => (
       to the email
     </PrimaryText>
 
-    <RoundButton
-      iconSource={require('./SendIcon.png')}
-      onPress={signIn}
+    <IconButton
+      onPress={createSignIn(onInput, onPress)}
+      buttonStyle={styles.signInButton}
+      iconSource={require('./GoogleIcon.png')}
+      iconStyle={styles.signInIcon}
+      title="Sign In"
+      titleStyle={styles.signInTitle}
     />
 
     <DividerText>

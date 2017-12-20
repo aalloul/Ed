@@ -9,7 +9,6 @@ export default class SplashScreen extends Component {
   static navigationOptions = {
     title: "Smail.rocks",
     headerStyle: {
-      color: '#fff',
       backgroundColor: '#50D2C2',
     },
   };

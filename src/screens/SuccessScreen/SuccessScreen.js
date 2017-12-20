@@ -32,7 +32,6 @@ class SuccessScreen extends Component {
   static navigationOptions = {
     title: "Success",
     headerStyle: {
-      color: '#fff',
       backgroundColor: '#50D2C2',
     },
   };

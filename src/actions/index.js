@@ -5,6 +5,10 @@ export const TAKE_PHOTO_PROMISE = 'TAKE_PHOTO_PROMISE';
 export const TAKE_PHOTO_RESOLVE = 'TAKE_PHOTO_RESOLVE';
 export const TAKE_PHOTO_REJECT = 'TAKE_PHOTO_REJECT';
 
+export const REQUEST_TRANSLATION_PROMISE = 'REQUEST_TRANSLATION_PROMISE';
+export const REQUEST_TRANSLATION_RESOLVE = 'REQUEST_TRANSLATION_RESOLVE';
+export const REQUEST_TRANSLATION_REJECT = 'REQUEST_TRANSLATION_REJECT';
+
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SELECT_TRANSLATION = 'SELECT_TRANSLATION';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
@@ -75,18 +79,22 @@ export function takePhotoRoutine(camera) {
 }
 
 function requestTranslationPromise() {
-
+  return {
+    type: REQUEST_TRANSLATION_PROMISE,
+  }
 }
 
 function requestTranslationResolve() {
-
+  return {
+    type: REQUEST_TRANSLATION_RESOLVE,
+  }
 }
 
 function requestTranslationReject() {
-
+  return {
+    type: REQUEST_TRANSLATION_REJECT,
+  }
 }
-
-
 
 export function requestTranslationRoutine() {
   return (dispatch, getState) => {
@@ -133,7 +141,7 @@ export function changeLanguage(language) {
 
 export function selectTranslation(translation) {
   return {
-    type: TAKE_PHOTO,
+    type: SELECT_TRANSLATION,
     translation,
   };
 }

@@ -18,7 +18,6 @@ class EmailScreen extends Component {
   static navigationOptions = {
     title: "Input your email",
     headerStyle: {
-      color: '#fff',
       backgroundColor: '#50D2C2',
     },
   };
@@ -31,8 +30,6 @@ class EmailScreen extends Component {
 
   send() {
     this.props.requestTranslationRoutine();
-
-    // optimistic UI
     this.props.navigation.navigate('Success');
   }
 

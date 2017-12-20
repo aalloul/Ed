@@ -18,14 +18,13 @@ class TranslationScreen extends Component {
   static navigationOptions = {
     title: "Select your language",
     headerStyle: {
-      color: '#fff',
       backgroundColor: '#50D2C2',
     },
   };
 
   selectTranslation(translation) {
     this.props.selectTranslation(translation);
-    this.props.navigation.navigate('Email')
+    this.props.navigation.navigate('Email');
   }
 
   render() {

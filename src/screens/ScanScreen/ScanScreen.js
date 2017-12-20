@@ -44,7 +44,6 @@ class ScanScreen extends Component {
   static navigationOptions = {
     title: "Take a picture",
     headerStyle: {
-      color: '#fff',
       backgroundColor: '#50D2C2',
     },
   };
@@ -56,9 +55,8 @@ class ScanScreen extends Component {
   }
 
   scan() {
-    const { navigation } = this.props;
-
-    this.props.takePhotoRoutine(this.camera)//.then(() => navigation.navigate('Translation'));
+    this.props.takePhotoRoutine(this.camera);
+    this.props.navigation.navigate('Translation');
   }
 
   render() {
