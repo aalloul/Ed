@@ -14,8 +14,8 @@ platform :android do
   # Android Lanes
   
   private_lane :build do
-    gradle(task: 'clean', project_dir: 'android/')
-    gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/')
+    gradle(task: 'clean', project_dir: 'android/', flags: "-x lint")
+    gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/', flags: "-x lint")
     end
 
   desc 'Ship to Playstore Alpha.'
