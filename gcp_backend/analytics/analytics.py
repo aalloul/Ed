@@ -71,20 +71,32 @@ class Analytics(object):
         }
 
     def commit(self):
+        logger.info("Uploading to BQ")
         rpc_bq = self.upload_bq()
+        logger.info("Uploading the images")
         rpc_im = self.upload_images()
+        logger.info("Uploading the raw text")
         rpc_ext_text = self.upload_raw_text()
+        logger.info("Uploading the translated text")
         rpc_trans_text = self.upload_trans_text()
 
+        logger.info("BQ get results")
         self._check_answer(rpc_bq.get_result())
+        logger.info("  -> Received")
+
         if rpc_ext_text is not None:
+            logger.info("rpc_ext_text get results")
             self._check_answer(rpc_ext_text.get_result())
 
         if rpc_trans_text is not None:
+            logger.info("rpc_trans_text get results")
             self._check_answer(rpc_trans_text.get_result())
 
         if rpc_im is not None:
+            logger.info("rpc_im get results")
             self._check_answer(rpc_im.get_result())
+
+        logger.info("Done")
 
     def upload_bq(self):
         logger.debug('Event to report = {}'.format(
@@ -109,7 +121,7 @@ class Analytics(object):
 
     @staticmethod
     def _check_answer(answer):
-        if 200 <= answer.status_codex < 300:
+        if 200 <= answer.status_code < 300:
             return True
 
         else:

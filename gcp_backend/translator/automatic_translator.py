@@ -28,7 +28,7 @@ class AutomaticTranslator(Translator):
         self.api_key = "AIzaSyB5KLbSquVl7pYsYjVpCOhOsrqjYTbuf-8"
         self.url = "https://translation.googleapis.com/language/translate/v2" \
                    "?key={}".format(self.api_key)
-        self.DEBUG = True
+        self.DEBUG = False
         logger.debug("Init done")
 
     def set_text(self, text):

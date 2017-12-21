@@ -103,5 +103,7 @@ def translate():
         logger.info("Automatic translation requested")
         ans = request_automatic_translation(parsed_request, reporter)
 
+    logger.info("Everything went well - Sending reporting information")
     reporter.commit()
+    logger.info("  -> Done")
     return ans

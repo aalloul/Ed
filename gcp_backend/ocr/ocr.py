@@ -16,7 +16,7 @@ class Ocr(object):
     """
 
     def __init__(self, img, in_language):
-        self.DEBUG = True
+        self.DEBUG = False
         self.image = img
         self.in_language = in_language
         self.api_key = "AIzaSyB5KLbSquVl7pYsYjVpCOhOsrqjYTbuf-8"
