@@ -292,3 +292,4 @@ reporting/lib/
 service_account_release_smail_android.json
 gcp_backend/service_account.json
 gcp_backend/project.secret
+fastlane/report.xml
