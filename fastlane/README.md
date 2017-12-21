@@ -30,6 +30,11 @@ xcode-select --install
 
 # Available Actions
 ## Android
+### android alpha
+```
+fastlane android alpha
+```
+Ship to Playstore Alpha.
 ### android beta
 ```
 fastlane android beta
