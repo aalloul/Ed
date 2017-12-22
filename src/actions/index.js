@@ -99,7 +99,7 @@ function requestTranslationReject() {
 
 export function requestTranslationRoutine() {
   return (dispatch, getState) => {
-    const { email, language, translation, photo } = getState();
+    const { email, language, translation, photo } = getState().app;
 
     dispatch(requestTranslationPromise());
 
