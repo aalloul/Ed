@@ -283,10 +283,15 @@ fabric.properties
 reporting/service_account.json
 reporting/project.secret
 android/app/smail-release.keystore
-.idea/*
+.idea/
 .idea/misc.xml
 *.pyc
 gcp_backend/lib/*
 package-lock.json
 reporting/lib/
 service_account_release_smail_android.json
+gcp_backend/service_account.json
+gcp_backend/project.secret
+fastlane/report.xml
+Gemfile*
+fastlane/Pluginfile

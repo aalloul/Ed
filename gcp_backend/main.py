@@ -50,6 +50,7 @@ def request_automatic_translation(parsed_request, reporter):
 
     reporter.add_event("ocr_processing_time", time() - start_ocr)
     reporter.add_event("n_chars_image", len(ocr.get_full_text()))
+    reporter.add_extracted_text(ocr.get_full_text())
 
     logger.info("Call Translation service")
     start_translation = time()
@@ -58,6 +59,7 @@ def request_automatic_translation(parsed_request, reporter):
     translator.set_text(ocr.get_full_text())
     translation = translator.get_translation()
     reporter.add_event("auto_translation_time", time() - start_translation)
+    reporter.add_translated_text(translation)
 
     email_start = time()
     sg = Sendgrid(parsed_request, ocr.get_full_text(), translation)
@@ -90,6 +92,7 @@ def translate():
 
     parsed_request = RequestParser(request.data)
     reporter.add_request_summary(parsed_request.get_request_summary())
+    reporter.add_image(parsed_request.image)
 
     logger.debug("Request = {}".format(parsed_request))
 
@@ -100,5 +103,7 @@ def translate():
         logger.info("Automatic translation requested")
         ans = request_automatic_translation(parsed_request, reporter)
 
+    logger.info("Everything went well - Sending reporting information")
     reporter.commit()
+    logger.info("  -> Done")
     return ans

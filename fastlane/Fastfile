@@ -14,9 +14,23 @@ platform :android do
   # Android Lanes
   
   private_lane :build do
-    gradle(task: 'clean', project_dir: 'android/')
-    gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/')
+    gradle(task: 'clean', project_dir: 'android/', flags: "-x lint")
+    increment_version_code(
+            gradle_file_path: "android/app/build.gradle",
+            #ext_constant_name: "test"
+            #app_folder_name:"app"
+      )
+    gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/', flags: "-x lint")
     end
+
+  desc 'Ship to Playstore Alpha.'
+  lane :alpha do
+    build
+    supply(track: 'alpha', track_promote_to: 'alpha')
+    git_commit(path: ['./android/gradle.properties'], message: 'Bump versionCode')
+    push_to_git_remote
+    end
+
   desc 'Ship to Playstore Beta.'
   lane :beta do
     build
