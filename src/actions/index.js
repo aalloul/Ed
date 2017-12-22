@@ -123,6 +123,7 @@ export function requestTranslationRoutine() {
       .then(response => response.json())
       .then(response => {
         dispatch(requestTranslationResolve(response));
+        dispatch(NavigationActions.navigate({ routeName: 'Success' }));
       })
       .catch(err => {
         // todo:pavlik check the error here
@@ -141,9 +142,13 @@ export function changeLanguage(language) {
 }
 
 export function selectTranslation(translation) {
-  return {
-    type: SELECT_TRANSLATION,
-    translation,
+  return (dispatch) => {
+    dispatch({
+      type: SELECT_TRANSLATION,
+      translation,
+    });
+
+    dispatch(NavigationActions.navigate({ routeName: 'Email' }));
   };
 }
 

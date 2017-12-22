@@ -30,7 +30,6 @@ class EmailScreen extends Component {
 
   send() {
     this.props.requestTranslationRoutine();
-    this.props.navigation.navigate('Success');
   }
 
   render() {
@@ -48,7 +47,7 @@ class EmailScreen extends Component {
 
 export default connect(
   state => ({
-    email: state.email,
+    email: state.app.email,
   }),
   dispatch => ({
     changeEmail(email) {

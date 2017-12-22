@@ -24,7 +24,6 @@ class TranslationScreen extends Component {
 
   selectTranslation(translation) {
     this.props.selectTranslation(translation);
-    this.props.navigation.navigate('Email');
   }
 
   render() {
@@ -44,8 +43,8 @@ class TranslationScreen extends Component {
 
 export default connect(
   state => ({
-    language: state.language,
-    languages: state.languages,
+    language: state.app.language,
+    languages: state.app.languages,
   }),
   dispatch => ({
     changeLanguage(language) {

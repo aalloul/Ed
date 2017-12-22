@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
+import { StyleSheet, View, Image, Text } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
@@ -46,7 +47,7 @@ class SuccessScreen extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
+    const { goToScan } = this.props;
 
     return (
       <View style={styles.container}>
@@ -61,7 +62,7 @@ class SuccessScreen extends Component {
         </SecondaryText>
         <RectangularButton
           accessibilityLabel="Continue scanning the paper mails"
-          onPress={() => navigate('Scan')}
+          onPress={goToScan}
           style={styles.bottom}
           title="Scan more"
         />
@@ -72,9 +73,14 @@ class SuccessScreen extends Component {
 
 export default connect(
   state => ({
-    language: state.language,
-    languages: state.languages,
-    translation: state.translation,
-    email: state.email,
-  })
+    language: state.app.language,
+    languages: state.app.languages,
+    translation: state.app.translation,
+    email: state.app.email,
+  }),
+  dispatch => ({
+    goToScan() {
+      return dispatch(NavigationActions.navigate({ routeName: 'Scan' }));
+    }
+  }),
 )(SuccessScreen);
