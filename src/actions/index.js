@@ -110,6 +110,7 @@ export function requestTranslationRoutine() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        output: ['email'],
         email,
         language,
         human_translation_requested: translation === 'human',
@@ -120,8 +121,12 @@ export function requestTranslationRoutine() {
         user_id: '',
       }),
     })
-      .then(response => response.json())
       .then(response => {
+        console.log('response', response);
+        return response.json();
+      })
+      .then(response => {
+        console.log('response', response);
         dispatch(requestTranslationResolve(response));
         dispatch(NavigationActions.navigate({ routeName: 'Success' }));
       })
