@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
-export function genarateTranslationRequest(getState) {
+export function generateTranslationRequest(getState) {
   const { email, language, translation, photo } = getState().app;
 
   return {
@@ -20,5 +20,5 @@ export function genarateTranslationRequest(getState) {
 }
 
 export default {
-  genarateTranslationRequest,
+  generateTranslationRequest,
 };

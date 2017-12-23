@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, View, Image } from 'react-native';
-import { NavigationActions } from 'react-navigation';
 
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
+import { goToScan } from '../../actions/index';
 
 const styles = StyleSheet.create({
   container: {
@@ -57,7 +57,7 @@ class SplashScreen extends Component {
 
 const mapDispatchToProps = dispatch => ({
   goToScan() {
-    return dispatch(NavigationActions.navigate({ routeName: 'Scan' }));
+    return dispatch(goToScan());
   },
 });
 

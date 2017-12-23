@@ -1,7 +1,8 @@
 import RNFetchBlob from 'react-native-fetch-blob'
-import { NavigationActions } from 'react-navigation';
 
-import { genarateTranslationRequest } from '../common/storeDataHelpers';
+import { generateTranslationRequest } from '../common/storeDataHelpers';
+
+export const GO_TO_SCAN = 'GO_TO_SCAN';
 
 export const TAKE_PHOTO_PROMISE = 'TAKE_PHOTO_PROMISE';
 export const TAKE_PHOTO_RESOLVE = 'TAKE_PHOTO_RESOLVE';
@@ -100,7 +101,7 @@ function requestTranslationReject() {
 
 export function requestTranslationRoutine() {
   return (dispatch, getState) => {
-    const translationRequest = genarateTranslationRequest(getState);
+    const translationRequest = generateTranslationRequest(getState);
 
     dispatch(requestTranslationPromise());
 
@@ -147,5 +148,11 @@ export function changeEmail(email) {
   return {
     type: CHANGE_EMAIL,
     email,
+  };
+}
+
+export function goToScan() {
+  return {
+    type: GO_TO_SCAN,
   };
 }
