@@ -100,6 +100,7 @@ android {
     defaultConfig {
         applicationId "com.smail.app.android"
         minSdkVersion 16
+        multiDexEnabled true
         targetSdkVersion 22
         versionCode 2
         versionName "1.0"
@@ -118,6 +119,12 @@ android {
     signingConfigs {
         pavlik {
             storeFile file('/Users/pavlik/.android/debug.keystore')
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storePassword 'android'
+        }
+        arthur {
+            storeFile file('C:/Users/User/.android/debug.keystore')
             keyAlias 'androiddebugkey'
             keyPassword 'android'
             storePassword 'android'
@@ -156,6 +163,9 @@ android {
 
 dependencies {
     compile(project(':react-native-google-sign-in')) {
+        exclude group: "com.google.android.gms"
+    }
+    compile(project(':react-native-device-info')) {
         exclude group: "com.google.android.gms"
     }
     compile project(':react-native-fetch-blob')

@@ -3,7 +3,7 @@ import { REQUEST_TRANSLATION_PROMISE, TAKE_PHOTO_PROMISE } from '../actions/inde
 
 export default function storeUserDetails({ getState, dispatch }) {
   return next => async (action) => {
-    const { language, email } = getState();
+    const { language, email } = getState().app;
 
     if (action.type === REQUEST_TRANSLATION_PROMISE) {
       try {

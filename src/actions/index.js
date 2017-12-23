@@ -1,5 +1,8 @@
 import RNFetchBlob from 'react-native-fetch-blob'
-import { NavigationActions } from 'react-navigation';
+
+import { generateTranslationRequest } from '../common/storeDataHelpers';
+
+export const GO_TO_SCAN = 'GO_TO_SCAN';
 
 export const TAKE_PHOTO_PROMISE = 'TAKE_PHOTO_PROMISE';
 export const TAKE_PHOTO_RESOLVE = 'TAKE_PHOTO_RESOLVE';
@@ -63,7 +66,6 @@ export function takePhotoRoutine(camera) {
           });
           ifstream.onEnd(() => {
             dispatch(takePhotoResolve(buffer));
-            dispatch(NavigationActions.navigate({ routeName: 'Translation' }));
 
             resolve(buffer);
           })
@@ -99,7 +101,7 @@ function requestTranslationReject() {
 
 export function requestTranslationRoutine() {
   return (dispatch, getState) => {
-    const { email, language, translation, photo } = getState();
+    const translationRequest = generateTranslationRequest(getState);
 
     dispatch(requestTranslationPromise());
 
@@ -109,19 +111,14 @@ export function requestTranslationRoutine() {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        email,
-        language,
-        human_translation_requested: translation === 'human',
-        image: photo,
-        timestamp: Date.now(),
-        device: '', // todo:pavlik the device info, version and the user id | maybe `react-native-device-info`
-        version: 1,
-        user_id: '',
-      }),
+      body: JSON.stringify(translationRequest),
     })
-      .then(response => response.json())
       .then(response => {
+        console.log('Pure response', response);
+        return response.json();
+      })
+      .then(response => {
+        console.log('JSON.parsed response', response);
         dispatch(requestTranslationResolve(response));
       })
       .catch(err => {
@@ -142,14 +139,20 @@ export function changeLanguage(language) {
 
 export function selectTranslation(translation) {
   return {
-    type: SELECT_TRANSLATION,
-    translation,
-  };
+      type: SELECT_TRANSLATION,
+      translation,
+    };
 }
 
 export function changeEmail(email) {
   return {
     type: CHANGE_EMAIL,
     email,
+  };
+}
+
+export function goToScan() {
+  return {
+    type: GO_TO_SCAN,
   };
 }

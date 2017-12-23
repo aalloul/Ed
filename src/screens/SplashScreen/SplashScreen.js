@@ -1,52 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, Text, Button } from 'react-native';
+import { connect } from 'react-redux';
+import { StyleSheet, View, Image } from 'react-native';
 
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
-
-export default class SplashScreen extends Component {
-  static navigationOptions = {
-    title: "Smail.rocks",
-    headerStyle: {
-      backgroundColor: '#50D2C2',
-    },
-  };
-
-  constructor() {
-    super();
-
-    this.goToScan = this.goToScan.bind(this);
-  }
-
-  goToScan() {
-    console.log('go to scan screen');
-  }
-
-  render() {
-    const { navigate } = this.props.navigation;
-
-    return (
-      <View style={styles.container}>
-        <PrimaryText>
-          Never miss{"\n"}
-          what’s important
-        </PrimaryText>
-        <Image source={require('./SplashImage.png')} style={styles.image} />
-        <SecondaryText>
-          Send the translated{"\n"}
-          version of a paper mail{"\n"}
-          to your email
-        </SecondaryText>
-        <RectangularButton
-          onPress={() => navigate('Scan')}
-          title="Start"
-          accessibilityLabel="Start scanning the paper mail"
-        />
-      </View>
-    );
-  }
-}
+import { goToScan } from '../../actions/index';
 
 const styles = StyleSheet.create({
   container: {
@@ -62,3 +21,42 @@ const styles = StyleSheet.create({
     width: 240,
   },
 });
+
+class SplashScreen extends Component {
+  static navigationOptions = {
+    title: "Smail.rocks",
+    headerStyle: {
+      backgroundColor: '#50D2C2',
+    },
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <PrimaryText>
+          Never miss{"\n"}
+          what’s important
+        </PrimaryText>
+        <Image source={require('./SplashImage.png')} style={styles.image} />
+        <SecondaryText>
+          Send the translated{"\n"}
+          version of a paper mail{"\n"}
+          to your email
+        </SecondaryText>
+        <RectangularButton
+          onPress={this.props.goToScan}
+          title="Start"
+          accessibilityLabel="Start scanning the paper mail"
+        />
+      </View>
+    );
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  goToScan() {
+    return dispatch(goToScan());
+  },
+});
+
+export default connect(null, mapDispatchToProps)(SplashScreen);
