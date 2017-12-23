@@ -3,6 +3,7 @@ package com.smail.app.android;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.reactlibrary.googlesignin.RNGoogleSignInPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+        new RNDeviceInfo(),
         new RNGoogleSignInPackage(),
         new RNFetchBlobPackage(),
         new RCTCameraPackage()

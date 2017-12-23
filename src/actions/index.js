@@ -1,3 +1,5 @@
+import { Platform } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import RNFetchBlob from 'react-native-fetch-blob'
 import { NavigationActions } from 'react-navigation';
 
@@ -112,13 +114,15 @@ export function requestTranslationRoutine() {
       body: JSON.stringify({
         output: ['email'],
         email,
-        language,
+        input_language: "nl",
+        output_language: language,
         human_translation_requested: translation === 'human',
         image: photo,
         timestamp: Date.now(),
-        device: '', // todo:pavlik the device info, version and the user id | maybe `react-native-device-info`
-        version: 1,
-        user_id: '',
+        device: Platform.OS === 'ios' ? 'ios' : 'android',
+        version: 0.1,
+        user_id: DeviceInfo.getUniqueID(),
+        extract_reminder: false,
       }),
     })
       .then(response => {

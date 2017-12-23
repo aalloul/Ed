@@ -100,6 +100,7 @@ android {
     defaultConfig {
         applicationId "com.smail.app.android"
         minSdkVersion 16
+        multiDexEnabled true
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -162,6 +163,9 @@ android {
 
 dependencies {
     compile(project(':react-native-google-sign-in')) {
+        exclude group: "com.google.android.gms"
+    }
+    compile(project(':react-native-device-info')) {
         exclude group: "com.google.android.gms"
     }
     compile project(':react-native-fetch-blob')
