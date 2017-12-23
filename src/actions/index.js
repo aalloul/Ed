@@ -1,7 +1,7 @@
-import { Platform } from 'react-native';
-import DeviceInfo from 'react-native-device-info';
 import RNFetchBlob from 'react-native-fetch-blob'
 import { NavigationActions } from 'react-navigation';
+
+import { genarateTranslationRequest } from '../common/storeDataHelpers';
 
 export const TAKE_PHOTO_PROMISE = 'TAKE_PHOTO_PROMISE';
 export const TAKE_PHOTO_RESOLVE = 'TAKE_PHOTO_RESOLVE';
@@ -101,7 +101,7 @@ function requestTranslationReject() {
 
 export function requestTranslationRoutine() {
   return (dispatch, getState) => {
-    const { email, language, translation, photo } = getState().app;
+    const translationRequest = genarateTranslationRequest(getState);
 
     dispatch(requestTranslationPromise());
 
@@ -111,19 +111,7 @@ export function requestTranslationRoutine() {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        output: ['email'],
-        email,
-        input_language: "nl",
-        output_language: language,
-        human_translation_requested: translation === 'human',
-        image: photo,
-        timestamp: Date.now(),
-        device: Platform.OS === 'ios' ? 'ios' : 'android',
-        version: 0.1,
-        user_id: DeviceInfo.getUniqueID(),
-        extract_reminder: false,
-      }),
+      body: JSON.stringify(translationRequest),
     })
       .then(response => {
         console.log('response', response);

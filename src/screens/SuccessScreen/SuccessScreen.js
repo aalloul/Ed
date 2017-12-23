@@ -80,7 +80,13 @@ export default connect(
   }),
   dispatch => ({
     goToScan() {
-      return dispatch(NavigationActions.navigate({ routeName: 'Scan' }));
+      return dispatch(NavigationActions.reset({
+        index: 1,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Home'}),
+          NavigationActions.navigate({ routeName: 'Scan'}),
+        ],
+      }));
     }
   }),
 )(SuccessScreen);
