@@ -31,8 +31,6 @@ class SplashScreen extends Component {
   };
 
   render() {
-    const { goToScan } = this.props;
-
     return (
       <View style={styles.container}>
         <PrimaryText>
@@ -46,7 +44,7 @@ class SplashScreen extends Component {
           to your email
         </SecondaryText>
         <RectangularButton
-          onPress={goToScan}
+          onPress={this.props.goToScan}
           title="Start"
           accessibilityLabel="Start scanning the paper mail"
         />
