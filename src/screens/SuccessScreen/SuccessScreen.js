@@ -72,11 +72,11 @@ class SuccessScreen extends Component {
 }
 
 export default connect(
-  state => ({
-    language: state.app.language,
-    languages: state.app.languages,
-    translation: state.app.translation,
-    email: state.app.email,
+  ({ app }) => ({
+    language: app.language,
+    languages: app.languages,
+    translation: app.translation,
+    email: app.email,
   }),
   dispatch => ({
     goToScan() {

@@ -46,8 +46,8 @@ class EmailScreen extends Component {
 }
 
 export default connect(
-  state => ({
-    email: state.app.email,
+  ({ app }) => ({
+    email: app.email,
   }),
   dispatch => ({
     changeEmail(email) {

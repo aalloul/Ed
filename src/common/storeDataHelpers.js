@@ -12,7 +12,7 @@ export function genarateTranslationRequest(getState) {
     human_translation_requested: translation === 'human',
     image: photo,
     timestamp: Date.now(),
-    device: Platform.OS === 'ios' ? 'ios' : 'android',
+    device: Platform.OS,
     version: 0.1,
     user_id: DeviceInfo.getUniqueID(),
     extract_reminder: false,

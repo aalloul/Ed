@@ -65,7 +65,6 @@ export function takePhotoRoutine(camera) {
           });
           ifstream.onEnd(() => {
             dispatch(takePhotoResolve(buffer));
-            dispatch(NavigationActions.navigate({ routeName: 'Translation' }));
 
             resolve(buffer);
           })
@@ -114,13 +113,12 @@ export function requestTranslationRoutine() {
       body: JSON.stringify(translationRequest),
     })
       .then(response => {
-        console.log('response', response);
+        console.log('Pure response', response);
         return response.json();
       })
       .then(response => {
-        console.log('response', response);
+        console.log('JSON.parsed response', response);
         dispatch(requestTranslationResolve(response));
-        dispatch(NavigationActions.navigate({ routeName: 'Success' }));
       })
       .catch(err => {
         // todo:pavlik check the error here
@@ -139,14 +137,10 @@ export function changeLanguage(language) {
 }
 
 export function selectTranslation(translation) {
-  return (dispatch) => {
-    dispatch({
+  return {
       type: SELECT_TRANSLATION,
       translation,
-    });
-
-    dispatch(NavigationActions.navigate({ routeName: 'Email' }));
-  };
+    };
 }
 
 export function changeEmail(email) {
