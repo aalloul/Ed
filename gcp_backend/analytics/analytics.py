@@ -32,7 +32,7 @@ class Analytics(object):
                              "devstorage.read_write"
         self._storage_token = None
         self.token = "Bearer {access_token}"
-        self._body = {"request_timestamp": round(time(), 3)}
+        self._body = {"request_received": round(time(), 3)}
         self.image = None
         self.extracted_text = None
         self.translated_text = None

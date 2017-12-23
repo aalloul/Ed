@@ -14,7 +14,10 @@ class RequestParser(object):
     """
 
     def __init__(self, request):
-        request = loads(request)
+        try:
+            request = loads(request)
+        except Exception as ex:
+            raise ValueError("Json malformed.")
         logging.debug("Request loaded to JSON")
         self._set_output(request)
         logging.debug("_set_output done")
@@ -80,7 +83,7 @@ class RequestParser(object):
         if "timestamp" not in request:
             raise KeyError("timestamp not found in request")
         else:
-            self.timestamp = request["timestamp"]
+            self.timestamp = request["timestamp"]/1000
 
     def _set_device(self, request):
         if "device" not in request:

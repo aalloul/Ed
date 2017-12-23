@@ -1,5 +1,5 @@
 from __future__ import print_function
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from request_parser.request_parser import RequestParser
 from ocr.ocr import Ocr
 from translator.automatic_translator import AutomaticTranslator
@@ -11,10 +11,12 @@ from analytics.analytics import Analytics
 from time import time
 from custom_exceptions.custom_exceptions import NoTextFoundException
 
+
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
+DEBUG = True
 
 
 def request_human_translation(parsed_request, reporter):
@@ -24,7 +26,7 @@ def request_human_translation(parsed_request, reporter):
     status_code, body, headers = sg.send()
 
     if 200 <= status_code < 300:
-        reporter.add_event("email_sent_in_sec", time() - start)
+        reporter.add_event("email_sent_in_sec", round(time() - start, 3))
         return Answer(human_requested=True).get_answer()
     else:
         reporter.add_event("email_send_exception_status_code", status_code)
@@ -48,7 +50,7 @@ def request_automatic_translation(parsed_request, reporter):
         reporter.add_event("exception", "no_text_found_in_image")
         return Answer(exception=ex).get_answer()
 
-    reporter.add_event("ocr_processing_time", time() - start_ocr)
+    reporter.add_event("ocr_processing_time", round(time() - start_ocr, 3))
     reporter.add_event("n_chars_image", len(ocr.get_full_text()))
     reporter.add_extracted_text(ocr.get_full_text())
 
@@ -58,7 +60,8 @@ def request_automatic_translation(parsed_request, reporter):
                                      parsed_request.get_output_language())
     translator.set_text(ocr.get_full_text())
     translation = translator.get_translation()
-    reporter.add_event("auto_translation_time", time() - start_translation)
+    reporter.add_event("auto_translation_time", round(time() -
+                                                      start_translation, 3))
     reporter.add_translated_text(translation)
 
     email_start = time()
@@ -66,7 +69,7 @@ def request_automatic_translation(parsed_request, reporter):
     status_code, body, headers = sg.send()
 
     if 200 <= status_code < 300:
-        reporter.add_event("email_sent_in_sec", time() - email_start)
+        reporter.add_event("email_sent_in_sec", round(time() - email_start, 3))
         return Answer(original_text=ocr.get_full_text(),
                       translated_text=translation,
                       email_status=True).get_answer()
@@ -88,22 +91,35 @@ app = Flask(__name__)
 @app.route('/request_translation', methods=['POST'])
 def translate():
     logger.info("Received a request")
-    reporter = Analytics()
 
-    parsed_request = RequestParser(request.data)
-    reporter.add_request_summary(parsed_request.get_request_summary())
-    reporter.add_image(parsed_request.image)
+    try:
+        reporter = Analytics()
 
-    logger.debug("Request = {}".format(parsed_request))
+        parsed_request = RequestParser(request.data)
+        reporter.add_request_summary(parsed_request.get_request_summary())
+        reporter.add_image(parsed_request.image)
 
-    if parsed_request.get_human_translation_requested():
-        logger.info("Human translation requested")
-        ans = request_human_translation(parsed_request, reporter)
-    else:
-        logger.info("Automatic translation requested")
-        ans = request_automatic_translation(parsed_request, reporter)
+        logger.debug("Request = {}".format(parsed_request))
 
-    logger.info("Everything went well - Sending reporting information")
-    reporter.commit()
-    logger.info("  -> Done")
-    return ans
+        if parsed_request.get_human_translation_requested():
+            logger.info("Human translation requested")
+            ans = request_human_translation(parsed_request, reporter)
+        else:
+            logger.info("Automatic translation requested")
+            ans = request_automatic_translation(parsed_request, reporter)
+
+        logger.info("Everything went well - Sending reporting information")
+        reporter.commit()
+        logger.info("  -> Done")
+        return ans
+    except Exception as ex:
+        return page_not_found(ex, request.data, str(request.headers))
+
+
+@app.errorhandler(404)
+def page_not_found(e, req, rhead):
+    return jsonify({
+        "error_message": e.message,
+        "received_request": req,
+        "request_header": rhead
+    }), 404
