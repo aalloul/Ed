@@ -59,5 +59,34 @@ export default getSiteProps(() => (
         <Buttons />
       </div>
     </section>
+
+    <section className="reviews">
+      <div className="reviews--block">
+        <div className="reviews--header">
+          <div className="reviews--photo--wraper">
+            <img className="reviews--photo" src="https://scontent-amt2-1.xx.fbcdn.net/v/t1.0-1/c28.28.345.345/s100x100/207922_106344616117483_4494958_n.jpg?oh=bbe6b9ae6fc66222586ec3ac9ac08885&oe=5AB52EF7"/>
+          </div>
+          <div className="reviews--name--wraper">
+            <div className="reviews--name--header">
+              <span className="reviews--name">
+                <a className="reviews--name-link" href="https://www.facebook.com/ivan.grifins?hc_ref=ARRJoAcF67qnEZxz0yBYfTu3Ps9e7_K885iEc-VU1dgcQIWEyg65SORyONmY7Rex-DI">Pavik Kiselev </a>
+                reviewed
+                <a>Growity</a>
+                —
+                <i className="reviews--grade">
+                  <u>5 stars</u>
+                </i>
+              </span>
+              <span className="reviews--date">
+                <a>31 May</a>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="reviews--text">
+          <p>I find most of the posts very useful, thanks guys for doing this!</p>
+        </div>
+      </div>
+    </section>
   </div>
 ))
