@@ -4,7 +4,7 @@ import { View, Modal } from 'react-native';
 
 import TranslationForm from '../TranslationForm/TranslationForm';
 
-const TranslationModal = ({ onPress, visible, navigation, language, onLanguageChange }) => (
+const TranslationModal = ({ onPress, visible, navigation, language, languages, onLanguageChange }) => (
   <Modal
     animationType="slide"
     transparent={false}
@@ -19,6 +19,7 @@ const TranslationModal = ({ onPress, visible, navigation, language, onLanguageCh
         onMachineTranslationPress={() => navigation.navigate('Email')}
         onLanguageChange={onLanguageChange}
         language={language}
+        languages={languages}
       />
     </View>
   </Modal>

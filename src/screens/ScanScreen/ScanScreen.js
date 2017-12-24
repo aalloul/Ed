@@ -56,7 +56,6 @@ class ScanScreen extends Component {
 
   scan() {
     this.props.takePhotoRoutine(this.camera);
-    this.props.navigation.navigate('Translation');
   }
 
   render() {

@@ -14,7 +14,7 @@ const EmailModal = ({ onPress, visible, navigation }) => (
     }}
   >
     <EmailForm
-      onPress={() => navigation.navigate('Success')}
+      onPress={() => console.log('Some')}
     />
   </Modal>
 );
