@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View, Image } from 'react-native';
+import { AsyncStorage, StyleSheet, View, Image } from 'react-native';
 
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
@@ -30,7 +30,45 @@ class SplashScreen extends Component {
     },
   };
 
+  constructor() {
+    super();
+
+    this.scanMore = this.scanMore.bind(this);
+    this.state = {
+      loading: true,
+    };
+  }
+
+  componentWillMount() {
+    AsyncStorage
+      .getItem('scanMore')
+      .then((value) => {
+        if (value === 'true') {
+          this.scanMore()
+            .then(() => this.setState({ loading: false }));
+        } else {
+          this.setState({ loading: false });
+        }
+      });
+  }
+
+  scanMore() {
+    return AsyncStorage
+      .setItem('scanMore', 'false')
+      .then(() => this.props.goToScan());
+  }
+
   render() {
+    if (this.state.loading) {
+      return (
+        <View style={styles.container}>
+          <PrimaryText>
+            Loading...
+          </PrimaryText>
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <PrimaryText>
