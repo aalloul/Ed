@@ -6,30 +6,30 @@ To enable us to track how our potential users interact with our app, it is impor
 
 ## Data model definition
 The fields/columns expected to be reported on by the app are the following:
-  - `datamodel_version` (double): Version of the data model, independent of both the client and back-end versions. It allows to track the updates to the data model.
-  - `app_version` (double): Version of the app that is installed on the user's device.
-  - `phone_maker` (string): Indicates the manufacturer of the phone.
-  - `phone_model` (string): Indicates the model of the phone (Iphone7, S8, ...etc)
-  - `os_version` (string): Indicates the version of the OS
-  - `user_id` (string): UUID4 to uniquely identify a phone
-  - `timestamp` (long int): Epoch time in milliseconds at which the event was generated
-  - `type` (string): Identifies which data type this model pertains to. For now, the expected values are:
+  - `datamodel_version` (required, double): Version of the data model, independent of both the client and back-end versions. It allows to track the updates to the data model.
+  - `app_version` (required, double): Version of the app that is installed on the user's device.
+  - `phone_maker` (required, string): Indicates the manufacturer of the phone.
+  - `phone_model` (required, string): Indicates the model of the phone (Iphone7, S8, ...etc)
+  - `os_version` (required, string): Indicates the version of the OS
+  - `user_id` (required, string): UUID4 to uniquely identify a phone
+  - `timestamp` (required, long int): Epoch time in milliseconds at which the event was generated
+  - `type` (required, string): Identifies which data type this model pertains to. For now, the expected values are:
     - `data`: to identify an event reporting on user behaviour
     - `exception`: to identify an exception
     - `back-end`: to identify metrics from the back-end
-  - `screen` (string): Name of the screen on which this data was generated. For example:
+  - `screen` (required, string): Name of the screen on which this data was generated. For example:
     - `welcome_screen`
     - `scan_screen`
     - ...
-  - `action` (string): Identifies the action that generated the event. Examples are:
+  - `action` (required, string): Identifies the action that generated the event. Examples are:
     - `app_start`: generated when the app started
     - `create_scan`: generated when the user takes the picture
     - `app_end`: generated when the user leaves the app
     - `request_human_translation`
     - ...
-  - `screen_start` (long int): Time (epoch milliseconds) when the current screen was open
+  - `screen_start` (required, long int): Time (epoch milliseconds) when the current screen was open
   - `screen_end` (long int): Time (epoch milliseconds) when the current screen ended (if the action leads to a change of screen)
-  -  `session_start` (long_int): Time (epoch milliseconds) when the current session started.
+  -  `session_start` (required, long_int): Time (epoch milliseconds) when the current session started.
 
 When an exception was caught during the app lifecycle, the `type` field takes the value `exception` and the following fields are expected:
 
