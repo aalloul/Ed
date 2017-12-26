@@ -1,4 +1,4 @@
-import RNFetchBlob from 'react-native-fetch-blob'
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import { generateTranslationRequest } from '../common/requestDataHelpers';
 
@@ -19,6 +19,14 @@ export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const SEND_LETTER_PROMISE = 'SEND_LETTER_PROMISE';
 export const SEND_LETTER_RESOLVE = 'SEND_LETTER_RESOLVE';
 export const SEND_LETTER_REJECT = 'SEND_LETTER_REJECT';
+
+export const RESTART_APP = 'RESTART_APP';
+
+export function goToScan() {
+  return {
+    type: GO_TO_SCAN,
+  };
+}
 
 function takePhotoPromise() {
   return {
@@ -148,11 +156,5 @@ export function changeEmail(email) {
   return {
     type: CHANGE_EMAIL,
     email,
-  };
-}
-
-export function goToScan() {
-  return {
-    type: GO_TO_SCAN,
   };
 }

@@ -78,7 +78,6 @@ class ScanScreen extends Component {
                     onPress={this.scan}
                   />
             }
-
           </View>
         </Camera>
       </View>

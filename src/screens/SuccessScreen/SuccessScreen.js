@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View, Image, Text } from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import { AsyncStorage, StyleSheet, View, Image, Text } from 'react-native';
+import RNRestart from 'react-native-restart';
 
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
@@ -37,6 +37,12 @@ class SuccessScreen extends Component {
     },
   };
 
+  constructor() {
+    super();
+
+    this.restartApp = this.restartApp.bind(this);
+  }
+
   computeLanguageLabel(language) {
     const lang = this.props.languages.find(({ code }) => code === language);
     if (!lang) {
@@ -46,9 +52,13 @@ class SuccessScreen extends Component {
     return lang.label;
   }
 
-  render() {
-    const { goToScan } = this.props;
+  restartApp() {
+    AsyncStorage
+      .setItem('scanMore', 'true')
+      .then(() => RNRestart.Restart());
+  }
 
+  render() {
     return (
       <View style={styles.container}>
         <PrimaryText>
@@ -62,7 +72,7 @@ class SuccessScreen extends Component {
         </SecondaryText>
         <RectangularButton
           accessibilityLabel="Continue scanning the paper mails"
-          onPress={goToScan}
+          onPress={this.restartApp}
           style={styles.bottom}
           title="Scan more"
         />
@@ -77,16 +87,5 @@ export default connect(
     languages: app.languages,
     translation: app.translation,
     email: app.email,
-  }),
-  dispatch => ({
-    goToScan() {
-      return dispatch(NavigationActions.reset({
-        index: 1,
-        actions: [
-          NavigationActions.navigate({ routeName: 'Home'}),
-          NavigationActions.navigate({ routeName: 'Scan'}),
-        ],
-      }));
-    }
-  }),
+  })
 )(SuccessScreen);
