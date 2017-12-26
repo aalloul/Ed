@@ -3,6 +3,7 @@ package com.smail.app.android;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.reactlibrary.googlesignin.RNGoogleSignInPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+        new ReactNativeRestartPackage(),
         new RNDeviceInfo(),
         new RNGoogleSignInPackage(),
         new RNFetchBlobPackage(),
