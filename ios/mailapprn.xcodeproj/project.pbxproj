@@ -40,7 +40,6 @@
 		DF50577A33131967F6FB80B5 /* libPods-mailapprn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77371A64BA3E874983B02303 /* libPods-mailapprn.a */; };
 		9A47CF77370842648700C5FE /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3155254D2F8C4BA7BBD01F3A /* libRNFetchBlob.a */; };
 		6ADC680103E54479AA44DF7C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB0545D17A5470399CB5469 /* libRNDeviceInfo.a */; };
-		AA9C0E79350848F3ADAEDD30 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1FA953C9AB947DDA4F40890 /* libRNDeviceInfo-tvOS.a */; };
 		0E89F7B27AF7408A93F6399B /* libRCTRestart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5F23E889AB3419D8BF6A41B /* libRCTRestart.a */; };
 /* End PBXBuildFile section */
 
@@ -308,7 +307,6 @@
 		3155254D2F8C4BA7BBD01F3A /* libRNFetchBlob.a */ = {isa = PBXFileReference; name = "libRNFetchBlob.a"; path = "libRNFetchBlob.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		E1A700D2A09148809DD39583 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNDeviceInfo.xcodeproj"; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		9BB0545D17A5470399CB5469 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo.a"; path = "libRNDeviceInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		B1FA953C9AB947DDA4F40890 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo-tvOS.a"; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		F9613E8C1B5C4784A3EDE0A2 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; name = "RCTRestart.xcodeproj"; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		A5F23E889AB3419D8BF6A41B /* libRCTRestart.a */ = {isa = PBXFileReference; name = "libRCTRestart.a"; path = "libRCTRestart.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
@@ -344,7 +342,6 @@
 				32B01A7E9E02425485221678 /* libRNImageToBase64.a in Frameworks */,
 				9A47CF77370842648700C5FE /* libRNFetchBlob.a in Frameworks */,
 				6ADC680103E54479AA44DF7C /* libRNDeviceInfo.a in Frameworks */,
-				AA9C0E79350848F3ADAEDD30 /* libRNDeviceInfo-tvOS.a in Frameworks */,
 				0E89F7B27AF7408A93F6399B /* libRCTRestart.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

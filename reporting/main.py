@@ -12,27 +12,6 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-@app.route('/events', methods=["POST"])
-def new_event():
-    try:
-        parsed_request = loads(request.data)
-        logger.debug("Received following request {}".format(parsed_request))
-        logger.info("Received request with {} rows".format(len(parsed_request)))
-
-        version = check_datamodel_version(parsed_request)
-        version = str(version).replace(".", "")
-
-        handler = importlib.import_module("data_parsers.parser_v{}".format(version))
-        try:
-            handler.get_class(parsed_request).upload()
-        except Exception as ex:
-            logger.error("Got the following exception {}".format(ex))
-            abort(404)
-
-        return jsonify({'ack': 200})
-    except Exception as ex:
-        return page_not_found(ex, request.data, str(request.headers))
-
 @app.errorhandler(404)
 def page_not_found(e, req, rhead):
     return jsonify({
@@ -40,6 +19,7 @@ def page_not_found(e, req, rhead):
         "received_request": req,
         "request_header": rhead
     }), 404
+
 
 def check_datamodel_version(body):
     dv = []
@@ -61,3 +41,42 @@ def check_datamodel_version(body):
 @app.errorhandler(404)
 def key_missing(e):
     return e, 404
+
+
+@app.route('/events', methods=["POST"])
+def new_event():
+    try:
+        parsed_request = loads(request.data)
+        logger.debug("Received following request {}".format(parsed_request))
+        logger.info("Received request with {} rows".format(len(parsed_request)))
+
+        version = check_datamodel_version(parsed_request)
+        version = str(version).replace(".", "")
+
+        handler = importlib.import_module(
+            "data_parsers.parser_v{}".format(version))
+
+        handler.get_class(parsed_request).upload()
+        return jsonify({'ack': 200})
+
+    except Exception as ex:
+        return page_not_found(ex, request.data, str(request.headers))
+
+@app.route('/newProspect', methods=['POST'])
+def new_prospect():
+    try:
+        parsed_request = loads(request.data)
+        logger.info("Received following request for new prospect {}".format(
+            parsed_request))
+        if "datamodel_version" not in parsed_request:
+            raise KeyError("datamodel_version not found in request body")
+
+        version = str(parsed_request['datamodel_version']).replace(".", "")
+        handler = importlib.import_module("email_parsers.parser_v{}".format(
+            version))
+
+        handler.get_class(parsed_request).upload()
+        return jsonify({"ack": 200})
+
+    except Exception as ex:
+        return page_not_found(ex, request.data, str(request.headers))
