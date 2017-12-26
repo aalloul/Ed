@@ -39,7 +39,7 @@ export default function sendStatistics({ getState, dispatch }) {
 
       sendStatisticsRequest(statisticsRequest);
 
-      // remove screen_end from statisticsRequest by functional way
+      // remove screen_end from statisticsRequest in functional way
       const { screen_end, ...cleanStatisticsRequest } = statisticsRequest;
 
       cleanStatisticsRequest.screen_start = Date.now();
