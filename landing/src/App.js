@@ -1,24 +1,20 @@
-import React from 'react'
-import { Router, Link } from 'react-static'
+import React from 'react';
+import Home from './routes/Home';
+import Footer from './containers/Footer/Footer';
 
-import Routes from 'react-static-routes'
+export default props => (
+  <React.Fragment>
+    <title>{props.title}</title>
 
-import './app.css'
+    <style dangerouslySetInnerHTML={{
+      __html: 'body { margin: 0; padding: 0; font-family: "Lato", sans-serif; font-size: 15px; background: #f5f2f1; color: #714f4f; -webkit-font-smoothing: antialiased; }'
+    }} />
 
-export default () => (
-  <Router>
     <div className="content">
-      <Routes />
+      <Home />
 
-      <footer className="footer transition">
-        <div className="social-media">
-          <li>
-            <a href="https://fb.me/smailrocks" target="_blank">
-              <i className="fa fa-facebook-official">Smail.rocks Facebook Group</i>
-            </a>
-          </li>
-        </div>
-      </footer>
+      <Footer />
     </div>
-  </Router>
+  </React.Fragment>
+
 )

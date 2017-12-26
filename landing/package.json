@@ -5,18 +5,26 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "react-static start",
-    "build": "react-static build",
-    "serve": "serve dist -p 3000"
+    "start": "x0 dev src/App.js",
+    "build": "x0 build src/App.js --out-dir public --static --cssLibrary=glamorous",
+    "serve": "serve public -p 3000"
   },
   "dependencies": {
+    "@compositor/x0": "^3.0.2",
+    "glamor": "^2.20.40",
+    "glamorous": "^4.11.2",
+    "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
-    "react-router": "^4.2.0",
-    "react-static": "^4.7.0-beta.0"
+    "react-router": "^4.2.0"
   },
   "devDependencies": {
-    "eslint-config-react-tools": "1.x.x",
     "serve": "^6.1.0"
+  },
+  "x0": {
+    "title": "SMail.rocks",
+    "routes": [
+      "/"
+    ]
   }
 }
