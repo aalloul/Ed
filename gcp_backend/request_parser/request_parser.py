@@ -16,8 +16,11 @@ class RequestParser(object):
     def __init__(self, request):
         try:
             request = loads(request)
-        except Exception as ex:
+        except ValueError:
             raise ValueError("Json malformed.")
+        except Exception as ex:
+            raise Exception("Unknown exception: {}".format(ex.message))
+
         logging.debug("Request loaded to JSON")
         self._set_output(request)
         logging.debug("_set_output done")
