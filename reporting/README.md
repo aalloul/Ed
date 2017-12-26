@@ -104,3 +104,29 @@ A simple POST as follows will get the data into BigQuery
 ``` curl -XPOST https://reporting-dot-linear-asset-184705.appspot.com/events -H "Content-Type: application/json" --data-binary "@fixture/test_request.json"```
 
 It is also possible to replace `--data-binary "@fixture/test_request.json"` by a list of 1 or more JSON documents.
+
+# Collecting e-mails from Iphone users
+As we might not have the Iphone app ready by launch day, we want to allow Iphone users to provide us their e-mail from the website. We will then store it on BigQuery and contact them once the Iphone app is ready.
+
+## Data model
+As this endpoint is temporary, we will keep the number of fields limited accepted limited.
+
+```javascript
+{
+    "request_timestamp": 1510556210358,
+    "email": "you@example.com",
+    "duration_visit": 10,
+    "datamodel_version": 0.1
+}
+```
+
+## Example
+``` curl -XPOST https://reporting-dot-linear-asset-184705.appspot.com/newProspect -H "Content-Type: application/json" -d '{
+    "request_timestamp": 1510556210358,
+    "email": "you@example.com",
+    "duration_visit": 10,
+    "datamodel_version": 0.1}'
+```
+
+If all goes ok, the API returns
+```javascript {"ack": 200} ```
