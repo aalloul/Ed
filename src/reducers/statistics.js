@@ -1,8 +1,8 @@
-import { REQUEST_TRANSLATION_RESOLVE } from '../actions/appActions';
-import { APP_START, APP_END } from '../actions/statisticsActions';
+import { APP_START, SCREEN_START } from '../actions/statisticsActions';
 
 const initialStatisticsState = {
   session_start: null,
+  screen_start: null,
 };
 
 export default (state = initialStatisticsState, action) => {
@@ -10,7 +10,13 @@ export default (state = initialStatisticsState, action) => {
     case APP_START: {
       return {
         ...state,
-        session_start: Date.now(),
+        session_start: action.payload,
+      };
+    }
+    case SCREEN_START: {
+      return {
+        ...state,
+        screen_start: action.payload,
       };
     }
     default: {

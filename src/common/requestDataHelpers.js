@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { APP_END } from '../actions/statisticsActions';
+import { APP_START, screenStart } from '../actions/statisticsActions';
 
 export function generateTranslationRequest(getState) {
   const { email, language, translation, photo } = getState().app;
@@ -20,11 +20,25 @@ export function generateTranslationRequest(getState) {
   };
 }
 
-export function generateStatisticsRequest(getState, action) {
-  const { session_start, session_end, session_duration, number_scans } = getState().statistics;
-  console.log('getState.nav', getState().nav);
+export function getCurrentRouteName(navigationState) {
+  if (!navigationState) {
+    return null;
+  }
+  const route = navigationState.routes[navigationState.index];
+  // dive into nested navigators
+  if (route.routes) {
+    return getCurrentRouteName(route);
+  }
+  return route.routeName;
+}
 
-  let dataModel = {
+export function generateBasicStatisticsRequest(getState, action, dispatch) {
+  // fix first time setting of the session_start
+  const session_start = action.type === APP_START && !getState().statistics.session_start
+    ? action.payload
+    : getState().statistics.session_start;
+
+  const dataModel = {
     datamodel_version: 0.1,
     app_version: 0.2,
     phone_maker: DeviceInfo.getManufacturer(),
@@ -33,28 +47,21 @@ export function generateStatisticsRequest(getState, action) {
     user_id: DeviceInfo.getUniqueID(),
     timestamp: Date.now(),
     type: 'data',
-    screen: 'send_document',
     action: action.type,
-    screen_start: 1510556217358,
-    screen_end: 1510556219358,
     session_start,
+    screen_start: getState().statistics.screen_start,
   };
 
-  if (action.type === APP_END) {
-    dataModel = {
-      ...dataModel,
-      session_end,
-      session_duration,
-      number_scans,
-    };
+  if (action.type === APP_START) {
+    dataModel.screen_start = session_start;
+    dispatch(screenStart(session_start));
   }
-
-  console.log('data model', dataModel);
 
   return dataModel;
 }
 
 export default {
   generateTranslationRequest,
-  generateStatisticsRequest,
+  getCurrentRouteName,
+  generateBasicStatisticsRequest,
 };

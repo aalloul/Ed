@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { AppState } from 'react-native';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
 
-import { appStart, appEnd } from '../actions/statisticsActions';
+import { appStart } from '../actions/statisticsActions';
 
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import ScanScreen from '../screens/ScanScreen/ScanScreen';
@@ -21,28 +20,9 @@ export const AppNavigator = StackNavigator({
 });
 
 class AppWithNavigationState extends Component {
-  componentDidMount() {
-    console.log('AppWithNavigationState mounted');
-    AppState.addEventListener('change', this.handleAppStateChange);
+  componentWillMount() {
+    this.props.dispatchAppStart();
   }
-
-  componentWillUnmount() {
-    console.log('AppWithNavigationState unmounted');
-    AppState.removeEventListener('change', this.handleAppStateChange);
-  }
-
-  handleAppStateChange = (nextAppState) => {
-    console.log('AppState.currentState', AppState.currentState);
-    console.log('nextAppState', nextAppState);
-
-    if (AppState.currentState.match(/inactive|background/) && nextAppState === 'active') {
-      this.props.dispatchAppStart();
-    }
-
-    if (AppState.currentState.match(/active|background/) && nextAppState === 'inactive') {
-      this.props.dispatchAppEnd();
-    }
-  };
 
   render() {
     const { dispatch, nav } = this.props;
@@ -55,7 +35,6 @@ class AppWithNavigationState extends Component {
 AppWithNavigationState.propTypes = {
   dispatch: PropTypes.func.isRequired,
   dispatchAppStart: PropTypes.func.isRequired,
-  dispatchAppEnd: PropTypes.func.isRequired,
   nav: PropTypes.object.isRequired,
 };
 
@@ -65,9 +44,9 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchAppStart() {
     return dispatch(appStart());
   },
-  dispatchAppEnd() {
-    return dispatch(appEnd());
-  },
+  dispatch() {
+    return dispatch;
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWithNavigationState);

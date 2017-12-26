@@ -1,5 +1,5 @@
 export const APP_START = 'APP_START';
-export const APP_END = 'APP_END';
+export const SCREEN_START = 'SCREEN_START';
 
 export function appStart() {
   return {
@@ -8,9 +8,9 @@ export function appStart() {
   };
 }
 
-export function appEnd() {
+export function screenStart(time) {
   return {
-    type: APP_END,
-    payload: Date.now(),
+    type: SCREEN_START,
+    payload: time,
   };
 }
