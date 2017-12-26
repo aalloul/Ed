@@ -54,8 +54,8 @@ class SuccessScreen extends Component {
 
   restartApp() {
     AsyncStorage
-    .setItem('scanMore', 'true')
-    .then(() => RNRestart.Restart());
+      .setItem('scanMore', 'true')
+      .then(() => RNRestart.Restart());
   }
 
   render() {

@@ -42,14 +42,8 @@ class SplashScreen extends Component {
   componentWillMount() {
     AsyncStorage
       .getItem('scanMore')
-      .then((value) => {
-        if (value === 'true') {
-          this.scanMore()
-            .then(() => this.setState({ loading: false }));
-        } else {
-          this.setState({ loading: false });
-        }
-      });
+      .then((value) => value === 'true' ? this.scanMore() : Promise.resolve())
+      .then(() => this.setState({ loading: false }));
   }
 
   scanMore() {
