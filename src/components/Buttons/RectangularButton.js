@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-native';
+import { Button, ViewPropTypes } from 'react-native';
 
 const RectangularButton = ({ onPress, title, accessibilityLabel, style }) => (
   <Button
@@ -18,7 +18,7 @@ RectangularButton.propTypes = {
   onPress: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
   accessibilityLabel: PropTypes.string.isRequired,
-  style: PropTypes.object,
+  style: ViewPropTypes.style,
 };
 
 RectangularButton.defaultProps = {
