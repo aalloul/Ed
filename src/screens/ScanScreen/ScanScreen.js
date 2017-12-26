@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Camera from 'react-native-camera';
 
 import RoundButton from '../../components/Buttons/RoundButton';
-import { takePhotoRoutine } from '../../actions/index';
+import { takePhotoRoutine } from '../../actions/appActions';
 
 const styles = StyleSheet.create({
   container: {

@@ -5,7 +5,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
-import { goToScan } from '../../actions/index';
+import { goToScan } from '../../actions/appActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,6 +29,14 @@ class SplashScreen extends Component {
       backgroundColor: '#50D2C2',
     },
   };
+
+  componentDidMount() {
+    console.log('SplashScreen mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('SplashScreen unmounted');
+  }
 
   render() {
     return (

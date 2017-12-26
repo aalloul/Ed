@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import EmailForm from '../../components/EmailForm/EmailForm';
-import { changeEmail, requestTranslationRoutine } from '../../actions/index';
+import { changeEmail, requestTranslationRoutine } from '../../actions/appActions';
 
 const styles = StyleSheet.create({
   container: {

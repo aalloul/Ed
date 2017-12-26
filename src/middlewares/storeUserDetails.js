@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { REQUEST_TRANSLATION_PROMISE, TAKE_PHOTO_PROMISE } from '../actions/index';
+import { REQUEST_TRANSLATION_PROMISE, TAKE_PHOTO_PROMISE } from '../actions/appActions';
 
 export default function storeUserDetails({ getState, dispatch }) {
   return next => async (action) => {

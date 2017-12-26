@@ -1,7 +1,12 @@
 import { NavigationActions } from 'react-navigation';
 
 import { AppNavigator } from '../navigators/AppNavigator';
-import { REQUEST_TRANSLATION_RESOLVE, SELECT_TRANSLATION, TAKE_PHOTO_RESOLVE, GO_TO_SCAN } from '../actions';
+import {
+  REQUEST_TRANSLATION_RESOLVE,
+  SELECT_TRANSLATION,
+  TAKE_PHOTO_RESOLVE,
+  GO_TO_SCAN,
+} from '../actions/appActions';
 
 const initialNavState = AppNavigator.router.getStateForAction(NavigationActions.init());
 
