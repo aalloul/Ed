@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import app from './app';
-import nav from './nav';
+import application from './application';
+import navigation from './navigation';
 import statistics from './statistics';
 
 export default combineReducers({
-  app,
-  nav,
+  application,
+  navigation,
   statistics,
 });

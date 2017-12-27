@@ -6,7 +6,7 @@ import {
   SELECT_TRANSLATION,
   TAKE_PHOTO_RESOLVE,
   GO_TO_SCAN,
-} from '../actions/appActions';
+} from '../actions/applicationActions';
 
 const initialNavState = AppNavigator.router.getStateForAction(NavigationActions.init());
 

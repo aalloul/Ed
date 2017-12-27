@@ -5,7 +5,7 @@ import { AsyncStorage, StyleSheet, View, Image } from 'react-native';
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
-import { goToScan } from '../../actions/appActions';
+import { goToScan } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
   container: {

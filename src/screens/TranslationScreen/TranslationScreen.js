@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import TranslationForm from '../../components/TranslationForm/TranslationForm';
-import { changeLanguage, selectTranslation } from '../../actions/appActions';
+import { changeLanguage, selectTranslation } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
   container: {

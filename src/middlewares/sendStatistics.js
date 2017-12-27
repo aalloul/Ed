@@ -28,15 +28,16 @@ export default function sendStatistics({ getState, dispatch }) {
 
     let statisticsRequest = generateBasicStatisticsRequest(getState, action, dispatch);
 
-    const currentScreen = getCurrentRouteName(getState().nav);
+    const currentScreen = getCurrentRouteName(getState().navigation);
     const result = next(action);
-    const nextScreen = getCurrentRouteName(getState().nav);
+    const nextScreen = getCurrentRouteName(getState().navigation);
 
     statisticsRequest.screen = currentScreen;
 
     if (nextScreen !== currentScreen) {
       statisticsRequest.screen_end = Date.now();
 
+      console.log('statisticsRequest before changing route', statisticsRequest);
       sendStatisticsRequest(statisticsRequest);
 
       // remove screen_end from statisticsRequest in functional way
@@ -49,6 +50,7 @@ export default function sendStatistics({ getState, dispatch }) {
       statisticsRequest = cleanStatisticsRequest;
     }
 
+    console.log('statisticsRequest', statisticsRequest);
     sendStatisticsRequest(statisticsRequest);
 
     return result;

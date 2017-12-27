@@ -1,9 +1,9 @@
 import { AsyncStorage } from 'react-native';
-import { REQUEST_TRANSLATION_PROMISE, TAKE_PHOTO_PROMISE } from '../actions/appActions';
+import { REQUEST_TRANSLATION_PROMISE, TAKE_PHOTO_PROMISE } from '../actions/applicationActions';
 
 export default function storeUserDetails({ getState, dispatch }) {
   return next => async (action) => {
-    const { language, email } = getState().app;
+    const { language, email } = getState().application;
 
     if (action.type === REQUEST_TRANSLATION_PROMISE) {
       try {

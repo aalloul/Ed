@@ -3,7 +3,7 @@ import DeviceInfo from 'react-native-device-info';
 import { APP_START, screenStart } from '../actions/statisticsActions';
 
 export function generateTranslationRequest(getState) {
-  const { email, language, translation, photo } = getState().app;
+  const { email, language, translation, photo } = getState().application;
 
   return {
     output: ['email'],

@@ -25,20 +25,25 @@ class AppWithNavigationState extends Component {
   }
 
   render() {
-    const { dispatch, nav } = this.props;
-    const navigation = addNavigationHelpers({ dispatch, state: nav });
+    const { dispatch, navigation } = this.props;
 
-    return <AppNavigator navigation={navigation} />;
+    return <AppNavigator
+      navigation={addNavigationHelpers({
+        dispatch: dispatch(),
+        state: navigation,
+      })}
+    />;
+
   }
 }
 
 AppWithNavigationState.propTypes = {
   dispatch: PropTypes.func.isRequired,
   dispatchAppStart: PropTypes.func.isRequired,
-  nav: PropTypes.object.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({ nav }) => ({ nav });
+const mapStateToProps = ({ navigation }) => ({ navigation });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchAppStart() {
