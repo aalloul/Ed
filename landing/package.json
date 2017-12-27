@@ -7,7 +7,8 @@
   "scripts": {
     "start": "x0 dev src/App.js",
     "build": "x0 build src/App.js --out-dir public --static --cssLibrary=glamorous",
-    "serve": "serve public -p 3000"
+    "serve": "serve public -p 3000",
+    "deploy": "firebase deploy"
   },
   "dependencies": {
     "@compositor/x0": "^3.0.2",
