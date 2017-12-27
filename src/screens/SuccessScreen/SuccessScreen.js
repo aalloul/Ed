@@ -45,7 +45,7 @@ class SuccessScreen extends Component {
   }
 
   componentDidMount() {
-    if(this._confettiView) {
+    if (this._confettiView) {
       this._confettiView.startConfetti();
     }
   }
