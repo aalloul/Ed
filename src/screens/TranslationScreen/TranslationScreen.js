@@ -42,9 +42,9 @@ class TranslationScreen extends Component {
 }
 
 export default connect(
-  ({ app }) => ({
-    language: app.language,
-    languages: app.languages,
+  ({ application }) => ({
+    language: application.language,
+    languages: application.languages,
   }),
   dispatch => ({
     changeLanguage(language) {

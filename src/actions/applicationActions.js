@@ -111,6 +111,8 @@ export function requestTranslationRoutine() {
   return (dispatch, getState) => {
     const translationRequest = generateTranslationRequest(getState);
 
+    console.log('translationRequest', translationRequest);
+
     dispatch(requestTranslationPromise());
 
     fetch('https://linear-asset-184705.appspot.com/request_translation', {
