@@ -1,6 +1,4 @@
-import { AsyncStorage } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-
 
 import { AppNavigator } from '../navigators/AppNavigator';
 import {
@@ -8,7 +6,7 @@ import {
   SELECT_TRANSLATION,
   TAKE_PHOTO_RESOLVE,
   GO_TO_SCAN,
-} from '../actions';
+} from '../actions/applicationActions';
 
 const initialNavState = AppNavigator.router.getStateForAction(NavigationActions.init());
 

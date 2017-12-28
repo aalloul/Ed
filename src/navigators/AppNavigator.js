@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, StackNavigator } from 'react-navigation';
+
+import { appStart } from '../actions/statisticsActions';
 
 import SplashScreen from '../screens/SplashScreen/SplashScreen';
 import ScanScreen from '../screens/ScanScreen/ScanScreen';
@@ -17,15 +19,39 @@ export const AppNavigator = StackNavigator({
   Success: { screen: SuccessScreen },
 });
 
-const AppWithNavigationState = ({ dispatch, nav }) => (
-  <AppNavigator navigation={addNavigationHelpers({ dispatch, state: nav })} />
-);
+class AppWithNavigationState extends Component {
+  componentWillMount() {
+    this.props.dispatchAppStart();
+  }
+
+  render() {
+    const { dispatch, navigation } = this.props;
+
+    return <AppNavigator
+      navigation={addNavigationHelpers({
+        dispatch: dispatch(),
+        state: navigation,
+      })}
+    />;
+
+  }
+}
 
 AppWithNavigationState.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  nav: PropTypes.object.isRequired,
+  dispatchAppStart: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({ nav }) => ({ nav });
+const mapStateToProps = ({ navigation }) => ({ navigation });
 
-export default connect(mapStateToProps)(AppWithNavigationState);
+const mapDispatchToProps = (dispatch) => ({
+  dispatchAppStart() {
+    return dispatch(appStart());
+  },
+  dispatch() {
+    return dispatch;
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppWithNavigationState);

@@ -5,7 +5,7 @@ import { AsyncStorage, StyleSheet, View, Image } from 'react-native';
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
-import { goToScan } from '../../actions/index';
+import { goToScan } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +29,6 @@ class SplashScreen extends Component {
       backgroundColor: '#50D2C2',
     },
   };
-
   constructor() {
     super();
 
@@ -44,6 +43,14 @@ class SplashScreen extends Component {
       .getItem('scanMore')
       .then((value) => value === 'true' ? this.scanMore() : Promise.resolve())
       .then(() => this.setState({ loading: false }));
+  }
+
+  componentDidMount() {
+    console.log('SplashScreen mounted');
+  }
+
+  componentWillUnmount() {
+    console.log('SplashScreen unmounted');
   }
 
   scanMore() {

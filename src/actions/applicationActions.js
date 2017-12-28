@@ -1,6 +1,6 @@
 import RNFetchBlob from 'react-native-fetch-blob';
 
-import { generateTranslationRequest } from '../common/storeDataHelpers';
+import { generateTranslationRequest } from '../common/requestDataHelpers';
 
 export const GO_TO_SCAN = 'GO_TO_SCAN';
 
@@ -110,6 +110,8 @@ function requestTranslationReject() {
 export function requestTranslationRoutine() {
   return (dispatch, getState) => {
     const translationRequest = generateTranslationRequest(getState);
+
+    console.log('translationRequest', translationRequest);
 
     dispatch(requestTranslationPromise());
 

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import TranslationForm from '../../components/TranslationForm/TranslationForm';
-import { changeLanguage, selectTranslation } from '../../actions/index';
+import { changeLanguage, selectTranslation } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,9 +42,9 @@ class TranslationScreen extends Component {
 }
 
 export default connect(
-  ({ app }) => ({
-    language: app.language,
-    languages: app.languages,
+  ({ application }) => ({
+    language: application.language,
+    languages: application.languages,
   }),
   dispatch => ({
     changeLanguage(language) {
