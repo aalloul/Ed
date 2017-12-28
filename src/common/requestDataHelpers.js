@@ -33,8 +33,8 @@ export function getCurrentRouteName(navigationState) {
 }
 
 export function generateBasicStatisticsRequest(getState, action, dispatch) {
-  // fix first time setting of the session_start
-  const session_start = action.type === APP_START && !getState().statistics.session_start
+  // fix first time setting of the sessionStart
+  const sessionStart = action.type === APP_START && !getState().statistics.session_start
     ? action.payload
     : getState().statistics.session_start;
 
@@ -48,13 +48,13 @@ export function generateBasicStatisticsRequest(getState, action, dispatch) {
     timestamp: Date.now(),
     type: 'data',
     action: action.type,
-    session_start,
+    session_start: sessionStart,
     screen_start: getState().statistics.screen_start,
   };
 
   if (action.type === APP_START) {
-    dataModel.screen_start = session_start;
-    dispatch(screenStart(session_start));
+    dataModel.screen_start = sessionStart;
+    dispatch(screenStart(sessionStart));
   }
 
   return dataModel;
