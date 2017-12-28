@@ -6,7 +6,7 @@ export function generateTranslationRequest(getState) {
   const { email, language, translation, photo } = getState().application;
 
   return {
-    output: ['email'],
+    output: ['email', 'app'],
     email,
     input_language: 'nl',
     output_language: language,
