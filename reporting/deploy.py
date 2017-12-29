@@ -22,3 +22,4 @@ if res == 0:
         f.write(version_str)
 else:
     print ("ERROR - Deployment ended with exit status == {}".format(res))
+

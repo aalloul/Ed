@@ -12,10 +12,11 @@ The application is expected to generate a `POST` call towards the back-end follo
  - `version`: Float to indicate the version of the app (0.1, alpha, ...etc).
  - `user_id`: UUID to uniquely identify a phone.
 
-For the future, we foresee the following fields might be needed:
+Non required fields:
+ - `input_language`: String indicating the input language. If not present, we will assume `nl`.
+ - `output_language`: String indicating the output language for the translation. If not present, we will assume `en`.
 
- - `input_language`: String indicating the input language. For the 1st version, this field will be ignored and we will assume `nl`.
- - `output_language`: String indicating the output language for the translation. For the 1st version, we will ignore this field and assume `en`.
+For the future, we foresee the following fields might be needed:
  - `extract_reminder`: Boolean to indicate whether the user would like an automated extraction of the reminders attached to the mail he scanned. Ignored for the 1st version
 
 Example call:

@@ -1,0 +1,15 @@
+{
+  "datamodel_version": 0.1,
+  "app_version": 0.2,
+  "phone_maker": "Apple",
+  "phone_model": "Iphone7",
+  "os_version": "11.0.3",
+  "user_id": "08fb1184-d74e-42f0-a4ae-ad65438a3dcc",
+  "timestamp": 1510556219358,
+  "type": "data",
+  "screen": "scan_document",
+  "action": "open_list_documents",
+  "screen_start": 1510556217358,
+  "screen_end": 1510556219358,
+  "session_start": 1510556210358
+}

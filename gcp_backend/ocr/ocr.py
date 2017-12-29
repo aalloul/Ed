@@ -61,7 +61,7 @@ class Ocr(object):
             method=POST,
             headers={"Content-Type": "application/json"}
         )
-
+        logger.info("Response status code = {}".format(response.status_code))
         return Ocr_text(response.content)
 
     def get_full_text(self):

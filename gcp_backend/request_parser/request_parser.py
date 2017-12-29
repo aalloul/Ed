@@ -1,6 +1,7 @@
 from json import loads, dumps
 import logging
 from sys import stdout
+from base64 import b64decode
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -79,8 +80,15 @@ class RequestParser(object):
     def _set_image(self, request):
         if "image" not in request:
             raise KeyError("image not found in request")
-        else:
-            self.image = request["image"]
+
+        try:
+            b64decode(request['image'])
+        except Exception as ex:
+            logger.error("Caught an exception while decoding image")
+            logger.error("Message was = {}".format(ex.message))
+            raise
+
+        self.image = request["image"]
 
     def _set_timestamp(self, request):
         if "timestamp" not in request:
