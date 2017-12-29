@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, StyleSheet, View, Image, Text } from 'react-native';
 import RNRestart from 'react-native-restart';
+import Confetti from 'react-native-confetti';
 
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
@@ -43,6 +44,18 @@ class SuccessScreen extends Component {
     this.restartApp = this.restartApp.bind(this);
   }
 
+  componentDidMount() {
+    if (this._confettiView) {
+      this._confettiView.startConfetti();
+    }
+  }
+
+  componentWillUnmount ()   {
+    if (this._confettiView) {
+      this._confettiView.stopConfetti();
+    }
+  }
+
   computeLanguageLabel(language) {
     const lang = this.props.languages.find(({ code }) => code === language);
     if (!lang) {
@@ -61,6 +74,11 @@ class SuccessScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Confetti
+          ref={(node) => this._confettiView = node}
+          timeout={15}
+          confettiCount={150}
+        />
         <PrimaryText>
           Success!
         </PrimaryText>
@@ -82,10 +100,10 @@ class SuccessScreen extends Component {
 }
 
 export default connect(
-  ({ app }) => ({
-    language: app.language,
-    languages: app.languages,
-    translation: app.translation,
-    email: app.email,
+  ({ application }) => ({
+    language: application.language,
+    languages: application.languages,
+    translation: application.translation,
+    email: application.email,
   })
 )(SuccessScreen);

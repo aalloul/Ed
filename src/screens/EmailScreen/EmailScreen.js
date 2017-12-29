@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import EmailForm from '../../components/EmailForm/EmailForm';
-import { changeEmail, requestTranslationRoutine } from '../../actions/index';
+import { changeEmail, requestTranslationRoutine } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -46,8 +46,8 @@ class EmailScreen extends Component {
 }
 
 export default connect(
-  ({ app }) => ({
-    email: app.email,
+  ({ application }) => ({
+    email: application.email,
   }),
   dispatch => ({
     changeEmail(email) {
