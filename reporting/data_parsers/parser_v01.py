@@ -22,9 +22,13 @@ class Parser(object):
                                  'user_id', 'timestamp', 'type', 'screen',
                                  'screen_start', 'session_start']
         self._body = self._check_required_fields(body)
-
+        logger.debug("Converting ms to seconds")
         self._convert_ms_to_s()
+
+        logger.debug("Loading secrets")
         self._secret = self._load_secrets()
+
+
         self._add_row_hash()
 
         self.url = "https://www.googleapis.com/bigquery/v2/projects/" \
@@ -44,16 +48,18 @@ class Parser(object):
         # represents to milli or micro-seconds
 
         # Mandatory fields first
-        self._body['session_start'] = self._body["session_start"] / 1000
-        self._body["timestamp"] = self._body["timestamp"] / 1000
-        self._body["screen_start"] = self._body["screen_start"] / 1000
 
-        # Non-mandatory fields
-        if "screen_end" in self._body:
-            self._body["screen_end"] = self._body["screen_end"] / 1000
+        for rec in self._body:
+            rec['session_start'] = rec["session_start"] / 1000
+            rec["timestamp"] = rec["timestamp"] / 1000
+            rec["screen_start"] = rec["screen_start"] / 1000
 
-        if "session_end" in self._body:
-            self._body["session_end"] = self._body["session_end"] / 1000
+            # Non-mandatory fields
+            if "screen_end" in rec:
+                rec["screen_end"] = rec["screen_end"] / 1000
+
+            if "session_end" in self._body:
+                rec["session_end"] = rec["session_end"] / 1000
 
     def _check_required_fields(self, body):
         logger.debug("Checking presence of required fields")

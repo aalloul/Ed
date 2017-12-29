@@ -9,7 +9,7 @@ app = Flask(__name__)
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 @app.errorhandler(404)
@@ -45,8 +45,14 @@ def key_missing(e):
 
 @app.route('/events', methods=["POST"])
 def new_event():
+    logger.debug("Hi!")
     try:
         parsed_request = loads(request.data)
+        logger.debug("isinstance(parsed_request, list) = {}".format(isinstance(parsed_request, list)))
+        if not isinstance(parsed_request, list):
+            logger.debug("Received a non list body - casting to list")
+            parsed_request = [parsed_request]
+
         logger.debug("Received following request {}".format(parsed_request))
         logger.info("Received request with {} rows".format(len(parsed_request)))
 
