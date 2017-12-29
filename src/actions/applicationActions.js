@@ -62,7 +62,7 @@ export function takePhotoRoutine(camera) {
           // @property {String} data.path: Returns the path of the captured image or video file on disk
           console.log(data);
 
-          return RNFetchBlob.fs.readStream(data.path, 'base64');
+          return RNFetchBlob.fs.readStream(data.path, 'base64', 4095);
         })
         .then((ifstream) => {
           let buffer = '';
