@@ -18,7 +18,7 @@ const Icon = glamorous.img({
 
 export default () => (
   <Wrapper>
-    <Button href="#">
+    <Button href="#" data-modal="notify-ios">
       <Icon src="/img/icon-appstore1.svg" alt="Icon" />
       APP STORE
     </Button>

@@ -3,6 +3,7 @@ import React from 'react';
 import Home from './routes/Home';
 
 import Footer from './containers/Footer/Footer';
+import NotifyModal from './components/NotifyModal/NotifyModal';
 
 export default props => (
   <React.Fragment>
@@ -17,6 +18,8 @@ export default props => (
 
       <Footer />
     </div>
+
+    <NotifyModal />
 
     <script dangerouslySetInnerHTML={{
       __html: `
