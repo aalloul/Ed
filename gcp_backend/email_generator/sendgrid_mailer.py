@@ -14,9 +14,9 @@ class Sendgrid(object):
 
     """
 
-    def __init__(self, initial_request, extracted_text=None,
-                 translated_text=None,
+    def __init__(self, initial_request, parsed_ocr=None,
                  human_translation=False):
+
         logger.info("Initializing Sendgrid client")
         self.api_key = \
             "SG.dL-7fS_ER9GeIC5s5AVlww" \
@@ -24,8 +24,7 @@ class Sendgrid(object):
         self.sendgrid_sender = 'smail@smail.rocks'
         self.initial_request = initial_request
         self.human_translation = human_translation
-        self.extracted_text = extracted_text
-        self.translated_text = translated_text
+        self.parsed_ocr = parsed_ocr
         self.DEBUG = False
 
     def _build_message_for_auto_translation(self):
@@ -41,8 +40,7 @@ class Sendgrid(object):
                   'archiving'
         content = mail.Content('text/plain',
                                self._get_content_for_automatic_translations())
-        logger.debug("  - Content (first 50 chars) {}".format(
-            self._get_content_for_automatic_translations()[0:50]))
+        logger.debug("  - Content done")
 
         message = mail.Mail(from_email=from_email, subject=subject,
                             to_email=to_email, content=content)
@@ -106,8 +104,6 @@ class Sendgrid(object):
 
     def _get_content_for_automatic_translations(self):
         logger.debug("Building content for automatic translation")
-        logger.debug("  - Extracted text {}".format(self.extracted_text[0:20]))
-        logger.debug("  - Extracted text {}".format(self.translated_text[0:20]))
 
         message = """Dear user,
         
@@ -124,9 +120,17 @@ class Sendgrid(object):
         {}
         
         Your friends @ Smail!
-        """.format(self.translated_text, self.extracted_text)
-
+        """.format(self._get_english_version(), self._get_original_version())
+        logger.debug("Content built (50 chars) = {}".format(message[0:50]))
         return message
+
+    def _get_english_version(self):
+        logger.info("Extracting English version")
+        return "\n".join([w['translation'] for w in self.parsed_ocr[1]])
+
+    def _get_original_version(self):
+        logger.info("Extracting original version")
+        return "\n".join([w['word'] for w in self.parsed_ocr[1]])
 
     def send(self):
         if self.DEBUG:

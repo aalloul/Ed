@@ -1,8 +1,12 @@
 from json import dumps
 from google.appengine.api.urlfetch import fetch, POST
-from ocr_text import Ocr_text
 import logging
 from sys import stdout
+from PIL import Image, ExifTags
+from io import BytesIO
+from base64 import b64decode
+from ocr_parser import OCRParser
+
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -23,9 +27,9 @@ class Ocr(object):
 
         self._payload = self._get_payload()
         logger.debug("Payload constructed")
-        self._ocr_text = self._get_ocr_answer()
+        self.ocr_answer = self._get_ocr_answer()
         logger.debug(("OCR answer received. Text follows"))
-        logger.debug(self._ocr_text.get_full_text()[0:20])
+        logger.debug(self.ocr_answer.full_text[0:20])
 
     def _get_payload(self):
         return {
@@ -47,8 +51,7 @@ class Ocr(object):
 
     def _get_fixture(self):
         logger.debug("DEBUG Mode enabled: reading ocr answer from fixture")
-        with open("fixture/test_response_ocr.json", "r") as f:
-            return Ocr_text(f.read())
+        pass
 
     def _get_ocr_answer(self):
         if self.DEBUG:
@@ -61,8 +64,34 @@ class Ocr(object):
             method=POST,
             headers={"Content-Type": "application/json"}
         )
-        logger.info("Response status code = {}".format(response.status_code))
-        return Ocr_text(response.content)
 
-    def get_full_text(self):
-        return self._ocr_text.get_full_text()
+        logger.info("Response status code = {}".format(response.status_code))
+        return OCRParser(response.content, self.get_orientation(self.image))
+
+    @staticmethod
+    def get_orientation(im):
+        image = Image.open(BytesIO(b64decode(im)))
+        orientation = ""
+
+        for orientations in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientations] == 'Orientation':
+                orientation = orientations
+
+        exif = dict(image._getexif().items())
+
+        if not exif.has_key(orientation):
+            logger.info("Image has no orientation TAG")
+            return 0
+
+        if exif[orientation] == 3:
+            logger.info("Image has an orientation of 180")
+            return 180
+        elif exif[orientation] == 6:
+            logger.info("Image has an orientation of 270")
+            return 270
+        elif exif[orientation] == 8:
+            logger.info("Image has an orientation of 90")
+            return 90
+        else:
+            logger.info("Image has an orientation of 0")
+            return 0
