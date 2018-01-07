@@ -1,9 +1,18 @@
 import React from 'react';
+import { StaticRouter, BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Home from './routes/Home';
+import PrivacyPolicy from './routes/PrivacyPolicy';
 
 import Footer from './containers/Footer/Footer';
 import NotifyModal from './components/NotifyModal/NotifyModal';
+
+const Router = typeof document !== 'undefined'
+  ? BrowserRouter
+  : StaticRouter;
+
+// This context object contains the results of the render
+const context = {};
 
 export default props => (
   <React.Fragment>
@@ -14,7 +23,23 @@ export default props => (
     }} />
 
     <div className="content">
-      <Home />
+      <Router
+        basename={props.basename}
+        location={props.pathname}
+        context={context}
+      >
+        <Switch>
+          <Route
+            exact
+            path='/'
+            render={() => <Home {...props} />}
+          />
+          <Route
+            path='/privacy-policy'
+            render={() => <PrivacyPolicy {...props} />}
+          />
+        </Switch>
+      </Router>
 
       <Footer />
     </div>
