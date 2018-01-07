@@ -1,0 +1,7 @@
+[
+  { "from_x": 0, "to_x": 400, "from_y": 0, "to_y": 20 },
+  { "from_x": 1200, "to_x": 1500, "from_y": 0, "to_y": 140 },
+  { "from_x": 0, "to_x": 400, "from_y": 30, "to_y": 90 },
+  { "from_x": 0, "to_x": 500, "from_y": 140, "to_y": 180 },
+  { "from_x": 0, "to_x": 1550, "from_y": 210, "to_y": 900 },
+]

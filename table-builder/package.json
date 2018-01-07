@@ -1,0 +1,33 @@
+{
+  "name": "table-builder",
+  "version": "0.0.1",
+  "repository": "https://github.com/adampackets/Ed",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "smail.rocks team",
+  "contributors": [],
+  "cloud-repo-tools": {
+    "requiresKeyFile": true,
+    "requiresProjectId": true,
+    "test": {
+      "app": {
+        "args": [
+          "app.js"
+        ],
+        "msg": "Hello, world!"
+      }
+    }
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "4.16.2"
+  },
+  "devDependencies": {
+    "@google-cloud/nodejs-repo-tools": "2.1.1"
+  },
+  "engines": {
+    "node": ">=6.3.2"
+  }
+}
