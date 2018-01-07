@@ -18,7 +18,7 @@ It consists of:
 - Website: https://www.smail.rocks
 - API for translations: https://linear-asset-184705.appspot.com/request_translation . Check relevant [README.md](https://github.com/adampackets/Ed/blob/master/gcp_backend/README.md) for information on how to use it.
 - API for usage statistics: https://reporting-dot-linear-asset-184705.appspot.com/events . Check relevant [README.md](https://github.com/adampackets/Ed/blob/master/reporting/README.md) for information on how to use it.
-- App listing on Play Store [link](https://play.google.com/store/apps/details?id=com.smail.app.android&ah=CXtH2thjg3Dl_KgaPLLmIANUq-0). Not that you might not see it yet as it is under private alpha. If you want, just ask to be added to the list of testers.
+- App listing on Play Store [link](https://play.google.com/store/apps/details?id=com.smail.app.android&ah=CXtH2thjg3Dl_KgaPLLmIANUq-0). Note that you might not see it yet as it is under private alpha. If you want, just ask to be added to the list of testers.
 - E-mail address: smail.app.rocks@gmail.com . If you don't have access yet, you can request password from Adam or Pavlik.
 - Google Cloud project URL is: https://console.cloud.google.com/home/dashboard?project=linear-asset-184705 . If you need access, Pavlik and Adam can help.
 
