@@ -60,7 +60,9 @@ def request_automatic_translation(parsed_request, reporter):
     translator = AutomaticTranslator(parsed_request.get_input_language(),
                                      parsed_request.get_output_language(),
                                      parsed_ocr.parsed_pages)
+    logger.info("About to request translation")
     translator.get_translation()
+    logger.info("Translation requested")
 
     reporter.add_event("auto_translation_time", round(time() -
                                                       start_translation, 3))
