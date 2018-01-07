@@ -56,11 +56,10 @@ class AutomaticTranslator(Translator):
             return None
 
         resp_json = loads(resp.content)
-        # logger.debug("Got an answer back")
-        # logger.debug("Translation received {}".format(resp_json))
 
-        return resp_json['data']['translations'][0]['translatedText'].encode(
-            "utf-8")
+        logger.debug("Returning translation")
+        return [w['translatedText'].encode("utf-8")
+                for w in resp_json['data']['translations']]
 
     def get_translation(self):
         logger.info("Requesting translation from {} to {}".format(
@@ -69,18 +68,16 @@ class AutomaticTranslator(Translator):
         if self.DEBUG:
             return self._fixture()
 
-        for word in self.pages[1]:
-            word['translation'] = self._translate_word(word['word'])
+        words_to_translate = [word['word'] for word in self.pages[1]]
+        res = self._translate_word(words_to_translate)
+
+        logger.debug("Updating the pages")
+        for ii in range(len(self.pages[1])):
+            self.pages[1][ii]['translation'] = res[ii]
+
         logger.info(" -> Done")
 
     def _build_payload(self, word):
-        # logger.debug("Building payload")
-        # logger.debug("Payload is {}".format({
-        #     'q': word,
-        #     'target': self.out_language,
-        #     'source': self.input_language,
-        #     'format': 'text'
-        # }))
         return {
             'q': word,
             'target': self.out_language,
