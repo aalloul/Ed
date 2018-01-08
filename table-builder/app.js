@@ -182,10 +182,18 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-  if (!req.body.points || !Array.isArray(req.body.points)) {
-    res.status(404).send('Not found!');
+  let points;
+  if (typeof req.body === 'string') {
+    const params = JSON.parse(req.body);
+    points = params.points;
   } else {
-    res.status(200).send(build(req.body.points));
+    points = req.body.points;
+  }
+
+  if (!points || !Array.isArray(points)) {
+    res.status(404).send('No "points" or it is not an array');
+  } else {
+    res.status(200).send(build(points));
   }
 });
 
