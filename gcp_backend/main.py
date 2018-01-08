@@ -42,36 +42,42 @@ def request_human_translation(parsed_request, reporter):
 def request_automatic_translation(parsed_request, reporter):
     logger.info("Call OCR service")
     start_ocr = time()
+
     try:
-        ocr = Ocr(parsed_request.get_image(),
-                  parsed_request.get_input_language())
+        parsed_ocr = Ocr(parsed_request.get_image(),
+                  parsed_request.get_input_language()).ocr_answer
     except NoTextFoundException as ex:
         logger.error("No text was found in the provided image")
         reporter.add_event("exception", "no_text_found_in_image")
         return Answer(exception=ex).get_answer()
 
     reporter.add_event("ocr_processing_time", round(time() - start_ocr, 3))
-    reporter.add_event("n_chars_image", len(ocr.get_full_text()))
-    reporter.add_extracted_text(ocr.get_full_text())
+    reporter.add_event("n_chars_image", len(parsed_ocr.full_text))
+    reporter.add_extracted_text(parsed_ocr.ocr_resp)
 
     logger.info("Call Translation service")
     start_translation = time()
     translator = AutomaticTranslator(parsed_request.get_input_language(),
-                                     parsed_request.get_output_language())
-    translator.set_text(ocr.get_full_text())
-    translation = translator.get_translation()
+                                     parsed_request.get_output_language(),
+                                     parsed_ocr.parsed_pages)
+    logger.info("About to request translation")
+    translator.get_translation()
+
+    logger.info("Translation requested")
+
     reporter.add_event("auto_translation_time", round(time() -
                                                       start_translation, 3))
-    reporter.add_translated_text(translation)
+    reporter.add_translated_text(parsed_ocr.parsed_pages)
+
 
     email_start = time()
-    sg = Sendgrid(parsed_request, ocr.get_full_text(), translation)
+    sg = Sendgrid(parsed_request, translator.get_html(), parsed_ocr.parsed_pages)
     status_code, body, headers = sg.send()
 
     if 200 <= status_code < 300:
         reporter.add_event("email_sent_in_sec", round(time() - email_start, 3))
-        return Answer(original_text=ocr.get_full_text(),
-                      translated_text=translation,
+        return Answer(original_text=parsed_ocr.full_text,
+                      translated_text=parsed_ocr.parsed_pages,
                       email_status=True).get_answer()
     else:
         reporter.add_event("email_send_exception_status_code", status_code)
@@ -120,6 +126,6 @@ def translate():
 def page_not_found(e, req, rhead):
     return jsonify({
         "error_message": e.message,
-        "received_request": req,
+        # "received_request": req,
         "request_header": rhead
     }), 404

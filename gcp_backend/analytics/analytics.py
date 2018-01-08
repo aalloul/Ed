@@ -203,7 +203,7 @@ class Analytics(object):
                             "Authorization": self.token.format(
                                 access_token=self._storage_token)
                         },
-                        payload=self.extracted_text
+                        payload=dumps(self.extracted_text)
                         )
         return rpc
 
@@ -235,6 +235,6 @@ class Analytics(object):
                             "Authorization": self.token.format(
                                 access_token=self._storage_token)
                         },
-                        payload=self.translated_text
+                        payload=dumps(self.translated_text)
                         )
         return rpc

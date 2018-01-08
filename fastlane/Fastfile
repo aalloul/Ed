@@ -20,7 +20,7 @@ platform :android do
             #ext_constant_name: "test"
             #app_folder_name:"app"
       )
-    gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/', flags: "-x lint")
+    gradle(task: 'assemble', build_type: 'release', project_dir: 'android/', flags: "-x lint")
     end
 
   desc 'Ship to Playstore Alpha.'
