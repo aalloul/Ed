@@ -7,6 +7,8 @@ import Camera from 'react-native-camera';
 import RoundButton from '../../components/Buttons/RoundButton';
 import { takePhotoRoutine } from '../../actions/applicationActions';
 
+import { headerStyle } from '../../common/navigationOptions';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -43,9 +45,7 @@ const styles = StyleSheet.create({
 class ScanScreen extends Component {
   static navigationOptions = {
     title: "Take a picture",
-    headerStyle: {
-      backgroundColor: '#50D2C2',
-    },
+    ...headerStyle,
   };
 
   constructor() {

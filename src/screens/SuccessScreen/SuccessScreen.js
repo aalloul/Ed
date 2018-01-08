@@ -8,6 +8,8 @@ import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
 
+import { headerStyle } from '../../common/navigationOptions';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -33,9 +35,7 @@ const styles = StyleSheet.create({
 class SuccessScreen extends Component {
   static navigationOptions = {
     title: "Success",
-    headerStyle: {
-      backgroundColor: '#50D2C2',
-    },
+    ...headerStyle,
   };
 
   constructor() {

@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import EmailForm from '../../components/EmailForm/EmailForm';
 import { changeEmail, requestTranslationRoutine } from '../../actions/applicationActions';
 
+import { headerStyle } from '../../common/navigationOptions';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,9 +19,7 @@ const styles = StyleSheet.create({
 class EmailScreen extends Component {
   static navigationOptions = {
     title: "Input your email",
-    headerStyle: {
-      backgroundColor: '#50D2C2',
-    },
+    ...headerStyle,
   };
 
   constructor() {

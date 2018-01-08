@@ -7,6 +7,8 @@ import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
 import { goToScan } from '../../actions/applicationActions';
 
+import { headerStyle } from '../../common/navigationOptions';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -25,9 +27,7 @@ const styles = StyleSheet.create({
 class SplashScreen extends Component {
   static navigationOptions = {
     title: "Smail.rocks",
-    headerStyle: {
-      backgroundColor: '#50D2C2',
-    },
+    ...headerStyle,
   };
   constructor() {
     super();
