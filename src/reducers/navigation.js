@@ -4,7 +4,7 @@ import { AppNavigator } from '../navigators/AppNavigator';
 import {
   REQUEST_TRANSLATION_RESOLVE,
   SELECT_TRANSLATION,
-  TAKE_PHOTO_RESOLVE,
+  TAKE_PHOTO_PROMISE,
   GO_TO_SCAN,
 } from '../actions/applicationActions';
 
@@ -18,7 +18,7 @@ export default (state = initialNavState, action) => {
       navigatorAction = NavigationActions.navigate({ routeName: 'Scan' });
       break;
     }
-    case TAKE_PHOTO_RESOLVE: {
+    case TAKE_PHOTO_PROMISE: {
       navigatorAction = NavigationActions.navigate({ routeName: 'Translation' });
       break;
     }
