@@ -85,8 +85,9 @@ class SuccessScreen extends Component {
         <Image source={require('./TickIcon.png')} style={styles.image} />
         <SecondaryText>
           <Text style={styles.bold}>{this.computeLanguageLabel(this.props.language)}</Text> translation{"\n"}
-          has been sent to{"\n"}
-          <Text style={styles.bold}>{this.props.email}</Text>
+          will be sent to{"\n"}
+          <Text style={styles.bold}>{this.props.email}</Text>{"\n"}
+          in five minutes
         </SecondaryText>
         <RectangularButton
           accessibilityLabel="Continue scanning the paper mails"
