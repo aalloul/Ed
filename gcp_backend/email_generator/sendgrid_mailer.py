@@ -14,7 +14,7 @@ class Sendgrid(object):
 
     """
 
-    def __init__(self, initial_request, parsed_ocr=None,
+    def __init__(self, initial_request, html, parsed_ocr=None,
                  human_translation=False):
 
         logger.info("Initializing Sendgrid client")
@@ -26,6 +26,7 @@ class Sendgrid(object):
         self.human_translation = human_translation
         self.parsed_ocr = parsed_ocr
         self.DEBUG = False
+        self.html = html
 
     def _build_message_for_auto_translation(self):
         """Builds the message when the required translation is automatic"""
@@ -38,8 +39,8 @@ class Sendgrid(object):
 
         subject = 'Smail - Your mail scanned, translated and ready for ' \
                   'archiving'
-        content = mail.Content('text/plain',
-                               self._get_content_for_automatic_translations())
+        logger.info(self.html)
+        content = mail.Content('text/html', self.html)
         logger.debug("  - Content done")
 
         message = mail.Mail(from_email=from_email, subject=subject,
@@ -136,9 +137,14 @@ class Sendgrid(object):
         if self.DEBUG:
             return 200, "", ""
 
-        sg = sendgrid.SendGridAPIClient(apikey=self.api_key)
-        response = sg.client.mail.send.post(
-            request_body=self._build_message().get())
+        try:
+            sg = sendgrid.SendGridAPIClient(apikey=self.api_key)
+            response = sg.client.mail.send.post(
+                request_body=self._build_message().get())
+        except Exception as ex:
+            logger.error("ERror!!! {}".format(ex))
+            logger.error(ex.message)
+            raise
 
         logger.info("Email sent")
         return response.status_code, response.body, response.headers

@@ -62,14 +62,16 @@ def request_automatic_translation(parsed_request, reporter):
                                      parsed_ocr.parsed_pages)
     logger.info("About to request translation")
     translator.get_translation()
+
     logger.info("Translation requested")
 
     reporter.add_event("auto_translation_time", round(time() -
                                                       start_translation, 3))
     reporter.add_translated_text(parsed_ocr.parsed_pages)
 
+
     email_start = time()
-    sg = Sendgrid(parsed_request, parsed_ocr.parsed_pages)
+    sg = Sendgrid(parsed_request, translator.get_html(), parsed_ocr.parsed_pages)
     status_code, body, headers = sg.send()
 
     if 200 <= status_code < 300:

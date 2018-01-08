@@ -3,6 +3,8 @@ from google.appengine.api.urlfetch import fetch, POST
 import logging
 from sys import stdout
 from json import load, dumps, loads, dump
+import requests
+import requests_toolbelt.adapters.appengine
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -29,6 +31,8 @@ class AutomaticTranslator(Translator):
         self.url = "https://translation.googleapis.com/language/translate/v2"\
                    "?key={}".format(self.api_key)
         self.DEBUG = False
+        self.html_parser_url = "http://table-builder-dot-linear-asset-184705." \
+                               "appspot.com"
         logger.debug("Init done")
 
     def _fixture(self):
@@ -84,3 +88,31 @@ class AutomaticTranslator(Translator):
             'source': self.input_language,
             'format': 'text'
         }
+
+    def get_html(self):
+        out = self.pages[1]
+        [e.pop('word') for e in out]
+        for e in out:
+            e['word'] = e['translation']
+        [e.pop('translation') for e in out]
+
+        logger.info("Renamed translation to word")
+        b = {
+            "points": out
+        }
+
+        logger.info("added points level")
+
+        r = fetch(self.html_parser_url,
+              payload=dumps(b),
+              method=POST,
+              headers={"Content-Type": "application/json"}
+              )
+        if r.status_code < 200 or r.status_code > 299:
+            logger.error("HTML parser Status code is {}".format(
+                r.status_code))
+            raise Exception("HTML parser not found")
+
+        logger.info("HTML received")
+        logger.info(r.content)
+        return r.content
