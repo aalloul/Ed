@@ -13,7 +13,7 @@ export default () => (
     <ul className="social-media">
       <li>
         <a href="https://fb.me/smailrocks" target="_blank">
-          <i className="fa fa-facebook-official">Smail.rocks Facebook Group</i>
+          <i className="fa fa-facebook-official">Smail.rocks Facebook</i>
         </a>
       </li>
     </ul>

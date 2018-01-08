@@ -3,6 +3,7 @@ import React from 'react';
 import Home from './routes/Home';
 
 import Footer from './containers/Footer/Footer';
+import Header from './containers/Header/Header';
 import NotifyModal from './components/NotifyModal/NotifyModal';
 
 export default props => (
@@ -14,6 +15,7 @@ export default props => (
     }} />
 
     <div className="content">
+      <Header />
       <Home />
 
       <Footer />
