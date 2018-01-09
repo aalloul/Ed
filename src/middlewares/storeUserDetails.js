@@ -5,6 +5,8 @@ export default function storeUserDetails({ getState, dispatch }) {
   return next => async (action) => {
     const { language, email } = getState().application;
 
+    console.log('state', getState());
+
     if (action.type === REQUEST_TRANSLATION_PROMISE) {
       try {
         await AsyncStorage.setItem('userDetails', JSON.stringify({ language, email }));

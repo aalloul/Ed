@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import TranslationForm from '../../components/TranslationForm/TranslationForm';
 import { changeLanguage, selectTranslation } from '../../actions/applicationActions';
 
+import { headerStyle } from '../../common/navigationOptions';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -17,9 +19,7 @@ const styles = StyleSheet.create({
 class TranslationScreen extends Component {
   static navigationOptions = {
     title: "Select your language",
-    headerStyle: {
-      backgroundColor: '#50D2C2',
-    },
+    ...headerStyle,
   };
 
   selectTranslation(translation) {
