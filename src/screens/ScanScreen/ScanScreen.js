@@ -69,7 +69,7 @@ class ScanScreen extends Component {
           aspect={Camera.constants.Aspect.fill}
         >
           <View style={styles.camera}>
-            <Text style={styles.text}>List of scanned letters goes here</Text>
+            {/* <Text style={styles.text}>List of scanned letters goes here</Text> */}
             {
               this.props.loading
                 ? <Text style={styles.text}>Loading</Text>

@@ -2,6 +2,8 @@ import RNFetchBlob from 'react-native-fetch-blob';
 
 import { generateTranslationRequest } from '../common/requestDataHelpers';
 
+const MAIN_FLOW_QUEUE = 'MAIN_FLOW_QUEUE';
+
 export const GO_TO_SCAN = 'GO_TO_SCAN';
 
 export const TAKE_PHOTO_PROMISE = 'TAKE_PHOTO_PROMISE';
@@ -36,6 +38,7 @@ function takePhotoPromise() {
 }
 
 function takePhotoResolve(photo) {
+  console.log('photo TAKE_PHOTO_RESOLVE', photo);
   return {
     type: TAKE_PHOTO_RESOLVE,
     loading: false,
@@ -52,15 +55,16 @@ function takePhotoReject(err) {
 }
 
 export function takePhotoRoutine(camera) {
-  return (dispatch) => {
-    return new Promise((resolve, reject) => {
+  return {
+    queue: MAIN_FLOW_QUEUE,
+    callback: (next, dispatch, getState) => {
       dispatch(takePhotoPromise());
 
       camera
         .capture()
         .then((data) => {
           // @property {String} data.path: Returns the path of the captured image or video file on disk
-          console.log(data);
+          console.log('all data', data);
 
           return RNFetchBlob.fs.readStream(data.path, 'base64', 4095);
         })
@@ -74,18 +78,15 @@ export function takePhotoRoutine(camera) {
           });
           ifstream.onEnd(() => {
             dispatch(takePhotoResolve(buffer));
-
-            resolve(buffer);
-          })
+            next();
+          });
         })
         .catch(err => {
           dispatch(takePhotoReject(err));
-
           console.error(err);
-
-          reject(err);
+          next();
         });
-    });
+    },
   };
 }
 
@@ -108,35 +109,39 @@ function requestTranslationReject() {
 }
 
 export function requestTranslationRoutine() {
-  return (dispatch, getState) => {
-    const translationRequest = generateTranslationRequest(getState);
+  return {
+    queue: MAIN_FLOW_QUEUE,
+    callback: (next, dispatch, getState) => {
+      const translationRequest = generateTranslationRequest(getState);
 
-    console.log('translationRequest', translationRequest);
+      console.log('translationRequest', translationRequest);
 
-    dispatch(requestTranslationPromise());
+      dispatch(requestTranslationPromise());
 
-    fetch('https://linear-asset-184705.appspot.com/request_translation', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(translationRequest),
-    })
-      .then(response => {
-        console.log('Pure response', response);
-        return response.json();
+      fetch('https://linear-asset-184705.appspot.com/request_translation', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(translationRequest),
       })
-      .then(response => {
-        console.log('JSON.parsed response', response);
-        dispatch(requestTranslationResolve(response));
-      })
-      .catch(err => {
-        // todo:pavlik check the error here
-        dispatch(requestTranslationReject(err));
+        .then(response => {
+          console.log('Pure response', response);
+          return response.json();
+        })
+        .then(response => {
+          console.log('JSON.parsed response', response);
+          dispatch(requestTranslationResolve(response));
+          next();
+        })
+        .catch(err => {
+          dispatch(requestTranslationReject(err));
 
-        console.error(err);
-      });
+          console.error(err);
+          next();
+        });
+    },
   };
 }
 
