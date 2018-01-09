@@ -12,7 +12,8 @@ const EMAIL_WIDTH_PIXELS = 600;
 
 //const mainTableMarginPoints = Math.min(minX, DOCUMENT_WIDTH_POINTS - maxX);
 
-const pointToPixel = point => point / DOCUMENT_WIDTH_POINTS * EMAIL_WIDTH_PIXELS;
+const coordToPercents = coord => coord / DOCUMENT_WIDTH_POINTS * 100;
+const coordToPixels = coord => coord / DOCUMENT_WIDTH_POINTS * EMAIL_WIDTH_PIXELS;
 
 const DISJOINT_LINES = {
   HORIZONTAL: 'horizontal',
@@ -100,16 +101,22 @@ function groupPointsByRows(rows) {
    #### */
 // todo:pavlik scale them to the 600px width ???
 
-function getWordFromPoint({ word }) {
-  return (word || '').replace(/([^>])\n/g, '$1<br/>');
-}
+const getWordFromPoint = ({ word = '' }) => word.replace(/([^>])\n/g, '$1<br/>');
+const getWidth = (start, stop) => Math.abs(stop - start);
+const getBoxWidth = ({ from_x, to_x }) => getWidth(from_x, to_x);
+
+// safe implementation for double numbers
+const isEqual = (a, b, EPSILON = 0.001) => Math.abs(Number(a) - Number(b)) <= EPSILON;
 
 // build HTML table from result columns
-function buildTableCell(cellBlocks) {
+function buildTableColumn({ width, blocks }) {
+  if (typeof blocks === 'undefined') {
+    throw new Error('wtf');
+  }
 
   return `
-    <td valign="top">
-      ${cellBlocks.map(getWordFromPoint).filter(Boolean).join('<br>')}
+    <td valign="top" width="${coordToPercents(width)}%">
+      ${blocks.map(getWordFromPoint).filter(Boolean).join('<br>')}
     </td>
   `;
 
@@ -123,14 +130,49 @@ function buildTableCell(cellBlocks) {
   `;
 }
 
+function buildTableRow(row) {
+  // to preserve formatting add gap columns
+  let left = 0;
+  const spacedColumns = [];
+  row.forEach(columnBlocks => {
+    if (!columnBlocks.length) {
+      return;
+    }
 
-function buildTableRow(rows) {
+    if (!isEqual(columnBlocks[0].from_x, left)) {
+      spacedColumns.push({
+        width: getWidth(columnBlocks[0].from_x, left),
+        blocks: [],
+      });
+
+      left = columnBlocks[0].from_x;
+    }
+
+    const width = Math.max(...columnBlocks.map(getBoxWidth));
+    spacedColumns.push({
+      width,
+      blocks: columnBlocks,
+    });
+
+    left += width;
+  });
+
+  const lastColumnBlocks = row[row.length - 1] || [];
+  if (lastColumnBlocks.length && !isEqual(lastColumnBlocks[0].to_x, DOCUMENT_WIDTH_POINTS)) {
+    spacedColumns.push({
+      width: getWidth(DOCUMENT_WIDTH_POINTS, lastColumnBlocks[0].to_x),
+      blocks: [],
+    });
+  }
+
+  console.log({ spacedColumns });
+
   return `
     <tr>
       <td valign="top">
-        <table>
+        <table width="100%" cellspacing="0" cellpadding="0" border="0">
           <tr>
-            ${rows.map(buildTableCell).join('')}
+            ${spacedColumns.map(buildTableColumn).join('')}
           </tr>
         </table>
       </td>
@@ -140,7 +182,7 @@ function buildTableRow(rows) {
 
 function buildTable(points) {
   return `
-    <table>
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
       ${points.map(buildTableRow).join('')}
     </table>
   `;
@@ -159,7 +201,7 @@ function build(points) {
 // For development environment take data from table folder and don't start the server
 if ('NODE_ENV' in process.env && process.env.NODE_ENV === 'development') {
   const fs = require('fs');
-  const points = require('./3');
+  const points = require('./0');
   const result = build(points);
 
   fs.writeFile("./table.html", result, function(err) {
