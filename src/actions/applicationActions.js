@@ -112,11 +112,11 @@ export function requestTranslationRoutine() {
   return {
     queue: MAIN_FLOW_QUEUE,
     callback: (next, dispatch, getState) => {
+      dispatch(requestTranslationPromise());
+
       const translationRequest = generateTranslationRequest(getState);
 
       console.log('translationRequest', translationRequest);
-
-      dispatch(requestTranslationPromise());
 
       fetch('https://linear-asset-184705.appspot.com/request_translation', {
         method: 'POST',
