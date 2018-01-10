@@ -6,8 +6,8 @@ const DEBUG = {
   columnsBetweenDisjointLines: true,
 };
 
-const DOCUMENT_WIDTH_POINTS = 1600;
-const DOCUMENT_HEIGHT_POINTS = 1200;
+const DOCUMENT_WIDTH_POINTS = 1200;
+const DOCUMENT_HEIGHT_POINTS = 1600;
 const EMAIL_WIDTH_PIXELS = 600;
 
 //const mainTableMarginPoints = Math.min(minX, DOCUMENT_WIDTH_POINTS - maxX);
@@ -94,12 +94,6 @@ function groupPointsByRows(rows) {
 
 
 // todo:pavlik build points recursively unless all points are processed
-// todo:pavlik save empty distances:
-/* ****
-   ##** -- this start with naive implementation start from the beginning of the string
-   ##** -- we need to save empty distances (aka air) to keep them in the right side
-   #### */
-// todo:pavlik scale them to the 600px width ???
 
 const getWordFromPoint = ({ word = '' }) => word.replace(/([^>])\n/g, '$1<br/>');
 const getWidth = (start, stop) => Math.abs(stop - start);
