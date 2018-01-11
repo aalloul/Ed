@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 
 import EmailForm from '../../components/EmailForm/EmailForm';
 import {
-  changeEmail, disableButtonLoading, enableButtonLoading,
+  changeEmail,
+  disableButtonLoading,
+  enableButtonLoading,
   requestTranslationRoutine
 } from '../../actions/applicationActions';
 

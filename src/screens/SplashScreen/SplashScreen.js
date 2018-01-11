@@ -54,8 +54,8 @@ class SplashScreen extends Component {
   }
 
   onPressHandler() {
-    // setTimeout is needed because of instantly starting
-    // loading the Camera the Preloader couldn't be in time
+    // setTimeout is needed because of instantly starting loading
+    // the Camera so the Preloader couldn't be in time
     this.props.enableButtonLoading()
       .then(() => setTimeout(this.props.goToScan, 200));
   }
