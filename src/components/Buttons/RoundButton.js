@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Image } from 'react-native';
+import { ActivityIndicator, StyleSheet, Image } from 'react-native';
 
 import ActionButton from 'react-native-action-button';
 
@@ -16,15 +16,49 @@ const styles = StyleSheet.create({
   },
 });
 
-const RoundButton = ({ onPress, iconSource, iconStyle, buttonProps }) => (
-  <ActionButton
-    buttonColor="rgba(80, 210, 194, 1)"
-    icon={<Image source={iconSource} style={[styles.fabIcon, iconStyle]} />}
-    onPress={onPress}
-    position="center"
-    {...buttonProps}
-  />
-);
+class RoundButton extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      loading: false,
+    };
+
+    this.handlePress = this.handlePress.bind(this);
+  }
+
+  disableLoading = () => {
+    this.setState({ loading: false });
+  };
+
+  handlePress() {
+    if (!this.state.loading) {
+      this.setState({ loading: true }, () => this.props.onPress());
+    }
+  }
+
+  getIcon() {
+    const { iconSource, iconStyle } = this.props;
+
+    return this.state.loading
+      ? <ActivityIndicator size="large" color="#00ff00" />
+      : <Image source={iconSource} style={[styles.fabIcon, iconStyle]} />
+  }
+
+  render() {
+    const { buttonProps } = this.props;
+
+    return (
+      <ActionButton
+        buttonColor="rgba(80, 210, 194, 1)"
+        icon={this.getIcon()}
+        onPress={this.handlePress}
+        position="center"
+        {...buttonProps}
+      />
+    );
+  }
+}
 
 RoundButton.displayName = 'RoundButton';
 

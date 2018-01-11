@@ -51,11 +51,17 @@ class ScanScreen extends Component {
   constructor() {
     super();
 
+    this.state = {
+      loading: false,
+    };
+
     this.scan = this.scan.bind(this);
   }
 
   scan() {
-    this.props.takePhotoRoutine(this.camera);
+    this.setState({ loading: true });
+    return this.props.takePhotoRoutine(this.camera)
+      .then(() => this.setState({ loading: false }));
   }
 
   render() {
@@ -76,6 +82,7 @@ class ScanScreen extends Component {
                 : <RoundButton
                     iconSource={require('./ScanIcon.png')}
                     onPress={this.scan}
+                    loading={this.props.loading}
                   />
             }
           </View>
@@ -87,6 +94,6 @@ class ScanScreen extends Component {
 
 export default connect(null, dispatch => ({
   takePhotoRoutine(photo) {
-    dispatch(takePhotoRoutine(photo))
+    return dispatch(takePhotoRoutine(photo))
   }
 }))(ScanScreen);

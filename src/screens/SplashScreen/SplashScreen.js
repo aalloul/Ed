@@ -59,8 +59,8 @@ class SplashScreen extends Component {
 
   onPressHandler() {
     this.setState({ loading: true });
+    // because of instantly starting loading the Camera the Preloader couldn't be in time
     setTimeout(() => this.props.goToScan().then(() => this.setState({ loading: false })), 200);
-
   }
 
   scanMore() {
@@ -96,10 +96,12 @@ class SplashScreen extends Component {
   }
 }
 
+const mapStateToProps = ({ application: { loading } }) => ({ loading });
+
 const mapDispatchToProps = dispatch => ({
   goToScan() {
     return dispatch(goToScan());
   },
 });
 
-export default connect(null, mapDispatchToProps)(SplashScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen);
