@@ -5,6 +5,7 @@ import Home from './routes/Home';
 import PrivacyPolicy from './routes/PrivacyPolicy';
 
 import Footer from './containers/Footer/Footer';
+import Header from './containers/Header/Header';
 import NotifyModal from './components/NotifyModal/NotifyModal';
 import FbMessenger from './components/FbMessenger/FbMessenger';
 
@@ -24,6 +25,7 @@ export default props => (
     }} />
 
     <div className="content">
+      <Header />
       <Router
         basename={props.basename}
         location={props.pathname}

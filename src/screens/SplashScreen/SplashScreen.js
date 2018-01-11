@@ -7,6 +7,9 @@ import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
 import { goToScan } from '../../actions/applicationActions';
 
+import { headerStyle } from '../../common/navigationOptions';
+import Preloader from '../../components/Preloader/Preloader';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -25,17 +28,18 @@ const styles = StyleSheet.create({
 class SplashScreen extends Component {
   static navigationOptions = {
     title: "Smail.rocks",
-    headerStyle: {
-      backgroundColor: '#50D2C2',
-    },
+    ...headerStyle,
   };
+
   constructor() {
     super();
 
-    this.scanMore = this.scanMore.bind(this);
     this.state = {
       loading: true,
     };
+
+    this.scanMore = this.scanMore.bind(this);
+    this.onPressHandler = this.onPressHandler.bind(this);
   }
 
   componentWillMount() {
@@ -53,6 +57,12 @@ class SplashScreen extends Component {
     console.log('SplashScreen unmounted');
   }
 
+  onPressHandler() {
+    this.setState({ loading: true });
+    setTimeout(() => this.props.goToScan().then(() => this.setState({ loading: false })), 200);
+
+  }
+
   scanMore() {
     return AsyncStorage
       .setItem('scanMore', 'false')
@@ -61,13 +71,7 @@ class SplashScreen extends Component {
 
   render() {
     if (this.state.loading) {
-      return (
-        <View style={styles.container}>
-          <PrimaryText>
-            Loading...
-          </PrimaryText>
-        </View>
-      );
+      return <Preloader />;
     }
 
     return (
@@ -83,7 +87,7 @@ class SplashScreen extends Component {
           to your email
         </SecondaryText>
         <RectangularButton
-          onPress={this.props.goToScan}
+          onPress={this.onPressHandler}
           title="Start"
           accessibilityLabel="Start scanning the paper mail"
         />

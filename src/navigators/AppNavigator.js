@@ -33,7 +33,6 @@ class AppWithNavigationState extends Component {
         state: navigation,
       })}
     />;
-
   }
 }
 
