@@ -77,8 +77,10 @@ class Ocr(object):
             if ExifTags.TAGS[orientations] == 'Orientation':
                 orientation = orientations
 
-        exif = dict(image._getexif().items())
+        if image._getexif() is None:
+            return 0
 
+        exif = dict(image._getexif().items())
         if not exif.has_key(orientation):
             logger.info("Image has no orientation TAG")
             return 0
@@ -95,3 +97,34 @@ class Ocr(object):
         else:
             logger.info("Image has an orientation of 0")
             return 0
+
+if __name__ == "__main__":
+    from json import load, dumps
+    with open("/Users/adamalloul/TNT/downloads/translation_request.json",
+              "r") as f:
+        t = load(f)
+    from requests import post
+    payload = {
+            "requests": [
+                {
+                    "image": {
+                        "content": t['image']
+                    },
+                    "features": [
+                        {
+                            "type": "DOCUMENT_TEXT_DETECTION"
+                        }],
+                    "imageContext": {
+                        "languageHints": ["nl"],
+                    }
+                }
+            ]
+        }
+    api_key = "AIzaSyB5KLbSquVl7pYsYjVpCOhOsrqjYTbuf-8"
+
+    r = post(
+        "https://vision.googleapis.com/v1/images:annotate?key=" +
+        api_key,
+        data=dumps(payload)
+    )
+
