@@ -52,6 +52,7 @@ const TranslationForm = ({
   onLanguageChange,
   language,
   languages,
+  loading,
 }) => (
   <View style={styles.container}>
     <PrimaryText>
@@ -81,6 +82,7 @@ const TranslationForm = ({
         title="Human"
         titleStyle={styles.actionTitle}
         price="€3"
+        loading={loading}
       />
       <IconButton
         onPress={onMachineTranslationPress}
@@ -95,6 +97,7 @@ const TranslationForm = ({
         title="Auto"
         titleStyle={styles.actionTitle}
         price="FREE"
+        loading={loading}
       />
     </View>
   </View>
@@ -108,6 +111,7 @@ TranslationForm.propTypes = {
   onLanguageChange: PropTypes.func.isRequired,
   language: PropTypes.oneOf(['en', 'es', 'ru', 'fr', 'nl']),
   languages: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 TranslationForm.defaultProps = {

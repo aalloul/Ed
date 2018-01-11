@@ -6,6 +6,9 @@ const MAIN_FLOW_QUEUE = 'MAIN_FLOW_QUEUE';
 
 export const GO_TO_SCAN = 'GO_TO_SCAN';
 
+export const ENABLE_BUTTON_LOADING = 'ENABLE_BUTTON_LOADING';
+export const DISABLE_BUTTON_LOADING = 'DISABLE_BUTTON_LOADING';
+
 export const TAKE_PHOTO_PROMISE = 'TAKE_PHOTO_PROMISE';
 export const TAKE_PHOTO_RESOLVE = 'TAKE_PHOTO_RESOLVE';
 export const TAKE_PHOTO_REJECT = 'TAKE_PHOTO_REJECT';
@@ -23,6 +26,20 @@ export const SEND_LETTER_RESOLVE = 'SEND_LETTER_RESOLVE';
 export const SEND_LETTER_REJECT = 'SEND_LETTER_REJECT';
 
 export const RESTART_APP = 'RESTART_APP';
+
+export function enableButtonLoading() {
+  return {
+    type: ENABLE_BUTTON_LOADING,
+    loading: true,
+  };
+}
+
+export function disableButtonLoading() {
+  return {
+    type: DISABLE_BUTTON_LOADING,
+    loading: false,
+  };
+}
 
 export function goToScan() {
   return {
@@ -57,10 +74,10 @@ function takePhotoReject(err) {
 export function takePhotoRoutine(camera) {
   return {
     queue: MAIN_FLOW_QUEUE,
-    callback: (next, dispatch, getState) => {
+    callback: (next, dispatch) => {
       dispatch(takePhotoPromise());
 
-      camera
+      return camera
         .capture()
         .then((data) => {
           // @property {String} data.path: Returns the path of the captured image or video file on disk

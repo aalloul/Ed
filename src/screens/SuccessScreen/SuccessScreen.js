@@ -9,6 +9,7 @@ import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
 
 import { headerStyle } from '../../common/navigationOptions';
+import { enableButtonLoading, disableButtonLoading } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -45,6 +46,8 @@ class SuccessScreen extends Component {
   }
 
   componentDidMount() {
+    this.props.disableButtonLoading();
+
     if (this._confettiView) {
       this._confettiView.startConfetti();
     }
@@ -65,10 +68,15 @@ class SuccessScreen extends Component {
     return lang.label;
   }
 
-  restartApp() {
+  setStorageAndRestart() {
     AsyncStorage
       .setItem('scanMore', 'true')
       .then(() => RNRestart.Restart());
+  }
+
+  restartApp() {
+    this.props.enableButtonLoading()
+      .then(this.setStorageAndRestart);
   }
 
   render() {
@@ -94,17 +102,28 @@ class SuccessScreen extends Component {
           onPress={this.restartApp}
           style={styles.bottom}
           title="Scan more"
+          loading={this.props.loading}
         />
       </View>
     );
   }
 }
 
-export default connect(
-  ({ application }) => ({
-    language: application.language,
-    languages: application.languages,
-    translation: application.translation,
-    email: application.email,
-  })
-)(SuccessScreen);
+const mapStateToProps = ({ application }) => ({
+  loading: application.loading,
+  language: application.language,
+  languages: application.languages,
+  translation: application.translation,
+  email: application.email,
+});
+
+const mapDispatchToProps = dispatch => ({
+  enableButtonLoading() {
+    return dispatch(enableButtonLoading());
+  },
+  disableButtonLoading() {
+    return dispatch(disableButtonLoading());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SuccessScreen);

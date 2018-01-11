@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, ViewPropTypes } from 'react-native';
 
-const RectangularButton = ({ onPress, title, accessibilityLabel, style }) => (
+const RectangularButton = ({ onPress, title, accessibilityLabel, style, loading }) => (
   <Button
     accessibilityLabel={accessibilityLabel}
     color="#50D2C2"
     onPress={onPress}
     style={style}
     title={title}
+    disabled={loading}
   />
 );
 

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Camera from 'react-native-camera';
 
 import RoundButton from '../../components/Buttons/RoundButton';
-import { takePhotoRoutine } from '../../actions/applicationActions';
+import { disableButtonLoading, enableButtonLoading, takePhotoRoutine } from '../../actions/applicationActions';
 
 import { headerStyle } from '../../common/navigationOptions';
 
@@ -51,17 +51,15 @@ class ScanScreen extends Component {
   constructor() {
     super();
 
-    this.state = {
-      loading: false,
-    };
-
     this.scan = this.scan.bind(this);
   }
 
+  componentDidMount() {
+    this.props.disableButtonLoading();
+  }
+
   scan() {
-    this.setState({ loading: true });
-    return this.props.takePhotoRoutine(this.camera)
-      .then(() => this.setState({ loading: false }));
+    this.props.takePhotoRoutine(this.camera);
   }
 
   render() {
@@ -73,18 +71,14 @@ class ScanScreen extends Component {
           }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
+          orientation="portrait"
         >
           <View style={styles.camera}>
             {/* <Text style={styles.text}>List of scanned letters goes here</Text> */}
-            {
-              this.props.loading
-                ? <Text style={styles.text}>Loading</Text>
-                : <RoundButton
-                    iconSource={require('./ScanIcon.png')}
-                    onPress={this.scan}
-                    loading={this.props.loading}
-                  />
-            }
+            <RoundButton
+              iconSource={require('./ScanIcon.png')}
+              onPress={this.scan}
+            />
           </View>
         </Camera>
       </View>
@@ -92,8 +86,15 @@ class ScanScreen extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
+const mapStateToProps = ({ application: { loading } }) => ({ loading });
+
+const mapDispatchToProps = dispatch => ({
   takePhotoRoutine(photo) {
-    return dispatch(takePhotoRoutine(photo))
-  }
-}))(ScanScreen);
+    return dispatch(takePhotoRoutine(photo));
+  },
+  disableButtonLoading() {
+    return dispatch(disableButtonLoading());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScanScreen);

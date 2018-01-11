@@ -3,7 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import TranslationForm from '../../components/TranslationForm/TranslationForm';
-import { changeLanguage, selectTranslation } from '../../actions/applicationActions';
+import {
+  changeLanguage,
+  disableButtonLoading,
+  enableButtonLoading,
+  selectTranslation,
+} from '../../actions/applicationActions';
 
 import { headerStyle } from '../../common/navigationOptions';
 
@@ -22,19 +27,27 @@ class TranslationScreen extends Component {
     ...headerStyle,
   };
 
+  componentDidMount() {
+    this.props.disableButtonLoading();
+  }
+
   selectTranslation(translation) {
-    this.props.selectTranslation(translation);
+    this.props.enableButtonLoading()
+      .then(this.props.selectTranslation.bind(null, translation));
   }
 
   render() {
+    const { changeLanguage, language, languages, loading } = this.props;
+
     return (
       <View style={styles.container}>
         <TranslationForm
           onHumanTranslationPress={() => this.selectTranslation('human')}
           onMachineTranslationPress={() => this.selectTranslation('machine')}
-          onLanguageChange={language => this.props.changeLanguage(language)}
-          language={this.props.language}
-          languages={this.props.languages}
+          onLanguageChange={language => changeLanguage(language)}
+          language={language}
+          languages={languages}
+          loading={loading}
         />
       </View>
     );
@@ -43,6 +56,7 @@ class TranslationScreen extends Component {
 
 export default connect(
   ({ application }) => ({
+    loading: application.loading,
     language: application.language,
     languages: application.languages,
   }),
@@ -52,6 +66,12 @@ export default connect(
     },
     selectTranslation(translation) {
       dispatch(selectTranslation(translation))
+    },
+    enableButtonLoading() {
+      return dispatch(enableButtonLoading());
+    },
+    disableButtonLoading() {
+      return dispatch(disableButtonLoading());
     },
   })
 )(TranslationScreen);

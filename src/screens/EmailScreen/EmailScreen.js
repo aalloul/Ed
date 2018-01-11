@@ -3,7 +3,10 @@ import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import EmailForm from '../../components/EmailForm/EmailForm';
-import { changeEmail, requestTranslationRoutine } from '../../actions/applicationActions';
+import {
+  changeEmail, disableButtonLoading, enableButtonLoading,
+  requestTranslationRoutine
+} from '../../actions/applicationActions';
 
 import { headerStyle } from '../../common/navigationOptions';
 
@@ -28,17 +31,25 @@ class EmailScreen extends Component {
     this.send = this.send.bind(this);
   }
 
+  componentDidMount() {
+    this.props.disableButtonLoading();
+  }
+
   send() {
-    this.props.requestTranslationRoutine();
+    this.props.enableButtonLoading()
+      .then(this.props.requestTranslationRoutine);
   }
 
   render() {
+    const { email, loading } = this.props;
+
     return (
       <View style={styles.container}>
         <EmailForm
           onInput={email => this.props.changeEmail(email)}
           onPress={this.send}
-          email={this.props.email}
+          email={email}
+          loading={loading}
         />
       </View>
     );
@@ -47,6 +58,7 @@ class EmailScreen extends Component {
 
 export default connect(
   ({ application }) => ({
+    loading: application.loading,
     email: application.email,
   }),
   dispatch => ({
@@ -55,6 +67,12 @@ export default connect(
     },
     requestTranslationRoutine() {
       dispatch(requestTranslationRoutine());
+    },
+    enableButtonLoading() {
+      return dispatch(enableButtonLoading());
+    },
+    disableButtonLoading() {
+      return dispatch(disableButtonLoading());
     },
   })
 )(EmailScreen);

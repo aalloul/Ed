@@ -10,7 +10,7 @@ const initialAppState = {
   ],
   photo: null,
   translation: null,
-  loading: false,
+  loading: true,
 };
 
 export default (state = initialAppState, action) => Object.assign({}, state, action);

@@ -104,7 +104,7 @@ function createSignIn(onInput, onPress) {
   }
 }
 
-const EmailForm = ({ onPress, onInput, email }) => (
+const EmailForm = ({ onPress, onInput, email, loading }) => (
   <View style={styles.container}>
     <PrimaryText>
       Send{'\n'}
@@ -139,6 +139,7 @@ const EmailForm = ({ onPress, onInput, email }) => (
       iconStyle={styles.icon}
       title="Send"
       titleStyle={styles.title}
+      loading={loading}
     />
   </View>
 );
@@ -147,6 +148,7 @@ EmailForm.displayName = 'EmailForm';
 
 EmailForm.propTypes = {
   onPress: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default EmailForm;

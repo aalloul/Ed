@@ -5,7 +5,7 @@ import { AsyncStorage, StyleSheet, View, Image } from 'react-native';
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
-import { goToScan } from '../../actions/applicationActions';
+import { disableButtonLoading, enableButtonLoading, goToScan } from '../../actions/applicationActions';
 
 import { headerStyle } from '../../common/navigationOptions';
 import Preloader from '../../components/Preloader/Preloader';
@@ -34,10 +34,6 @@ class SplashScreen extends Component {
   constructor() {
     super();
 
-    this.state = {
-      loading: true,
-    };
-
     this.scanMore = this.scanMore.bind(this);
     this.onPressHandler = this.onPressHandler.bind(this);
   }
@@ -46,7 +42,7 @@ class SplashScreen extends Component {
     AsyncStorage
       .getItem('scanMore')
       .then((value) => value === 'true' ? this.scanMore() : Promise.resolve())
-      .then(() => this.setState({ loading: false }));
+      .then(this.props.disableButtonLoading);
   }
 
   componentDidMount() {
@@ -58,9 +54,10 @@ class SplashScreen extends Component {
   }
 
   onPressHandler() {
-    this.setState({ loading: true });
-    // because of instantly starting loading the Camera the Preloader couldn't be in time
-    setTimeout(() => this.props.goToScan().then(() => this.setState({ loading: false })), 200);
+    // setTimeout is needed because of instantly starting
+    // loading the Camera the Preloader couldn't be in time
+    this.props.enableButtonLoading()
+      .then(() => setTimeout(this.props.goToScan, 200));
   }
 
   scanMore() {
@@ -70,7 +67,7 @@ class SplashScreen extends Component {
   }
 
   render() {
-    if (this.state.loading) {
+    if (this.props.loading) {
       return <Preloader />;
     }
 
@@ -101,6 +98,12 @@ const mapStateToProps = ({ application: { loading } }) => ({ loading });
 const mapDispatchToProps = dispatch => ({
   goToScan() {
     return dispatch(goToScan());
+  },
+  enableButtonLoading() {
+    return dispatch(enableButtonLoading());
+  },
+  disableButtonLoading() {
+    return dispatch(disableButtonLoading());
   },
 });
 
