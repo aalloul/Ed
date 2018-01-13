@@ -44,12 +44,13 @@ class AutomaticTranslator(Translator):
 
     def _translate_word(self, word):
         try:
+            logger.debug("Fetch start")
             resp = fetch(self.url,
                          payload=dumps(self._build_payload(word)),
                          method=POST,
                          headers={"Content-Type": "application/json"}
                          )
-
+            logger.debug("Fetch done")
         except Exception as ex:
             logger.error("Caught exception while fetching translation.")
             logger.error("Exception = {}".format(ex))
@@ -58,7 +59,7 @@ class AutomaticTranslator(Translator):
         if resp.status_code < 200 or resp.status_code > 299:
             logger.error("Status code is {}".format(resp.status_code))
             return None
-
+        logger.debug("Load content of fetch result")
         resp_json = loads(resp.content)
 
         logger.debug("Returning translation")
@@ -71,8 +72,9 @@ class AutomaticTranslator(Translator):
 
         if self.DEBUG:
             return self._fixture()
-
+        logger.debug("Getting words from pages")
         words_to_translate = [word['word'] for word in self.pages[1]]
+        logger.debug("Translating everyone together")
         res = self._translate_word(words_to_translate)
 
         logger.debug("Updating the pages")
@@ -114,5 +116,4 @@ class AutomaticTranslator(Translator):
             raise Exception("HTML parser not found")
 
         logger.info("HTML received")
-        logger.info(r.content)
         return r.content
