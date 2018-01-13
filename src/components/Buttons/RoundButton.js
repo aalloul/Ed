@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ActivityIndicator, StyleSheet, Image } from 'react-native';
 
 import ActionButton from 'react-native-action-button';
-import { enableButtonLoading } from '../../actions/applicationActions';
+import { enableButtonLoadingRoutine } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
   fabIcon: {
@@ -78,7 +78,7 @@ const mapStateToProps = ({ application: { loading } }) => ({ loading });
 
 const mapDispatchToProps = dispatch => ({
   enableButtonLoading() {
-    return dispatch(enableButtonLoading());
+    return dispatch(enableButtonLoadingRoutine());
   },
 });
 

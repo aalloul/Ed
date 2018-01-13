@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Camera from 'react-native-camera';
 
 import RoundButton from '../../components/Buttons/RoundButton';
-import { disableButtonLoading, enableButtonLoading, takePhotoRoutine } from '../../actions/applicationActions';
+import { disableButtonLoadingRoutine, enableButtonLoadingRoutine, takePhotoRoutine } from '../../actions/applicationActions';
 
 import { headerStyle } from '../../common/navigationOptions';
 
@@ -93,7 +93,7 @@ const mapDispatchToProps = dispatch => ({
     return dispatch(takePhotoRoutine(photo));
   },
   disableButtonLoading() {
-    return dispatch(disableButtonLoading());
+    return dispatch(disableButtonLoadingRoutine());
   },
 });
 

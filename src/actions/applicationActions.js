@@ -27,18 +27,30 @@ export const SEND_LETTER_REJECT = 'SEND_LETTER_REJECT';
 
 export const RESTART_APP = 'RESTART_APP';
 
-export function enableButtonLoading() {
-  return {
-    type: ENABLE_BUTTON_LOADING,
-    loading: true,
+export function enableButtonLoadingRoutine() {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      dispatch({
+        type: ENABLE_BUTTON_LOADING,
+        loading: true,
+      });
+
+      resolve();
+    });
   };
 }
 
-export function disableButtonLoading() {
-  return {
-    type: DISABLE_BUTTON_LOADING,
-    loading: false,
-  };
+export function disableButtonLoadingRoutine() {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      dispatch({
+        type: DISABLE_BUTTON_LOADING,
+        loading: false,
+      });
+
+      resolve();
+    });
+  }
 }
 
 export function goToScan() {
@@ -135,7 +147,7 @@ export function requestTranslationRoutine() {
 
       console.log('translationRequest', translationRequest);
 
-      fetch('https://linear-asset-184705.appspot.com/request_translation', {
+      return fetch('https://linear-asset-184705.appspot.com/request_translation', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

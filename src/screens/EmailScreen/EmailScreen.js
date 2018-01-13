@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import EmailForm from '../../components/EmailForm/EmailForm';
 import {
   changeEmail,
-  disableButtonLoading,
-  enableButtonLoading,
+  disableButtonLoadingRoutine,
+  enableButtonLoadingRoutine,
   requestTranslationRoutine
 } from '../../actions/applicationActions';
 
@@ -58,23 +58,24 @@ class EmailScreen extends Component {
   }
 }
 
-export default connect(
-  ({ application }) => ({
-    loading: application.loading,
-    email: application.email,
-  }),
-  dispatch => ({
-    changeEmail(email) {
-      dispatch(changeEmail(email));
-    },
-    requestTranslationRoutine() {
-      dispatch(requestTranslationRoutine());
-    },
-    enableButtonLoading() {
-      return dispatch(enableButtonLoading());
-    },
-    disableButtonLoading() {
-      return dispatch(disableButtonLoading());
-    },
-  })
-)(EmailScreen);
+const mapStateToProps = ({ application }) => ({
+  loading: application.loading,
+  email: application.email,
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeEmail(email) {
+    dispatch(changeEmail(email));
+  },
+  requestTranslationRoutine() {
+    dispatch(requestTranslationRoutine());
+  },
+  enableButtonLoading() {
+    return dispatch(enableButtonLoadingRoutine());
+  },
+  disableButtonLoading() {
+    return dispatch(disableButtonLoadingRoutine());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(EmailScreen);

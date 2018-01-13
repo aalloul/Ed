@@ -9,7 +9,7 @@ import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
 
 import { headerStyle } from '../../common/navigationOptions';
-import { enableButtonLoading, disableButtonLoading } from '../../actions/applicationActions';
+import { enableButtonLoadingRoutine, disableButtonLoadingRoutine } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -119,10 +119,10 @@ const mapStateToProps = ({ application }) => ({
 
 const mapDispatchToProps = dispatch => ({
   enableButtonLoading() {
-    return dispatch(enableButtonLoading());
+    return dispatch(enableButtonLoadingRoutine());
   },
   disableButtonLoading() {
-    return dispatch(disableButtonLoading());
+    return dispatch(disableButtonLoadingRoutine());
   },
 });
 

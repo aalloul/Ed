@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import TranslationForm from '../../components/TranslationForm/TranslationForm';
 import {
   changeLanguage,
-  disableButtonLoading,
-  enableButtonLoading,
+  disableButtonLoadingRoutine,
+  enableButtonLoadingRoutine,
   selectTranslation,
 } from '../../actions/applicationActions';
 
@@ -54,24 +54,25 @@ class TranslationScreen extends Component {
   }
 }
 
-export default connect(
-  ({ application }) => ({
-    loading: application.loading,
-    language: application.language,
-    languages: application.languages,
-  }),
-  dispatch => ({
-    changeLanguage(language) {
-      dispatch(changeLanguage(language))
-    },
-    selectTranslation(translation) {
-      dispatch(selectTranslation(translation))
-    },
-    enableButtonLoading() {
-      return dispatch(enableButtonLoading());
-    },
-    disableButtonLoading() {
-      return dispatch(disableButtonLoading());
-    },
-  })
-)(TranslationScreen);
+const mapStateToProps = ({ application }) => ({
+  loading: application.loading,
+  language: application.language,
+  languages: application.languages,
+});
+
+const mapDispatchToProps =dispatch => ({
+  changeLanguage(language) {
+    dispatch(changeLanguage(language))
+  },
+  selectTranslation(translation) {
+    dispatch(selectTranslation(translation))
+  },
+  enableButtonLoading() {
+    return dispatch(enableButtonLoadingRoutine());
+  },
+  disableButtonLoading() {
+    return dispatch(disableButtonLoadingRoutine());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TranslationScreen);
