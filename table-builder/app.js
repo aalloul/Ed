@@ -39,9 +39,11 @@ function getDisjointLines(points, type = DISJOINT_LINES.VERTICAL) {
   points.forEach(point => coordsGetter(point).forEach(result.add.bind(result)));
 
   const disjointLines = [...result]
-    .filter(coord => points.every(point => notIntersecting(coord, coordsGetter(point))));
+    .filter(coord => points.every(point => notIntersecting(coord, coordsGetter(point))))
+    .sort((a, b) => Number(a) - Number(b));
+
   if (DEBUG.rowDisjointLines) {
-    console.log('row disjoint lines', disjointLines);
+    console.log(`"${type}" disjoint lines for points`, { points, disjointLines });
   }
 
   return disjointLines;
@@ -70,7 +72,7 @@ function groupPoints(points, disjointLines, type = DISJOINT_LINES.VERTICAL) {
     type === DISJOINT_LINES.HORIZONTAL && DEBUG.rowsBetweenDisjointLines
     || type === DISJOINT_LINES.VERTICAL && DEBUG.columnsBetweenDisjointLines
   ) {
-    console.log('result groups for disjointLines', { disjointLines, groups });
+    console.log(`result groups for "${type}" disjointLines`, { disjointLines, groups });
   }
 
   return groups;
@@ -79,14 +81,14 @@ function groupPoints(points, disjointLines, type = DISJOINT_LINES.VERTICAL) {
 function groupPointsByRows(rows) {
   const columns = [];
   for (let i = 0; i < rows.length; i++) {
-    const disjointLines = getDisjointLines(rows[i]);
+    const disjointLines = getDisjointLines(rows[i], DISJOINT_LINES.VERTICAL);
     if (!disjointLines.length) {
       columns[i] = [];
 
       continue;
     }
 
-    columns[i] = groupPoints(rows[i], disjointLines);
+    columns[i] = groupPoints(rows[i], disjointLines, DISJOINT_LINES.VERTICAL);
   }
 
   return columns;
@@ -120,11 +122,11 @@ function buildTableColumn({ width, blocks }, totatWidth, totalHeight) {
   `;
 }
 
-function buildTableRow(row, totalWidth, totalHeight) {
+function buildTableRow(groupedColumn, totalWidth, totalHeight) {
   // to preserve formatting add gap columns
   let left = 0;
   const spacedColumns = [];
-  row.forEach(columnBlocks => {
+  groupedColumn.forEach(columnBlocks => {
     if (!columnBlocks.length) {
       return;
     }
@@ -147,7 +149,7 @@ function buildTableRow(row, totalWidth, totalHeight) {
     left += width;
   });
 
-  const lastColumnBlocks = row[row.length - 1] || [];
+  const lastColumnBlocks = groupedColumn[groupedColumn.length - 1] || [];
   if (lastColumnBlocks.length && !isEqual(lastColumnBlocks[0].to_x, totalWidth)) {
     spacedColumns.push({
       width: getWidth(totalWidth, lastColumnBlocks[0].to_x),
@@ -172,10 +174,10 @@ function buildTableRow(row, totalWidth, totalHeight) {
   `;
 }
 
-function buildTable(points, width, height) {
+function buildTable(groupedColumns, width, height) {
   return `
     <table width="100%" cellspacing="0" cellpadding="0" border="0">
-      ${points.map(point => buildTableRow(point, width, height)).join('')}
+      ${groupedColumns.map(groupedColumn => buildTableRow(groupedColumn, width, height)).join('')}
     </table>
   `;
 }
@@ -193,7 +195,7 @@ function build({ points, width, height }) {
 // For development environment take data from table folder and don't start the server
 if ('NODE_ENV' in process.env && process.env.NODE_ENV === 'development') {
   const fs = require('fs');
-  const input = require('./4');
+  const input = require('./5');
   const result = build(input);
 
   fs.writeFile("./table.html", result, function(err) {
