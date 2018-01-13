@@ -12,8 +12,8 @@ const EMAIL_WIDTH_PIXELS = 600;
 
 //const mainTableMarginPoints = Math.min(minX, DOCUMENT_WIDTH_POINTS - maxX);
 
-const coordToPercents = coord => coord / DOCUMENT_WIDTH_POINTS * 100;
-const coordToPixels = coord => coord / DOCUMENT_WIDTH_POINTS * EMAIL_WIDTH_PIXELS;
+const coordToPercents = (coord, totalWidth = DOCUMENT_WIDTH_POINTS) => coord / totalWidth * 100;
+const coordToPixels = (coord, totalWidth = DOCUMENT_WIDTH_POINTS) => coord / totalWidth * EMAIL_WIDTH_PIXELS;
 
 const DISJOINT_LINES = {
   HORIZONTAL: 'horizontal',
@@ -39,9 +39,11 @@ function getDisjointLines(points, type = DISJOINT_LINES.VERTICAL) {
   points.forEach(point => coordsGetter(point).forEach(result.add.bind(result)));
 
   const disjointLines = [...result]
-    .filter(coord => points.every(point => notIntersecting(coord, coordsGetter(point))));
+    .filter(coord => points.every(point => notIntersecting(coord, coordsGetter(point))))
+    .sort((a, b) => Number(a) - Number(b));
+
   if (DEBUG.rowDisjointLines) {
-    console.log('row disjoint lines', disjointLines);
+    console.log(`"${type}" disjoint lines for points`, { points, disjointLines });
   }
 
   return disjointLines;
@@ -70,7 +72,7 @@ function groupPoints(points, disjointLines, type = DISJOINT_LINES.VERTICAL) {
     type === DISJOINT_LINES.HORIZONTAL && DEBUG.rowsBetweenDisjointLines
     || type === DISJOINT_LINES.VERTICAL && DEBUG.columnsBetweenDisjointLines
   ) {
-    console.log('result groups for disjointLines', { disjointLines, groups });
+    console.log(`result groups for "${type}" disjointLines`, { disjointLines, groups });
   }
 
   return groups;
@@ -79,14 +81,14 @@ function groupPoints(points, disjointLines, type = DISJOINT_LINES.VERTICAL) {
 function groupPointsByRows(rows) {
   const columns = [];
   for (let i = 0; i < rows.length; i++) {
-    const disjointLines = getDisjointLines(rows[i]);
+    const disjointLines = getDisjointLines(rows[i], DISJOINT_LINES.VERTICAL);
     if (!disjointLines.length) {
       columns[i] = [];
 
       continue;
     }
 
-    columns[i] = groupPoints(rows[i], disjointLines);
+    columns[i] = groupPoints(rows[i], disjointLines, DISJOINT_LINES.VERTICAL);
   }
 
   return columns;
@@ -103,13 +105,9 @@ const getBoxWidth = ({ from_x, to_x }) => getWidth(from_x, to_x);
 const isEqual = (a, b, EPSILON = 0.001) => Math.abs(Number(a) - Number(b)) <= EPSILON;
 
 // build HTML table from result columns
-function buildTableColumn({ width, blocks }) {
-  if (typeof blocks === 'undefined') {
-    throw new Error('wtf');
-  }
-
+function buildTableColumn({ width, blocks }, totatWidth, totalHeight) {
   return `
-    <td valign="top" width="${coordToPercents(width)}%">
+    <td valign="top" width="${coordToPercents(width, totatWidth)}%">
       ${blocks.map(getWordFromPoint).filter(Boolean).join('<br>')}
     </td>
   `;
@@ -124,11 +122,11 @@ function buildTableColumn({ width, blocks }) {
   `;
 }
 
-function buildTableRow(row) {
+function buildTableRow(groupedColumn, totalWidth, totalHeight) {
   // to preserve formatting add gap columns
   let left = 0;
   const spacedColumns = [];
-  row.forEach(columnBlocks => {
+  groupedColumn.forEach(columnBlocks => {
     if (!columnBlocks.length) {
       return;
     }
@@ -151,10 +149,10 @@ function buildTableRow(row) {
     left += width;
   });
 
-  const lastColumnBlocks = row[row.length - 1] || [];
-  if (lastColumnBlocks.length && !isEqual(lastColumnBlocks[0].to_x, DOCUMENT_WIDTH_POINTS)) {
+  const lastColumnBlocks = groupedColumn[groupedColumn.length - 1] || [];
+  if (lastColumnBlocks.length && !isEqual(lastColumnBlocks[0].to_x, totalWidth)) {
     spacedColumns.push({
-      width: getWidth(DOCUMENT_WIDTH_POINTS, lastColumnBlocks[0].to_x),
+      width: getWidth(totalWidth, lastColumnBlocks[0].to_x),
       blocks: [],
     });
   }
@@ -166,7 +164,9 @@ function buildTableRow(row) {
       <td valign="top">
         <table width="100%" cellspacing="0" cellpadding="0" border="0">
           <tr>
-            ${spacedColumns.map(buildTableColumn).join('')}
+            ${spacedColumns.map(
+              columnDescriptor => buildTableColumn(columnDescriptor, totalWidth, totalHeight)
+            ).join('')}
           </tr>
         </table>
       </td>
@@ -174,29 +174,29 @@ function buildTableRow(row) {
   `;
 }
 
-function buildTable(points) {
+function buildTable(groupedColumns, width, height) {
   return `
     <table width="100%" cellspacing="0" cellpadding="0" border="0">
-      ${points.map(buildTableRow).join('')}
+      ${groupedColumns.map(groupedColumn => buildTableRow(groupedColumn, width, height)).join('')}
     </table>
   `;
 }
 
 // console.log('overall result', buildTable(columns));
 
-function build(points) {
+function build({ points, width, height }) {
   const disjointLines = getDisjointLines(points, DISJOINT_LINES.HORIZONTAL);
   const rows = groupPoints(points, disjointLines, DISJOINT_LINES.HORIZONTAL);
   const columns = groupPointsByRows(rows);
 
-  return buildTable(columns);
+  return buildTable(columns, width, height);
 }
 
 // For development environment take data from table folder and don't start the server
 if ('NODE_ENV' in process.env && process.env.NODE_ENV === 'development') {
   const fs = require('fs');
-  const points = require('./0');
-  const result = build(points);
+  const input = require('./5');
+  const result = build(input);
 
   fs.writeFile("./table.html", result, function(err) {
     if (err) {
@@ -218,19 +218,16 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-  let points;
-  if (typeof req.body === 'string') {
-    const params = JSON.parse(req.body);
-    points = params.points;
-  } else {
-    points = req.body.points;
+  const input = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+  if (!input.points || !Array.isArray(input.points)) {
+    res.status(404).send('No "points" or it is not an array');
   }
 
-  if (!points || !Array.isArray(points)) {
-    res.status(404).send('No "points" or it is not an array');
-  } else {
-    res.status(200).send(build(points));
+  if (!input.width || !input.height) {
+    res.status(404).send('No "width" or "height" in the input');
   }
+
+  res.status(200).send(build(input));
 });
 
 if (module === require.main) {

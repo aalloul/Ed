@@ -83,6 +83,22 @@ class OCRParser(object):
                 "to_y": page_max_x - min(xs),
                 "word": paragraph
             }
+        elif self.orientation == 270:
+            return {
+                "from_x": min(ys),
+                "to_x": page_max_y - max(ys),
+                "from_y": min(xs),
+                "to_y": page_max_x - min(xs),
+                "word": paragraph
+            }
+        elif self.orientation == 180:
+            return {
+                "from_x": min(xs),
+                "to_x": max(xs),
+                "from_y": min(ys),
+                "to_y": max(ys),
+                "word": paragraph
+            }
 
     def _extract_words(self, paragraph):
         p = ""
@@ -120,48 +136,54 @@ class OCRParser(object):
 def get_orientation(im):
     image = Image.open(BytesIO(b64decode(im)))
     orientation = ""
-
+    logger.debug("Looking for orientation tag")
     for orientations in ExifTags.TAGS.keys():
         if ExifTags.TAGS[orientations] == 'Orientation':
             orientation = orientations
 
-    exif = dict(image._getexif().items())
-
+    logger.debug("Getting EXIF items from image")
     try:
+        exif = dict(image._getexif().items())
         if exif[orientation] == 3:
+            logger.debug("Orientation is 180")
             return 180
         elif exif[orientation] == 6:
+            logger.debug("Orientation is 270")
             return 270
         elif exif[orientation] == 8:
+            logger.debug("Orientation is 90")
             return 90
         else:
+            logger.debug("Orientation is 0")
             return 0
     except:
+        logger.info("No orientation found - Assume 0")
         return 0
 
 
 if __name__ == "__main__":
-    with open("../fixture/test_request_excel.json") as f:
+    with open("../fixture/request_rotation_270.json") as f:
     # with open("../fixture/test_request.json", "r") as f:
         resp = load(f)
         orientation = get_orientation(resp['image'])
 
-    with open("../fixture/test_request_excel_orc.json", "r") as f:
-        resp = load(f)
+    with open("../fixture/request_rotation_270_orc.json", "r") as f:
+        resp = f.read()
 
     ocrparser = OCRParser(resp, orientation)
     parsed_pages = ocrparser.parse_pages()
     with open("/tmp/tmp.json", "w") as f:
         dump(parsed_pages[1], f)
 
-
+    resp = loads(resp)
     x = resp['responses'][0]['fullTextAnnotation']['pages'][0]['width']
     y = resp['responses'][0]['fullTextAnnotation']['pages'][0]['height']
     if orientation == 0:
         img=Image.new("RGB", (x,y),"white")
     elif orientation == 90:
         img = Image.new("RGB", (y, x), "white")
-
+    elif orientation == 270:
+        img = Image.new("RGB", (y, x), "white")
     draw = ImageDraw.Draw(img)
     for line in parsed_pages[1]:
         draw.text((line['from_x'], line['from_y']),line['word'].encode("utf-8"),

@@ -22,7 +22,7 @@ export default () => (
       <Icon src="/img/icon-appstore1.svg" alt="Icon" />
       APP STORE
     </Button>
-    <Button href="#">
+    <Button href="https://play.google.com/apps/testing/com.smail.app.android" target="_blank">
       <Icon src="/img/icon-googleplay1.svg" alt="Icon" />
       GOOGLE PLAY
     </Button>

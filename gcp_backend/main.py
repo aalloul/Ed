@@ -119,6 +119,7 @@ def translate():
         logger.info("  -> Done")
         return ans
     except Exception as ex:
+        logger.error("exception = {}".format(ex.message))
         return page_not_found(ex, request.data, str(request.headers))
 
 
