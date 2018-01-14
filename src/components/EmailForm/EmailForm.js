@@ -69,8 +69,6 @@ const styles = StyleSheet.create({
 
 function createSignIn(onInput, onPress) {
   return function() {
-    console.log('sign in');
-
     GoogleSignIn
       .configure({
         // iOS
@@ -107,8 +105,8 @@ function createSignIn(onInput, onPress) {
 const EmailForm = ({ onPress, onInput, email }) => (
   <View style={styles.container}>
     <PrimaryText>
-      Send{'\n'}
-      to the email
+      Where should we send{'\n'}
+      the translation
     </PrimaryText>
 
     <IconButton

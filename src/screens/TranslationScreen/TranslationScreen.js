@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
 class TranslationScreen extends Component {
   static navigationOptions = {
-    title: "Select your language",
+    title: "Your language",
     ...headerStyle,
   };
 

@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 
 class EmailScreen extends Component {
   static navigationOptions = {
-    title: "Input your email",
+    title: "Your email",
     ...headerStyle,
   };
 
