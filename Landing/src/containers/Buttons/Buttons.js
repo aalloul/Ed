@@ -3,11 +3,18 @@ import glamorous from 'glamorous';
 
 import Button from '../../components/Button/Button';
 
+const mediaQueries = {
+	phone: '@media only screen and (max-width: 1000px)',
+}
+
 const Wrapper = glamorous.div({
   display: 'flex',
   justifyContent: 'space-between',
   marginTop: '70px',
   width: '100%',
+  [mediaQueries.phone]: {
+    flexDirection: 'column',
+  },
 });
 
 const Icon = glamorous.img({

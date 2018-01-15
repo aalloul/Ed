@@ -10,12 +10,19 @@ const mediaQueries = {
 const Wrapper = glamorous.section({
   background: 'url("/img/cloud_image.jpg") center top no-repeat',
   padding: '350px 0 250px',
+  [mediaQueries.phone]: {
+    background: 'none',
+    padding: '20px 0 20px',
+  },
 });
 
 const Item = glamorous.div({
   margin: '0 auto',
   textAlign: 'center',
   width: '800px',
+  [mediaQueries.phone]: {
+    width: '100%',
+  },
 });
 
 const Price = glamorous.h2({
@@ -29,6 +36,9 @@ const Trial = glamorous.ul({
   display: 'flex',
   justifyContent: 'space-evenly',
   marginTop: '125px',
+  [mediaQueries.phone]: {
+    flexDirection: 'column',
+  },
 });
   
 const Condition = glamorous.li({

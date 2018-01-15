@@ -22,12 +22,15 @@ export default glamorous.div({
     position: 'absolute',
     top: '0',
     width: '100%',
-  },
-  [mediaQueries.phone]: {
-    width: '100%',
+    [mediaQueries.phone]: {
+      width: '0%',
+    },
   },
 }, ({ type }) => ({
   success: {
+    [mediaQueries.phone]: {
+      display: 'none',
+    },
     ':before': {
       background: 'url("/img/4-Success.jpg") 0 78px no-repeat',
       backgroundSize: 'contain',
@@ -49,7 +52,6 @@ export default glamorous.div({
       width: '75%',
       [mediaQueries.phone]: {
         width: '100%',
-        height: '100%',
       },
     },
     ':after': {
@@ -67,6 +69,9 @@ export default glamorous.div({
       left: '24px',
       top: '97px',
       width: '79%',
+      [mediaQueries.phone]: {
+        width: '100%',
+      },
     },
     ':after': {
       backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.jpg")',
@@ -82,6 +87,9 @@ export default glamorous.div({
       left: '7px',
       top: '80px',
       width: '83%',
+      [mediaQueries.phone]: {
+        width: '100%',
+      },
     },
     ':after': {
       backgroundImage: 'url("/img/Google Pixel 2 Just Black.png")',
