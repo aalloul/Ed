@@ -1,5 +1,9 @@
 import glamorous from 'glamorous';
 
+const mediaQueries = {
+	phone: '@media only screen and (max-width: 1000px)',
+}
+
 export default glamorous.div({
   height: '650px',
   minWidth: '350px',
@@ -17,6 +21,9 @@ export default glamorous.div({
     left: '0',
     position: 'absolute',
     top: '0',
+    width: '100%',
+  },
+  [mediaQueries.phone]: {
     width: '100%',
   },
 }, ({ type }) => ({
@@ -40,9 +47,16 @@ export default glamorous.div({
       left: '18px',
       top: '57px',
       width: '75%',
+      [mediaQueries.phone]: {
+        width: '100%',
+        height: '100%',
+      },
     },
     ':after': {
       backgroundImage: 'url("/img/Samsung Galaxy S8 Midnight Black.jpg")',
+      [mediaQueries.phone]: {
+        display: 'none',
+      },
     }
   },
   translation: {
@@ -56,6 +70,9 @@ export default glamorous.div({
     },
     ':after': {
       backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.jpg")',
+      [mediaQueries.phone]: {
+        display: 'none',
+      },
     }
   },
   email: {
@@ -68,6 +85,9 @@ export default glamorous.div({
     },
     ':after': {
       backgroundImage: 'url("/img/Google Pixel 2 Just Black.png")',
+      [mediaQueries.phone]: {
+        display: 'none',
+      },
     }
   },
 }[type]));

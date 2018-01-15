@@ -6,11 +6,19 @@ import Buttons from '../../containers/Buttons/Buttons';
 import ContentWithScreenshot from '../ContentWithScreenshot/ContentWithScreenshot';
 import Screenshot from '../Screenshot/Screenshot';
 
+const mediaQueries = {
+	phone: '@media only screen and (max-width: 1000px)',
+}
+
 const Wrapper = glamorous.div(({ reverse }) => ({
   display:  'flex',
   justifyContent:  'space-evenly',
-  padding:  '30px 0',
+  padding: '30px 0',
   flexDirection: reverse ? 'row-reverse' : 'row',
+  [mediaQueries.phone]: {
+    padding: '10px 0',
+    flexDirection: 'column',
+  },
 }));
 
 const Title = glamorous.h3({
@@ -18,11 +26,17 @@ const Title = glamorous.h3({
   fontWeight:  '900',
   position:  'relative',
   marginBottom:  '40px',
+  [mediaQueries.phone]: {
+    marginBottom: '10px',
+  },
 });
 
 const Text = glamorous.p({
   fontSize:  '36px',
   position:  'relative',
+  [mediaQueries.phone]: {
+    margin: '10px 0px',
+  },
 });
 
 const Number = glamorous.span({
@@ -35,6 +49,7 @@ const Number = glamorous.span({
 });
 
 const HiwStep = ({ number, title, type, reverse, children }) => (
+  
   <Wrapper reverse={reverse}>
     <Screenshot type={type} />
 

@@ -3,6 +3,10 @@ import glamorous from 'glamorous';
 
 import Buttons from '../Buttons/Buttons';
 
+const mediaQueries = {
+	phone: '@media only screen and (max-width: 1000px)',
+}
+
 const Wrapper = glamorous.section({
   background: 'url("/img/cloud_image.jpg") center top no-repeat',
   padding: '350px 0 250px',

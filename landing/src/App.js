@@ -1,5 +1,6 @@
 import React from 'react';
 import { StaticRouter, BrowserRouter, Route, Switch } from 'react-router-dom';
+import MetaTags from 'react-meta-tags';
 
 import Home from './routes/Home';
 import PrivacyPolicy from './routes/PrivacyPolicy';
@@ -18,8 +19,10 @@ const context = {};
 
 export default props => (
   <React.Fragment>
-    <title>{props.title}</title>
-
+    <MetaTags>
+      <title>{props.title}</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </MetaTags>
     <style dangerouslySetInnerHTML={{
       __html: 'body { margin: 0; padding: 0; font-family: "Lato", sans-serif; font-size: 15px; background: #f5f2f1; color: #714f4f; -webkit-font-smoothing: antialiased; }'
     }} />
