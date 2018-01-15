@@ -55,8 +55,8 @@ const TranslationForm = ({
 }) => (
   <View style={styles.container}>
     <PrimaryText>
-      How do want{'\n'}
-      your translation?
+      Which language{'\n'}
+      do you prefer?
     </PrimaryText>
 
     <Picker

@@ -110,8 +110,8 @@ function createSignIn(onInput, onPress) {
 const EmailForm = ({ onPress, onInput, errorText, resetError, email }) => (
   <View style={styles.container}>
     <PrimaryText>
-      Send{'\n'}
-      to the email
+      Where should we send{'\n'}
+      the translation
     </PrimaryText>
 
     <IconButton

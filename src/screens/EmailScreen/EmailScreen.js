@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 
 class EmailScreen extends PureComponent {
   static navigationOptions = {
-    title: "Input your email",
+    title: "Your email",
     ...headerStyle,
   };
 

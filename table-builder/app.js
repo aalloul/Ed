@@ -174,22 +174,22 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
   `;
 }
 
-function buildTable(groupedColumns, width, height) {
+function buildTable(groupedColumns, totalWidth, totalHeight) {
   return `
     <table width="100%" cellspacing="0" cellpadding="0" border="0">
-      ${groupedColumns.map(groupedColumn => buildTableRow(groupedColumn, width, height)).join('')}
+      ${groupedColumns.map(groupedColumn => buildTableRow(groupedColumn, totalWidth, totalHeight)).join('')}
     </table>
   `;
 }
 
 // console.log('overall result', buildTable(columns));
 
-function build({ points, width, height }) {
+function build({ points, totalWidth, totalHeight }) {
   const disjointLines = getDisjointLines(points, DISJOINT_LINES.HORIZONTAL);
   const rows = groupPoints(points, disjointLines, DISJOINT_LINES.HORIZONTAL);
   const columns = groupPointsByRows(rows);
 
-  return buildTable(columns, width, height);
+  return buildTable(columns, totalWidth, totalHeight);
 }
 
 // For development environment take data from table folder and don't start the server

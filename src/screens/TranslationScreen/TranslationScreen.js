@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 
 class TranslationScreen extends PureComponent {
   static navigationOptions = {
-    title: "Select your language",
+    title: "Your language",
     ...headerStyle,
   };
 

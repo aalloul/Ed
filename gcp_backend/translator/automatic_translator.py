@@ -100,11 +100,13 @@ class AutomaticTranslator(Translator):
 
         logger.info("Renamed translation to word")
         b = {
-            "points": out
+            "points": out,
+            "width": self.pages["widths"][0],
+            "height": self.pages["heights"][0]
         }
 
         logger.info("added points level")
-
+        logger.debug(dumps(b, indent=4))
         r = fetch(self.html_parser_url,
               payload=dumps(b),
               method=POST,
@@ -116,4 +118,4 @@ class AutomaticTranslator(Translator):
             raise Exception("HTML parser not found")
 
         logger.info("HTML received")
-        return r.content
+        return b, r.content

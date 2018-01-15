@@ -36,10 +36,12 @@ class Analytics(object):
         self.image = None
         self.extracted_text = None
         self.translated_text = None
+        self.html_input = None
         self.storage_bucket = 'smail_images'
         self.storage_images = 'raw_images'
         self.storage_extracted_text = 'raw_text'
         self.storage_translated_text = 'translated_text'
+        self.storage_html_input = "input_html"
         self.file_name = uuid4()
 
     @staticmethod
@@ -73,28 +75,33 @@ class Analytics(object):
     def commit(self):
         logger.info("Uploading to BQ")
         rpc_bq = self.upload_bq()
-        logger.info("Uploading the images")
+        logger.debug("Uploading the images")
         rpc_im = self.upload_images()
-        logger.info("Uploading the raw text")
+        logger.debug("Uploading the raw text")
         rpc_ext_text = self.upload_raw_text()
-        logger.info("Uploading the translated text")
+        logger.debug("Uploading the translated text")
         rpc_trans_text = self.upload_trans_text()
-
-        logger.info("BQ get results")
+        logger.debug("Uploading the input to HTML")
+        rpc_input_html = self.upload_input_html()
+        logger.debug("BQ get results")
         self._check_answer(rpc_bq.get_result())
-        logger.info("  -> Received")
+        logger.debug("  -> Received")
 
         if rpc_ext_text is not None:
-            logger.info("rpc_ext_text get results")
+            logger.debug("rpc_ext_text get results")
             self._check_answer(rpc_ext_text.get_result())
 
         if rpc_trans_text is not None:
-            logger.info("rpc_trans_text get results")
+            logger.debug("rpc_trans_text get results")
             self._check_answer(rpc_trans_text.get_result())
 
         if rpc_im is not None:
-            logger.info("rpc_im get results")
+            logger.debug("rpc_im get results")
             self._check_answer(rpc_im.get_result())
+
+        if rpc_input_html is not None:
+            logger.debug("rpc_input_html get results")
+            self._check_answer(rpc_input_html.get_result())
 
         logger.info("Done")
 
@@ -149,6 +156,9 @@ class Analytics(object):
 
     def add_translated_text(self, te):
         self.translated_text = te
+
+    def add_input_html(self, te):
+        self.html_input = te
 
     def upload_images(self):
 
@@ -236,5 +246,36 @@ class Analytics(object):
                                 access_token=self._storage_token)
                         },
                         payload=dumps(self.translated_text)
+                        )
+        return rpc
+
+    def upload_input_html(self):
+        if self.html_input is None:
+            logger.info("No input to HTML text found")
+            return
+
+        if self._storage_token is None:
+            self._storage_token = self._refresh_token(self.storage_scope)
+
+        logger.info("Token = {}".format(self._storage_token))
+        rpc = create_rpc(deadline=300)  # TODO Change this to acceptable delay
+
+        url = "https://www.googleapis.com/upload/storage/v1/b/{bucket}" \
+              "/o?uploadType=media&name={name}".format(
+                bucket=self.storage_bucket,
+                name=self.storage_html_input + "/{}.json".format(
+                    self.file_name)
+                )
+
+        logger.info("make_fetch_all started...")
+        make_fetch_call(rpc,
+                        url,
+                        method=POST,
+                        headers={
+                            "Content-Type": "application/json",
+                            "Authorization": self.token.format(
+                                access_token=self._storage_token)
+                        },
+                        payload=dumps(self.html_input)
                         )
         return rpc
