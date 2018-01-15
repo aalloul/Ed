@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, StyleSheet, View, Image } from 'react-native';
 
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
-import { disableButtonLoadingRoutine, enableButtonLoadingRoutine, goToScan } from '../../actions/applicationActions';
+import { goToScan } from '../../actions/applicationActions';
 
-import { headerStyle } from '../../common/navigationOptions';
-import Preloader from '../../components/Preloader/Preloader';
+import { debounceTaps } from '../../common/commonHelpers';
+import { headerStyle } from '../../common/navigationHelpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class SplashScreen extends Component {
+class SplashScreen extends PureComponent {
   static navigationOptions = {
     title: "Smail.rocks",
     ...headerStyle,
@@ -34,43 +34,44 @@ class SplashScreen extends Component {
   constructor() {
     super();
 
+    this.state = {
+      loading: true,
+    };
+
+    this.disableLoading = this.disableLoading.bind(this);
     this.scanMore = this.scanMore.bind(this);
-    this.onPressHandler = this.onPressHandler.bind(this);
+    this.handlePress = debounceTaps(this.handlePress.bind(this));
   }
 
   componentWillMount() {
     AsyncStorage
       .getItem('scanMore')
       .then((value) => value === 'true' ? this.scanMore() : Promise.resolve())
-      .then(this.props.disableButtonLoading);
+      .then(this.disableLoading);
   }
 
-  componentDidMount() {
-    console.log('SplashScreen mounted');
+  disableLoading() {
+    this.setState({ loading: false });
   }
 
-  componentWillUnmount() {
-    console.log('SplashScreen unmounted');
-  }
-
-  onPressHandler() {
-    // setTimeout is needed because of instantly starting loading
-    // the Camera so the Preloader couldn't be in time
-    this.props.enableButtonLoading()
-      .then(() => setTimeout(this.props.goToScan, 200));
+  handlePress() {
+    this.setState(
+      { loading: true },
+      // setTimeout is needed because of instantly starting
+      // loading the Camera the Preloader couldn't be in time
+      () => setTimeout(
+        () => this.props.goToScan().then(this.disableLoading),
+        150
+      ));
   }
 
   scanMore() {
     return AsyncStorage
       .setItem('scanMore', 'false')
-      .then(() => this.props.goToScan());
+      .then(this.props.goToScan);
   }
 
   render() {
-    if (this.props.loading) {
-      return <Preloader />;
-    }
-
     return (
       <View style={styles.container}>
         <PrimaryText>
@@ -84,27 +85,19 @@ class SplashScreen extends Component {
           to your email
         </SecondaryText>
         <RectangularButton
-          onPress={this.onPressHandler}
+          onPress={this.handlePress}
           title="Start"
-          accessibilityLabel="Start scanning the paper mail"
+          loading={this.state.loading}
         />
       </View>
     );
   }
 }
 
-const mapStateToProps = ({ application: { loading } }) => ({ loading });
-
 const mapDispatchToProps = dispatch => ({
   goToScan() {
     return dispatch(goToScan());
   },
-  enableButtonLoading() {
-    return dispatch(enableButtonLoadingRoutine());
-  },
-  disableButtonLoading() {
-    return dispatch(disableButtonLoadingRoutine());
-  },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen);
+export default connect(null, mapDispatchToProps)(SplashScreen);

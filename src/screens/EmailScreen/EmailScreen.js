@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import EmailForm from '../../components/EmailForm/EmailForm';
 import {
   changeEmail,
-  disableButtonLoadingRoutine,
-  enableButtonLoadingRoutine,
   requestTranslationRoutine
 } from '../../actions/applicationActions';
 
-import { headerStyle } from '../../common/navigationOptions';
+import { headerStyle } from '../../common/navigationHelpers';
+import { debounceTaps } from '../../common/commonHelpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class EmailScreen extends Component {
+class EmailScreen extends PureComponent {
   static navigationOptions = {
     title: "Input your email",
     ...headerStyle,
@@ -30,38 +29,51 @@ class EmailScreen extends Component {
   constructor() {
     super();
 
-    this.send = this.send.bind(this);
+    this.state = {
+      errorText: '',
+    };
+
+    this.handlePress = debounceTaps(this.handlePress.bind(this));
+    this.resetError = this.resetError.bind(this);
+    this.setError = this.setError.bind(this);
   }
 
-  componentDidMount() {
-    this.props.disableButtonLoading();
+  setError() {
+    this.setState({ errorText: 'Email is required' });
   }
 
-  send() {
-    this.props.enableButtonLoading()
-      .then(this.props.requestTranslationRoutine);
+  resetError() {
+    this.setState({ errorText: '' });
+  }
+
+  handlePress() {
+    const { email, requestTranslationRoutine } = this.props;
+
+    if (email) {
+      requestTranslationRoutine();
+    } else {
+      this.setError();
+    }
   }
 
   render() {
-    const { email, loading } = this.props;
+    const { email, changeEmail } = this.props;
 
     return (
       <View style={styles.container}>
         <EmailForm
-          onInput={email => this.props.changeEmail(email)}
-          onPress={this.send}
+          onInput={email => changeEmail(email)}
+          onPress={this.handlePress}
           email={email}
-          loading={loading}
+          errorText={this.state.errorText}
+          resetError={this.resetError}
         />
       </View>
     );
   }
 }
 
-const mapStateToProps = ({ application }) => ({
-  loading: application.loading,
-  email: application.email,
-});
+const mapStateToProps = ({ application: { email } }) => ({ email });
 
 const mapDispatchToProps = dispatch => ({
   changeEmail(email) {
@@ -69,12 +81,6 @@ const mapDispatchToProps = dispatch => ({
   },
   requestTranslationRoutine() {
     dispatch(requestTranslationRoutine());
-  },
-  enableButtonLoading() {
-    return dispatch(enableButtonLoadingRoutine());
-  },
-  disableButtonLoading() {
-    return dispatch(disableButtonLoadingRoutine());
   },
 });
 

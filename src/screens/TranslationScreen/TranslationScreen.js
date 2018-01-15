@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import TranslationForm from '../../components/TranslationForm/TranslationForm';
 import {
   changeLanguage,
-  disableButtonLoadingRoutine,
-  enableButtonLoadingRoutine,
   selectTranslation,
 } from '../../actions/applicationActions';
 
-import { headerStyle } from '../../common/navigationOptions';
+import { headerStyle } from '../../common/navigationHelpers';
+import { debounceTaps } from '../../common/commonHelpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,23 +20,24 @@ const styles = StyleSheet.create({
   },
 });
 
-class TranslationScreen extends Component {
+class TranslationScreen extends PureComponent {
   static navigationOptions = {
     title: "Select your language",
     ...headerStyle,
   };
 
-  componentDidMount() {
-    this.props.disableButtonLoading();
+  constructor() {
+    super();
+
+    this.selectTranslation = debounceTaps(this.selectTranslation.bind(this));
   }
 
   selectTranslation(translation) {
-    this.props.enableButtonLoading()
-      .then(this.props.selectTranslation.bind(null, translation));
+    this.props.selectTranslation(translation);
   }
 
   render() {
-    const { changeLanguage, language, languages, loading } = this.props;
+    const { changeLanguage, language, languages } = this.props;
 
     return (
       <View style={styles.container}>
@@ -47,7 +47,6 @@ class TranslationScreen extends Component {
           onLanguageChange={language => changeLanguage(language)}
           language={language}
           languages={languages}
-          loading={loading}
         />
       </View>
     );
@@ -55,23 +54,16 @@ class TranslationScreen extends Component {
 }
 
 const mapStateToProps = ({ application }) => ({
-  loading: application.loading,
   language: application.language,
   languages: application.languages,
 });
 
-const mapDispatchToProps =dispatch => ({
+const mapDispatchToProps = dispatch => ({
   changeLanguage(language) {
-    dispatch(changeLanguage(language))
+    dispatch(changeLanguage(language));
   },
   selectTranslation(translation) {
-    dispatch(selectTranslation(translation))
-  },
-  enableButtonLoading() {
-    return dispatch(enableButtonLoadingRoutine());
-  },
-  disableButtonLoading() {
-    return dispatch(disableButtonLoadingRoutine());
+    dispatch(selectTranslation(translation));
   },
 });
 

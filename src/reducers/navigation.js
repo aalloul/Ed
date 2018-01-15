@@ -11,32 +11,42 @@ import {
 const initialNavState = AppNavigator.router.getStateForAction(NavigationActions.init());
 
 export default (state = initialNavState, action) => {
-  let navigatorAction;
+  let nextState;
 
   switch (action.type) {
     case GO_TO_SCAN: {
-      navigatorAction = NavigationActions.navigate({ routeName: 'Scan' });
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'Scan' }),
+        state,
+      );
       break;
     }
     case TAKE_PHOTO_PROMISE: {
-      navigatorAction = NavigationActions.navigate({ routeName: 'Translation' });
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'Translation' }),
+        state,
+      );
       break;
     }
     case SELECT_TRANSLATION: {
-      navigatorAction = NavigationActions.navigate({ routeName: 'Email' });
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'Email' }),
+        state,
+      );
       break;
     }
     case REQUEST_TRANSLATION_PROMISE: {
-      navigatorAction = NavigationActions.navigate({ routeName: 'Success' });
+      nextState = AppNavigator.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'Success' }),
+        state,
+      );
       break;
     }
     default: {
-      navigatorAction = action;
+      nextState = AppNavigator.router.getStateForAction(action, state);
       break;
     }
   }
-
-  const nextState = AppNavigator.router.getStateForAction(navigatorAction, state);
 
   // Simply return the original `state` if `nextState` is null or undefined.
   return nextState || state;

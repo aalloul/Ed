@@ -6,9 +6,6 @@ const MAIN_FLOW_QUEUE = 'MAIN_FLOW_QUEUE';
 
 export const GO_TO_SCAN = 'GO_TO_SCAN';
 
-export const ENABLE_BUTTON_LOADING = 'ENABLE_BUTTON_LOADING';
-export const DISABLE_BUTTON_LOADING = 'DISABLE_BUTTON_LOADING';
-
 export const TAKE_PHOTO_PROMISE = 'TAKE_PHOTO_PROMISE';
 export const TAKE_PHOTO_RESOLVE = 'TAKE_PHOTO_RESOLVE';
 export const TAKE_PHOTO_REJECT = 'TAKE_PHOTO_REJECT';
@@ -20,38 +17,13 @@ export const REQUEST_TRANSLATION_REJECT = 'REQUEST_TRANSLATION_REJECT';
 export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SELECT_TRANSLATION = 'SELECT_TRANSLATION';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
+export const LOAD_STORED_USER_STATE = 'LOAD_STORED_USER_STATE';
 
 export const SEND_LETTER_PROMISE = 'SEND_LETTER_PROMISE';
 export const SEND_LETTER_RESOLVE = 'SEND_LETTER_RESOLVE';
 export const SEND_LETTER_REJECT = 'SEND_LETTER_REJECT';
 
 export const RESTART_APP = 'RESTART_APP';
-
-export function enableButtonLoadingRoutine() {
-  return (dispatch) => {
-    return new Promise((resolve, reject) => {
-      dispatch({
-        type: ENABLE_BUTTON_LOADING,
-        loading: true,
-      });
-
-      resolve();
-    });
-  };
-}
-
-export function disableButtonLoadingRoutine() {
-  return (dispatch) => {
-    return new Promise((resolve, reject) => {
-      dispatch({
-        type: DISABLE_BUTTON_LOADING,
-        loading: false,
-      });
-
-      resolve();
-    });
-  }
-}
 
 export function goToScan() {
   return {
@@ -62,15 +34,12 @@ export function goToScan() {
 function takePhotoPromise() {
   return {
     type: TAKE_PHOTO_PROMISE,
-    loading: true,
   };
 }
 
 function takePhotoResolve(photo) {
-  console.log('photo TAKE_PHOTO_RESOLVE', photo);
   return {
     type: TAKE_PHOTO_RESOLVE,
-    loading: false,
     photo,
   };
 }
@@ -78,7 +47,6 @@ function takePhotoResolve(photo) {
 function takePhotoReject(err) {
   return {
     type: TAKE_PHOTO_REJECT,
-    loading: false,
     err,
   };
 }
@@ -183,9 +151,9 @@ export function changeLanguage(language) {
 
 export function selectTranslation(translation) {
   return {
-      type: SELECT_TRANSLATION,
-      translation,
-    };
+    type: SELECT_TRANSLATION,
+    translation,
+  };
 }
 
 export function changeEmail(email) {
