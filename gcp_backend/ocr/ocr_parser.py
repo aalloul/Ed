@@ -1,5 +1,7 @@
 from json import loads
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ExifTags
+from io import BytesIO
+from base64 import b64decode
 from custom_exceptions.custom_exceptions import NoTextFoundException
 import logging
 from sys import stdout
@@ -47,12 +49,15 @@ class OCRParser(object):
             page_max_x = page['width']
             out[cnt] = self._extract_blocks(page, page_max_x, page_max_y)
             out[cnt] = self._combine_words(out[cnt])
+            out[cnt] = self._shift_all(out[cnt])
+
             if self.orientation in [0, 180]:
                 widths.append(page_max_x)
                 heights.append(page_max_y)
             else:
                 widths.append(page_max_y)
                 heights.append(page_max_x)
+
 
         out["heights"] = heights
         out["widths"] = widths
@@ -109,6 +114,23 @@ class OCRParser(object):
                 "to_y": max(ys),
                 "word": paragraph
             }
+
+    def _shift_all(self, page):
+        min_x = min([p["from_x"] for p in page])
+        min_y = min([p["from_y"] for p in page])
+
+        page_ = page
+        if min_x < 0:
+            for p in page_:
+                p["from_x"] += abs(min_x)
+                p["to_x"] += abs(min_x)
+
+        if min_y < 0:
+            for p in page_:
+                p["from_y"] += abs(min_y)
+                p["to_y"] += abs(min_y)
+
+        return page_
 
     def _extract_words(self, paragraph):
         logger.debug("_extract_words start")
@@ -185,9 +207,41 @@ class OCRParser(object):
 
 if __name__ == "__main__":
 
-    with open("../fixture/request_rotation_270_ocr.json", "r") as f:
+    def get_orientation(im):
+        image = Image.open(BytesIO(im))
+        orientation = ""
+
+        for orientations in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientations] == 'Orientation':
+                orientation = orientations
+
+        if image._getexif() is None:
+            return 0
+
+        exif = dict(image._getexif().items())
+        if not exif.has_key(orientation):
+            logger.info("Image has no orientation TAG")
+            return 0
+
+        if exif[orientation] == 3:
+            logger.info("Image has an orientation of 180")
+            return 180
+        elif exif[orientation] == 6:
+            logger.info("Image has an orientation of 270")
+            return 270
+        elif exif[orientation] == 8:
+            logger.info("Image has an orientation of 90")
+            return 90
+        else:
+            logger.info("Image has an orientation of 0")
+            return 0
+
+    with open("../fixture/tmp.jpeg", "rb") as f:
+        im = f.read()
+        orientation = get_orientation(im)
+
+    with open("../fixture/tmp.json", "r") as f:
         resp = f.read()
-        orientation = 270
 
     ocrparser = OCRParser(resp, orientation)
     parsed_pages = ocrparser.parse_pages()
@@ -208,4 +262,4 @@ if __name__ == "__main__":
                   'black')
 
     draw = ImageDraw.Draw(img)
-    img.save("test.png")
+    img.save("../fixture/test.png")
