@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { PureComponent } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import Camera from 'react-native-camera';
@@ -7,7 +7,8 @@ import Camera from 'react-native-camera';
 import RoundButton from '../../components/Buttons/RoundButton';
 import { takePhotoRoutine } from '../../actions/applicationActions';
 
-import { headerStyle } from '../../common/navigationOptions';
+import { debounceTaps } from '../../common/commonHelpers';
+import { headerStyle } from '../../common/navigationHelpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
   },
 });
 
-class ScanScreen extends Component {
+class ScanScreen extends PureComponent {
   static navigationOptions = {
     title: "Take a picture",
     ...headerStyle,
@@ -51,7 +52,7 @@ class ScanScreen extends Component {
   constructor() {
     super();
 
-    this.scan = this.scan.bind(this);
+    this.scan = debounceTaps(this.scan.bind(this));
   }
 
   scan() {
@@ -67,17 +68,14 @@ class ScanScreen extends Component {
           }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
+          orientation="portrait"
         >
           <View style={styles.camera}>
             {/* <Text style={styles.text}>List of scanned letters goes here</Text> */}
-            {
-              this.props.loading
-                ? <Text style={styles.text}>Loading</Text>
-                : <RoundButton
-                    iconSource={require('./ScanIcon.png')}
-                    onPress={this.scan}
-                  />
-            }
+            <RoundButton
+              iconSource={require('./ScanIcon.png')}
+              onPress={this.scan}
+            />
           </View>
         </Camera>
       </View>
@@ -85,8 +83,10 @@ class ScanScreen extends Component {
   }
 }
 
-export default connect(null, dispatch => ({
-  takePhotoRoutine(photo) {
-    dispatch(takePhotoRoutine(photo))
-  }
-}))(ScanScreen);
+const mapDispatchToProps = dispatch => ({
+  takePhotoRoutine(camera) {
+    return dispatch(takePhotoRoutine(camera));
+  },
+});
+
+export default connect(null, mapDispatchToProps)(ScanScreen);

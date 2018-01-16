@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, StyleSheet, View, Image, Text } from 'react-native';
 import RNRestart from 'react-native-restart';
@@ -8,7 +8,7 @@ import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
 
-import { headerStyle } from '../../common/navigationOptions';
+import { headerStyle } from '../../common/navigationHelpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -27,22 +27,13 @@ const styles = StyleSheet.create({
     marginTop: 35,
     width: 150,
   },
-  bottom: {
-    alignSelf: 'flex-end',
-  },
 });
 
-class SuccessScreen extends Component {
+class SuccessScreen extends PureComponent {
   static navigationOptions = {
     title: "Success",
     ...headerStyle,
   };
-
-  constructor() {
-    super();
-
-    this.restartApp = this.restartApp.bind(this);
-  }
 
   componentDidMount() {
     if (this._confettiView) {
@@ -65,13 +56,15 @@ class SuccessScreen extends Component {
     return lang.label;
   }
 
-  restartApp() {
+  setStorageAndRestart() {
     AsyncStorage
       .setItem('scanMore', 'true')
       .then(() => RNRestart.Restart());
   }
 
   render() {
+    const { email, language } = this.props;
+
     return (
       <View style={styles.container}>
         <Confetti
@@ -84,15 +77,14 @@ class SuccessScreen extends Component {
         </PrimaryText>
         <Image source={require('./TickIcon.png')} style={styles.image} />
         <SecondaryText>
-          <Text style={styles.bold}>{this.computeLanguageLabel(this.props.language)}</Text> translation{"\n"}
+          <Text style={styles.bold}>{this.computeLanguageLabel(language)}</Text> translation{"\n"}
           will be sent to{"\n"}
-          <Text style={styles.bold}>{this.props.email}</Text>{"\n"}
+          <Text style={styles.bold}>{email}</Text>{"\n"}
           in five minutes
         </SecondaryText>
         <RectangularButton
           accessibilityLabel="Continue scanning the paper mails"
-          onPress={this.restartApp}
-          style={styles.bottom}
+          onPress={this.setStorageAndRestart}
           title="Scan more"
         />
       </View>
@@ -100,11 +92,11 @@ class SuccessScreen extends Component {
   }
 }
 
-export default connect(
-  ({ application }) => ({
-    language: application.language,
-    languages: application.languages,
-    translation: application.translation,
-    email: application.email,
-  })
-)(SuccessScreen);
+const mapStateToProps = ({ application }) => ({
+  language: application.language,
+  languages: application.languages,
+  translation: application.translation,
+  email: application.email,
+});
+
+export default connect(mapStateToProps)(SuccessScreen);

@@ -1,11 +1,15 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import TranslationForm from '../../components/TranslationForm/TranslationForm';
-import { changeLanguage, selectTranslation } from '../../actions/applicationActions';
+import {
+  changeLanguage,
+  selectTranslation,
+} from '../../actions/applicationActions';
 
-import { headerStyle } from '../../common/navigationOptions';
+import { headerStyle } from '../../common/navigationHelpers';
+import { debounceTaps } from '../../common/commonHelpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,42 +20,51 @@ const styles = StyleSheet.create({
   },
 });
 
-class TranslationScreen extends Component {
+class TranslationScreen extends PureComponent {
   static navigationOptions = {
     title: "Your language",
     ...headerStyle,
   };
+
+  constructor() {
+    super();
+
+    this.selectTranslation = debounceTaps(this.selectTranslation.bind(this));
+  }
 
   selectTranslation(translation) {
     this.props.selectTranslation(translation);
   }
 
   render() {
+    const { changeLanguage, language, languages } = this.props;
+
     return (
       <View style={styles.container}>
         <TranslationForm
           onHumanTranslationPress={() => this.selectTranslation('human')}
           onMachineTranslationPress={() => this.selectTranslation('machine')}
-          onLanguageChange={language => this.props.changeLanguage(language)}
-          language={this.props.language}
-          languages={this.props.languages}
+          onLanguageChange={language => changeLanguage(language)}
+          language={language}
+          languages={languages}
         />
       </View>
     );
   }
 }
 
-export default connect(
-  ({ application }) => ({
-    language: application.language,
-    languages: application.languages,
-  }),
-  dispatch => ({
-    changeLanguage(language) {
-      dispatch(changeLanguage(language))
-    },
-    selectTranslation(translation) {
-      dispatch(selectTranslation(translation))
-    },
-  })
-)(TranslationScreen);
+const mapStateToProps = ({ application }) => ({
+  language: application.language,
+  languages: application.languages,
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeLanguage(language) {
+    dispatch(changeLanguage(language));
+  },
+  selectTranslation(translation) {
+    dispatch(selectTranslation(translation));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TranslationScreen);

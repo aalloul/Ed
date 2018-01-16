@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const IconButton = ({ onPress, buttonStyle, iconSource, iconStyle, title, titleStyle, price }) => (
+const IconButton = ({ buttonStyle, iconSource, iconStyle, onPress, price, title, titleStyle }) => (
   <TouchableHighlight onPress={onPress}>
     <View style={[styles.button, buttonStyle]}>
       <Image style={[styles.icon, iconStyle]} source={iconSource} />

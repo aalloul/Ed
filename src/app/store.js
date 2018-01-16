@@ -7,5 +7,12 @@ import actionsQueue from '../middlewares/actionsQueue';
 
 import reducers from '../reducers';
 
+const middlewares = [
+  thunk,
+  sendStatistics,
+  storeUserDetails,
+  actionsQueue,
+];
+
 // Connect our store to the reducers
-export default createStore(reducers, applyMiddleware(thunk, storeUserDetails, sendStatistics, actionsQueue));
+export default createStore(reducers, applyMiddleware(...middlewares));
