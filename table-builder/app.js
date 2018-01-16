@@ -1,7 +1,5 @@
 'use strict';
 
-const fs = require('fs');
-
 const DEBUG = {
   rowDisjointLines: false,
   rowsBetweenDisjointLines: false,
@@ -52,9 +50,13 @@ function getDisjointLines(points, type = DISJOINT_LINES.VERTICAL) {
 }
 
 function getSubsetBetweenLines(points, start, stop, type = DISJOINT_LINES.VERTICAL) {
-  return type === DISJOINT_LINES.VERTICAL
+  const subset = type === DISJOINT_LINES.VERTICAL
     ? points.filter(({ from_x, to_x }) => from_x >= start && to_x <= stop)
     : points.filter(({ from_y, to_y }) => from_y >= start && to_y <= stop);
+
+  debugger;
+
+  return subset;
 }
 
 /**
@@ -93,9 +95,10 @@ function groupPointsByRows(rows) {
     columns[i] = groupPoints(rows[i], disjointLines, DISJOINT_LINES.VERTICAL);
   }
 
+  console.log('columns', columns);
+
   return columns;
 }
-
 
 // todo:pavlik build points recursively unless all points are processed
 
@@ -105,36 +108,34 @@ const getBoxWidth = ({ from_x, to_x }) => getWidth(from_x, to_x);
 
 // safe implementation for double numbers
 const isEqual = (a, b, EPSILON = 0.001) => Math.abs(Number(a) - Number(b)) <= EPSILON;
-
-let inc = 6;
+const isNotInternalTable = once => !once;
 
 // build HTML table from result columns
-function buildTableColumn({ width, blocks }, totalWidth, totalHeight) {
+function buildTableColumn({ width, blocks }, totalWidth, totalHeight, once) {
   function renderBlocks() {
-    return blocks.map(getWordFromPoint).filter(Boolean).join('<br>');
+    return `
+      <td valign="top" width="${coordToPercents(width, totalWidth)}%">
+          ${blocks.map(getWordFromPoint).filter(Boolean).join('<br>')}
+      </td>
+    `;
   }
 
-  const json = JSON.stringify({ points: blocks, width: totalWidth, height: totalHeight });
+  function renderInternalTable() {
+    const internalTableData = { points: blocks, width: totalWidth, height: totalHeight, once: true };
 
-  return `
-    <td valign="top" width="${coordToPercents(width, totalWidth)}%">
-      ${
-        renderBlocks()
-      }
-    </td>
-  `;
+    return `
+      <td>
+        ${build(internalTableData)}
+      </td>
+    `;
+  }
 
-  // todo finish it
-  return `
-    <td>
-      ${Array.isArray(cell[0]) && Array.isArray(cell[0][0])
-        ? buildTable(cell)
-        : cell.word}
-    </td>
-  `;
+  return isNotInternalTable(once) && blocks.length > 1
+    ? renderInternalTable()
+    : renderBlocks();
 }
 
-function buildTableRow(groupedColumn, totalWidth, totalHeight) {
+function buildTableRow(groupedColumn, totalWidth, totalHeight, once) {
   // to preserve formatting add gap columns
   let left = 0;
   const spacedColumns = [];
@@ -143,7 +144,11 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
       return;
     }
 
-    if (!isEqual(columnBlocks[0].from_x, left)) {
+    function shouldAddFirstSpacedColumn() {
+      return !isEqual(columnBlocks[0].from_x, left) && isNotInternalTable(once);
+    }
+
+    if (shouldAddFirstSpacedColumn()) {
       spacedColumns.push({
         width: getWidth(columnBlocks[0].from_x, left),
         blocks: [],
@@ -162,7 +167,14 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
   });
 
   const lastColumnBlocks = groupedColumn[groupedColumn.length - 1] || [];
-  if (lastColumnBlocks.length && !isEqual(lastColumnBlocks[0].to_x, totalWidth)) {
+
+  function shouldAddLastSpacedColumn() {
+    return lastColumnBlocks.length
+      && !isEqual(lastColumnBlocks[0].to_x, totalWidth)
+      && isNotInternalTable(once);
+  }
+
+  if (shouldAddLastSpacedColumn()) {
     spacedColumns.push({
       width: getWidth(totalWidth, lastColumnBlocks[0].to_x),
       blocks: [],
@@ -177,7 +189,7 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
         <table width="100%" cellspacing="0" cellpadding="0" border="0">
           <tr>
             ${spacedColumns.map(
-              columnDescriptor => buildTableColumn(columnDescriptor, totalWidth, totalHeight)
+              columnDescriptor => buildTableColumn(columnDescriptor, totalWidth, totalHeight, once)
             ).join('')}
           </tr>
         </table>
@@ -186,32 +198,28 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
   `;
 }
 
-function buildTable(groupedColumns, totalWidth, totalHeight) {
+function buildTable(groupedColumns, totalWidth, totalHeight, once) {
   return `
     <table width="100%" cellspacing="0" cellpadding="0" border="0">
-      ${groupedColumns.map(groupedColumn => buildTableRow(groupedColumn, totalWidth, totalHeight)).join('')}
+      ${groupedColumns.map(groupedColumn => buildTableRow(groupedColumn, totalWidth, totalHeight, once)).join('')}
     </table>
   `;
 }
 
 // console.log('overall result', buildTable(columns));
 
-function build({ points, width: totalWidth, height: totalHeight }) {
+function build({ points, width: totalWidth, height: totalHeight, once = false }) {
   const disjointLines = getDisjointLines(points, DISJOINT_LINES.HORIZONTAL);
   const rows = groupPoints(points, disjointLines, DISJOINT_LINES.HORIZONTAL);
   const columns = groupPointsByRows(rows);
 
-  console.log('disjointLines', disjointLines);
-  console.log('rows', rows);
-  console.log('columns', columns);
-
-  return buildTable(columns, totalWidth, totalHeight);
+  return buildTable(columns, totalWidth, totalHeight, once);
 }
 
 // For development environment take data from table folder and don't start the server
 if ('NODE_ENV' in process.env && process.env.NODE_ENV === 'development') {
-  // const fs = require('fs');
-  const input = require('./5');
+  const fs = require('fs');
+  const input = require('./4');
   const result = build(input);
 
   fs.writeFile("./table.html", result, function(err) {

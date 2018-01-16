@@ -1,0 +1,69 @@
+{
+  "points": [
+    {
+      "from_y": 92,
+      "from_x": 92,
+      "word": "first",
+      "to_x": 461,
+      "to_y": 461
+    },
+    {
+      "from_y": 92,
+      "from_x": 923,
+      "word": "third",
+      "to_x": 1200,
+      "to_y": 461
+    },
+    {
+      "from_y": 554,
+      "from_x": 92,
+      "word": "fourth",
+      "to_x": 830,
+      "to_y": 923
+    },
+    {
+      "from_y": 554,
+      "from_x": 923,
+      "word": "fifth",
+      "to_x": 1200,
+      "to_y": 738
+    },
+    {
+      "from_y": 785,
+      "from_x": 923,
+      "word": "sixth",
+      "to_x": 1200,
+      "to_y": 923
+    },
+    {
+      "from_y": 1015,
+      "from_x": 92,
+      "word": "seventh",
+      "to_x": 277,
+      "to_y": 1384
+    },
+    {
+      "from_y": 1015,
+      "from_x": 369,
+      "word": "eighth",
+      "to_x": 1200,
+      "to_y": 1154
+    },
+    {
+      "from_y": 1246,
+      "from_x": 369,
+      "word": "ninth",
+      "to_x": 830,
+      "to_y": 1384
+    },
+    {
+      "from_y": 1246,
+      "from_x": 923,
+      "word": "tenth",
+      "to_x": 1200,
+      "to_y": 1384
+    }
+  ],
+  "height": 1600,
+  "width": 1200
+}
