@@ -107,6 +107,12 @@ function createSignIn(onInput, onPress) {
   return debounceTaps(signIn);
 }
 
+const renderError = (errorText) => {
+  if (errorText) {
+    return <Text>{errorText}</Text>;
+  }
+};
+
 const EmailForm = ({ onPress, onInput, errorText, resetError, email }) => (
   <View style={styles.container}>
     <PrimaryText>
@@ -136,7 +142,7 @@ const EmailForm = ({ onPress, onInput, errorText, resetError, email }) => (
       value={email}
     />
 
-    <Text>{errorText}</Text>
+    { renderError(errorText) }
 
     <IconButton
       onPress={onPress}

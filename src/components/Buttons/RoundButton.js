@@ -35,15 +35,15 @@ const ActiveButton =  ({ buttonProps, onPress, iconSource, iconStyle, loading })
   />
 );
 
-const ScanButton = (props) => {
+const RoundButton = (props) => {
   return props.loading
     ? <DisabledButton {...props} />
     : <ActiveButton {...props} />
 };
 
-ScanButton.displayName = 'ScanButton';
+RoundButton.displayName = 'RoundButton';
 
-ScanButton.propTypes = {
+RoundButton.propTypes = {
   onPress: PropTypes.func.isRequired,
   iconSource: PropTypes.number.isRequired,
   iconStyle: PropTypes.object,
@@ -51,10 +51,10 @@ ScanButton.propTypes = {
   loading: PropTypes.bool,
 };
 
-ScanButton.defaultProps = {
+RoundButton.defaultProps = {
   iconStyle: {},
   buttonProps: {},
   loading: false,
 };
 
-export default ScanButton;
+export default RoundButton;

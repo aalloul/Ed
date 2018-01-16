@@ -1,4 +1,4 @@
-import { generateBasicStatisticsRequest} from '../common/requestDataHelpers';
+import { generateBasicStatisticsRequest } from '../common/requestDataHelpers';
 import { SCREEN_START, screenStart } from '../actions/statisticsActions';
 import { getCurrentRouteName } from '../common/navigationHelpers';
 

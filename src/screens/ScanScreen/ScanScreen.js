@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import Camera from 'react-native-camera';
 
-import ScanButton from '../../components/Buttons/ScanButton';
+import RoundButton from '../../components/Buttons/RoundButton';
 import { takePhotoRoutine } from '../../actions/applicationActions';
 
 import { debounceTaps } from '../../common/commonHelpers';
@@ -72,7 +72,7 @@ class ScanScreen extends PureComponent {
         >
           <View style={styles.camera}>
             {/* <Text style={styles.text}>List of scanned letters goes here</Text> */}
-            <ScanButton
+            <RoundButton
               iconSource={require('./ScanIcon.png')}
               onPress={this.scan}
             />
