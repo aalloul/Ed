@@ -62,7 +62,7 @@ if __name__=="__main__":
     """ Small script to create new fixtures as we add more test cases to the 
     back-end API.
     """
-    filename = "tmp.jpeg"
+    filename = "/Users/adamalloul/Pictures/1475621197959.jpg"
 
     im = read_image(filename)
 
@@ -70,8 +70,8 @@ if __name__=="__main__":
 
     ocr_res = get_ocr_result(get_ocr_payload(im))
 
-    with open(filename.replace("jpeg", "json"), "w") as f:
+    with open("test_image_no_text.json", "w") as f:
         dump(ocr_fix, f, indent=4)
 
-    with open(filename.replace(".jpeg", "_ocr.json"), "w") as f:
+    with open("test_image_no_text_ocr.json", "w") as f:
         dump(ocr_res, f, indent=4)
