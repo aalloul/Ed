@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Image } from 'react-native';
+import { ActivityIndicator, StyleSheet, Image } from 'react-native';
 
 import ActionButton from 'react-native-action-button';
 
@@ -16,7 +16,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const RoundButton = ({ onPress, iconSource, iconStyle, buttonProps }) => (
+const DisabledButton = ({ buttonProps, onPress, iconSource, iconStyle, loading }) => (
+  <ActionButton
+    buttonColor="#555"
+    icon={<ActivityIndicator size="large" color="#00ff00" />}
+    position="center"
+    {...buttonProps}
+  />
+);
+
+const ActiveButton =  ({ buttonProps, onPress, iconSource, iconStyle, loading }) => (
   <ActionButton
     buttonColor="rgba(80, 210, 194, 1)"
     icon={<Image source={iconSource} style={[styles.fabIcon, iconStyle]} />}
@@ -26,6 +35,12 @@ const RoundButton = ({ onPress, iconSource, iconStyle, buttonProps }) => (
   />
 );
 
+const RoundButton = (props) => {
+  return props.loading
+    ? <DisabledButton {...props} />
+    : <ActiveButton {...props} />
+};
+
 RoundButton.displayName = 'RoundButton';
 
 RoundButton.propTypes = {
@@ -33,11 +48,13 @@ RoundButton.propTypes = {
   iconSource: PropTypes.number.isRequired,
   iconStyle: PropTypes.object,
   buttonProps: PropTypes.object,
+  loading: PropTypes.bool,
 };
 
 RoundButton.defaultProps = {
   iconStyle: {},
   buttonProps: {},
+  loading: false,
 };
 
 export default RoundButton;

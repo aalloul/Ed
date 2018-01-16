@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 
 import GoogleSignIn from 'react-native-google-sign-in';
 
 import PrimaryText from '../Texts/PrimaryText';
 import IconButton from '../Buttons/IconButton';
 import DividerText from '../Texts/DividerText';
+import { debounceTaps } from '../../common/commonHelpers';
 
 const styles = StyleSheet.create({
   container: {
@@ -68,7 +69,9 @@ const styles = StyleSheet.create({
 });
 
 function createSignIn(onInput, onPress) {
-  return function() {
+  function signIn() {
+    console.log('sign in');
+
     GoogleSignIn
       .configure({
         // iOS
@@ -100,9 +103,17 @@ function createSignIn(onInput, onPress) {
         onPress();
       });
   }
+
+  return debounceTaps(signIn);
 }
 
-const EmailForm = ({ onPress, onInput, email }) => (
+const renderError = (errorText) => {
+  if (errorText) {
+    return <Text>{errorText}</Text>;
+  }
+};
+
+const EmailForm = ({ onPress, onInput, errorText, resetError, email }) => (
   <View style={styles.container}>
     <PrimaryText>
       Where should we send{'\n'}
@@ -125,10 +136,13 @@ const EmailForm = ({ onPress, onInput, email }) => (
     <TextInput
       keyboardType="email-address"
       onChangeText={onInput}
+      onFocus={resetError}
       placeholder="Email"
       style={styles.input}
       value={email}
     />
+
+    { renderError(errorText) }
 
     <IconButton
       onPress={onPress}
@@ -145,6 +159,12 @@ EmailForm.displayName = 'EmailForm';
 
 EmailForm.propTypes = {
   onPress: PropTypes.func.isRequired,
+  resetError: PropTypes.func.isRequired,
+  errorText: PropTypes.string,
+};
+
+EmailForm.defaultProps = {
+  errorText: '',
 };
 
 export default EmailForm;

@@ -20,18 +20,6 @@ export function generateTranslationRequest(getState) {
   };
 }
 
-export function getCurrentRouteName(navigationState) {
-  if (!navigationState) {
-    return null;
-  }
-  const route = navigationState.routes[navigationState.index];
-  // dive into nested navigators
-  if (route.routes) {
-    return getCurrentRouteName(route);
-  }
-  return route.routeName;
-}
-
 export function generateBasicStatisticsRequest(getState, action, dispatch) {
   // fix first time setting of the sessionStart
   const sessionStart = action.type === APP_START && !getState().statistics.session_start
@@ -62,6 +50,5 @@ export function generateBasicStatisticsRequest(getState, action, dispatch) {
 
 export default {
   generateTranslationRequest,
-  getCurrentRouteName,
   generateBasicStatisticsRequest,
 };

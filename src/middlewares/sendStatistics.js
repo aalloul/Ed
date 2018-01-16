@@ -1,5 +1,6 @@
-import { generateBasicStatisticsRequest, getCurrentRouteName } from '../common/requestDataHelpers';
+import { generateBasicStatisticsRequest } from '../common/requestDataHelpers';
 import { SCREEN_START, screenStart } from '../actions/statisticsActions';
+import { getCurrentRouteName } from '../common/navigationHelpers';
 
 function sendStatisticsRequest(statisticsRequest) {
   return fetch('https://reporting-dot-linear-asset-184705.appspot.com/events', {
@@ -37,7 +38,6 @@ export default function sendStatistics({ getState, dispatch }) {
     if (nextScreen !== currentScreen) {
       statisticsRequest.screen_end = Date.now();
 
-      console.log('statisticsRequest before changing route', statisticsRequest);
       sendStatisticsRequest(statisticsRequest);
 
       // remove screen_end from statisticsRequest in functional way
