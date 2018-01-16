@@ -1,9 +1,9 @@
 'use strict';
 
 const DEBUG = {
-  rowDisjointLines: false,
-  rowsBetweenDisjointLines: false,
-  columnsBetweenDisjointLines: false,
+  rowDisjointLines: true,
+  rowsBetweenDisjointLines: true,
+  columnsBetweenDisjointLines: true,
 };
 
 const DOCUMENT_WIDTH_POINTS = 1200;
@@ -54,8 +54,6 @@ function getSubsetBetweenLines(points, start, stop, type = DISJOINT_LINES.VERTIC
     ? points.filter(({ from_x, to_x }) => from_x >= start && to_x <= stop)
     : points.filter(({ from_y, to_y }) => from_y >= start && to_y <= stop);
 
-  debugger;
-
   return subset;
 }
 
@@ -94,8 +92,6 @@ function groupPointsByRows(rows) {
 
     columns[i] = groupPoints(rows[i], disjointLines, DISJOINT_LINES.VERTICAL);
   }
-
-  console.log('columns', columns);
 
   return columns;
 }
