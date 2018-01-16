@@ -1,9 +1,11 @@
 'use strict';
 
+const fs = require('fs');
+
 const DEBUG = {
-  rowDisjointLines: true,
-  rowsBetweenDisjointLines: true,
-  columnsBetweenDisjointLines: true,
+  rowDisjointLines: false,
+  rowsBetweenDisjointLines: false,
+  columnsBetweenDisjointLines: false,
 };
 
 const DOCUMENT_WIDTH_POINTS = 1200;
@@ -104,11 +106,21 @@ const getBoxWidth = ({ from_x, to_x }) => getWidth(from_x, to_x);
 // safe implementation for double numbers
 const isEqual = (a, b, EPSILON = 0.001) => Math.abs(Number(a) - Number(b)) <= EPSILON;
 
+let inc = 6;
+
 // build HTML table from result columns
-function buildTableColumn({ width, blocks }, totatWidth, totalHeight) {
+function buildTableColumn({ width, blocks }, totalWidth, totalHeight) {
+  function renderBlocks() {
+    return blocks.map(getWordFromPoint).filter(Boolean).join('<br>');
+  }
+
+  const json = JSON.stringify({ points: blocks, width: totalWidth, height: totalHeight });
+
   return `
-    <td valign="top" width="${coordToPercents(width, totatWidth)}%">
-      ${blocks.map(getWordFromPoint).filter(Boolean).join('<br>')}
+    <td valign="top" width="${coordToPercents(width, totalWidth)}%">
+      ${
+        renderBlocks()
+      }
     </td>
   `;
 
@@ -157,7 +169,7 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
     });
   }
 
-  console.log({ spacedColumns });
+  // console.log({ spacedColumns });
 
   return `
     <tr>
@@ -184,17 +196,21 @@ function buildTable(groupedColumns, totalWidth, totalHeight) {
 
 // console.log('overall result', buildTable(columns));
 
-function build({ points, totalWidth, totalHeight }) {
+function build({ points, width: totalWidth, height: totalHeight }) {
   const disjointLines = getDisjointLines(points, DISJOINT_LINES.HORIZONTAL);
   const rows = groupPoints(points, disjointLines, DISJOINT_LINES.HORIZONTAL);
   const columns = groupPointsByRows(rows);
+
+  console.log('disjointLines', disjointLines);
+  console.log('rows', rows);
+  console.log('columns', columns);
 
   return buildTable(columns, totalWidth, totalHeight);
 }
 
 // For development environment take data from table folder and don't start the server
 if ('NODE_ENV' in process.env && process.env.NODE_ENV === 'development') {
-  const fs = require('fs');
+  // const fs = require('fs');
   const input = require('./5');
   const result = build(input);
 
