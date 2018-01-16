@@ -24,6 +24,18 @@ export default props => (
       __html: 'body { margin: 0; padding: 0; font-family: "Lato", sans-serif; font-size: 15px; background: #f5f2f1; color: #714f4f; -webkit-font-smoothing: antialiased; }'
     }} />
 
+    <script dangerouslySetInnerHTML={{
+      __html: `
+        (function(d) {
+          var g = d.createElement('script');
+          g.type = 'text/javascript';
+          g.src = d.location.protocol + '//s.growity.me/cj76v2o9cwapc0131tqxxfn57.js';
+          d.head.appendChild(g);
+        })(document);
+      `
+    }}>
+    </script>
+
     <div className="content">
       <Header />
       <Router
