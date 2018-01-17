@@ -23,7 +23,6 @@ export default props => (
     <style dangerouslySetInnerHTML={{
       __html: 'body { margin: 0; padding: 0; font-family: "Lato", sans-serif; font-size: 15px; background: #f5f2f1; color: #714f4f; -webkit-font-smoothing: antialiased; }'
     }} />
-
     <div className="content">
       <Header />
       <Router
@@ -48,8 +47,65 @@ export default props => (
     </div>
 
     <NotifyModal />
-    <FbMessenger />
+    <script dangerouslySetInnerHTML={{
+      __html: `
+      (function (window) {
+        { 
+          // browser
+          var nVer = navigator.appVersion;
+          var nAgt = navigator.userAgent;
+    
+          // mobile version
+          var mobile = /Mobile|mini|Fennec|Android|iP(ad|od|hone)/.test(nVer);
+          
+          if (mobile === false) {
+            return;
+          }
 
+          // system
+            var os = undefined;
+            var clientStrings = [
+                {s:'Android', r:/Android/},
+                {s:'iOS', r:/(iPhone|iPad|iPod)/}
+            ];
+
+            for (var id in clientStrings) {
+                var cs = clientStrings[id];
+                if (cs.r.test(nAgt)) {
+                    os = cs.s;
+                    break;
+                }
+            }
+    
+            if (/Windows/.test(os)) {
+                os = 'Windows';
+            }
+        }
+    
+        window.jscd = {
+            mobile: mobile,
+            os: os,
+        };
+    }(this));
+
+    if (jscd.mobile) {
+
+    var buttonClass = '';
+    if (jscd.os === 'iOS') {
+      buttonClass = 'Android';
+    } else if (jscd.os === 'Android') {
+      buttonClass = 'iOS';
+    }
+    
+    var buttons=document.getElementsByClassName(buttonClass);
+
+    Object.values(buttons).forEach(function(item) {
+      item.style.display = 'none';
+    });
+  };
+
+    `}}>
+    </script>
     <script dangerouslySetInnerHTML={{
       __html: `
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
