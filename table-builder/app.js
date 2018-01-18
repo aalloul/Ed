@@ -50,11 +50,9 @@ function getDisjointLines(points, type = DISJOINT_LINES.VERTICAL) {
 }
 
 function getSubsetBetweenLines(points, start, stop, type = DISJOINT_LINES.VERTICAL) {
-  const subset = type === DISJOINT_LINES.VERTICAL
+  return type === DISJOINT_LINES.VERTICAL
     ? points.filter(({ from_x, to_x }) => from_x >= start && to_x <= stop)
     : points.filter(({ from_y, to_y }) => from_y >= start && to_y <= stop);
-
-  return subset;
 }
 
 /**
@@ -104,10 +102,10 @@ const getBoxWidth = ({ from_x, to_x }) => getWidth(from_x, to_x);
 
 // safe implementation for double numbers
 const isEqual = (a, b, EPSILON = 0.001) => Math.abs(Number(a) - Number(b)) <= EPSILON;
-const isNotInternalTable = once => !once;
+const isNotInternalTable = isInternalTable => !isInternalTable;
 
 // build HTML table from result columns
-function buildTableColumn({ width, blocks }, totalWidth, totalHeight, once) {
+function buildTableColumn({ width, blocks }, totalWidth, totalHeight, isInternalTable) {
   function renderBlocks() {
     return `
       <td valign="top" width="${coordToPercents(width, totalWidth)}%">
@@ -117,7 +115,7 @@ function buildTableColumn({ width, blocks }, totalWidth, totalHeight, once) {
   }
 
   function renderInternalTable() {
-    const internalTableData = { points: blocks, width: totalWidth, height: totalHeight, once: true };
+    const internalTableData = { points: blocks, width: totalWidth, height: totalHeight, isInternalTable: true };
 
     return `
       <td>
@@ -126,12 +124,12 @@ function buildTableColumn({ width, blocks }, totalWidth, totalHeight, once) {
     `;
   }
 
-  return isNotInternalTable(once) && blocks.length > 1
+  return isNotInternalTable(isInternalTable) && blocks.length > 1
     ? renderInternalTable()
     : renderBlocks();
 }
 
-function buildTableRow(groupedColumn, totalWidth, totalHeight, once) {
+function buildTableRow(groupedColumn, totalWidth, totalHeight, isInternalTable) {
   // to preserve formatting add gap columns
   let left = 0;
   const spacedColumns = [];
@@ -140,11 +138,9 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight, once) {
       return;
     }
 
-    function shouldAddFirstSpacedColumn() {
-      return !isEqual(columnBlocks[0].from_x, left) && isNotInternalTable(once);
-    }
+    const shouldAddFirstSpacedColumn = !isEqual(columnBlocks[0].from_x, left) && isNotInternalTable(isInternalTable);
 
-    if (shouldAddFirstSpacedColumn()) {
+    if (shouldAddFirstSpacedColumn) {
       spacedColumns.push({
         width: getWidth(columnBlocks[0].from_x, left),
         blocks: [],
@@ -164,13 +160,11 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight, once) {
 
   const lastColumnBlocks = groupedColumn[groupedColumn.length - 1] || [];
 
-  function shouldAddLastSpacedColumn() {
-    return lastColumnBlocks.length
-      && !isEqual(lastColumnBlocks[0].to_x, totalWidth)
-      && isNotInternalTable(once);
-  }
+  const shouldAddLastSpacedColumn = lastColumnBlocks.length
+    && !isEqual(lastColumnBlocks[0].to_x, totalWidth)
+    && isNotInternalTable(isInternalTable);
 
-  if (shouldAddLastSpacedColumn()) {
+  if (shouldAddLastSpacedColumn) {
     spacedColumns.push({
       width: getWidth(totalWidth, lastColumnBlocks[0].to_x),
       blocks: [],
@@ -185,7 +179,7 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight, once) {
         <table width="100%" cellspacing="0" cellpadding="0" border="0">
           <tr>
             ${spacedColumns.map(
-              columnDescriptor => buildTableColumn(columnDescriptor, totalWidth, totalHeight, once)
+              columnDescriptor => buildTableColumn(columnDescriptor, totalWidth, totalHeight, isInternalTable)
             ).join('')}
           </tr>
         </table>
@@ -194,22 +188,25 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight, once) {
   `;
 }
 
-function buildTable(groupedColumns, totalWidth, totalHeight, once) {
+function buildTable(groupedColumns, totalWidth, totalHeight, isInternalTable) {
   return `
     <table width="100%" cellspacing="0" cellpadding="0" border="0">
-      ${groupedColumns.map(groupedColumn => buildTableRow(groupedColumn, totalWidth, totalHeight, once)).join('')}
+      ${groupedColumns.map(
+          groupedColumn => buildTableRow(groupedColumn, totalWidth, totalHeight, isInternalTable)
+        ).join('')
+      }
     </table>
   `;
 }
 
 // console.log('overall result', buildTable(columns));
 
-function build({ points, width: totalWidth, height: totalHeight, once = false }) {
+function build({ points, width: totalWidth, height: totalHeight, isInternalTable = false }) {
   const disjointLines = getDisjointLines(points, DISJOINT_LINES.HORIZONTAL);
   const rows = groupPoints(points, disjointLines, DISJOINT_LINES.HORIZONTAL);
   const columns = groupPointsByRows(rows);
 
-  return buildTable(columns, totalWidth, totalHeight, once);
+  return buildTable(columns, totalWidth, totalHeight, isInternalTable);
 }
 
 // For development environment take data from table folder and don't start the server
