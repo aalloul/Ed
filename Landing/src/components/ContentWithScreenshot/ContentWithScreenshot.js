@@ -1,8 +1,5 @@
 import glamorous from 'glamorous';
-
-const mediaQueries = {
-	phone: '@media only screen and (max-width: 1000px)',
-}
+import mediaQueries from '../Comon/mediaQueries';
 
 export default glamorous.div({
   alignItems:  'center',
@@ -12,7 +9,7 @@ export default glamorous.div({
   maxWidth:  '650px',
   textAlign:  'center',
   [mediaQueries.phone]: {
-    maxWidth: '1000px',
+    maxWidth: '700px',
     margin: '0px 20px',
   },
 });

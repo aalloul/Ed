@@ -2,7 +2,7 @@ import React from 'react';
 import glamorous from 'glamorous';
 
 const mediaQueries = {
-	phone: '@media only screen and (max-width: 1000px)',
+	phone: '@media only screen and (max-width: 700px)',
 }
 
 const Wrapper = glamorous.section({

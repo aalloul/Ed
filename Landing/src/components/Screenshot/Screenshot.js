@@ -1,7 +1,7 @@
 import glamorous from 'glamorous';
 
 const mediaQueries = {
-	phone: '@media only screen and (max-width: 1000px)',
+  phone: '@media only screen and (max-width: 700px)',
 }
 
 export default glamorous.div({
@@ -23,14 +23,16 @@ export default glamorous.div({
     top: '0',
     width: '100%',
     [mediaQueries.phone]: {
-      width: '0%',
+      display: 'none',
+      top: '-150px',
     },
+  },
+  [mediaQueries.phone]: {
+    position: 'absolute',
+    margin: '0px auto',
   },
 }, ({ type }) => ({
   success: {
-    [mediaQueries.phone]: {
-      display: 'none',
-    },
     ':before': {
       background: 'url("/img/4-Success.jpg") 0 78px no-repeat',
       backgroundSize: 'contain',
@@ -41,7 +43,10 @@ export default glamorous.div({
     },
     ':after': {
       backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.jpg")',
-    }
+    },
+    [mediaQueries.phone]: {
+      display: 'none',
+    },
   },
   scan: {
     ':before': {
@@ -51,14 +56,14 @@ export default glamorous.div({
       top: '57px',
       width: '75%',
       [mediaQueries.phone]: {
-        width: '100%',
+        height: '80%',
+        width: '90%',
+        top: '-50px',
+        left: '18px',
       },
     },
     ':after': {
       backgroundImage: 'url("/img/Samsung Galaxy S8 Midnight Black.jpg")',
-      [mediaQueries.phone]: {
-        display: 'none',
-      },
     }
   },
   translation: {
@@ -70,14 +75,14 @@ export default glamorous.div({
       top: '97px',
       width: '79%',
       [mediaQueries.phone]: {
-        width: '100%',
+        height: '80%',
+        width: '90%',
+        top: '-100px',
+        left: '18px',
       },
     },
     ':after': {
       backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.jpg")',
-      [mediaQueries.phone]: {
-        display: 'none',
-      },
     }
   },
   email: {
@@ -88,14 +93,14 @@ export default glamorous.div({
       top: '80px',
       width: '83%',
       [mediaQueries.phone]: {
-        width: '100%',
+        height: '80%',
+        width: '90%',
+        top: '-100px',
+        left: '18px',
       },
     },
     ':after': {
       backgroundImage: 'url("/img/Google Pixel 2 Just Black.png")',
-      [mediaQueries.phone]: {
-        display: 'none',
-      },
     }
   },
 }[type]));

@@ -7,7 +7,7 @@ import ContentWithScreenshot from '../ContentWithScreenshot/ContentWithScreensho
 import Screenshot from '../Screenshot/Screenshot';
 
 const mediaQueries = {
-	phone: '@media only screen and (max-width: 1000px)',
+  phone: '@media only screen and (max-width: 700px)',
 }
 
 const Wrapper = glamorous.div(({ reverse }) => ({
@@ -28,6 +28,9 @@ const Title = glamorous.h3({
   marginBottom:  '40px',
   [mediaQueries.phone]: {
     marginBottom: '10px',
+    fontSize: '38px',
+    paddingBottom: '540px',
+    width: '100%',
   },
 });
 
@@ -36,6 +39,7 @@ const Text = glamorous.p({
   position:  'relative',
   [mediaQueries.phone]: {
     margin: '10px 0px',
+    fontSize: '30px',
   },
 });
 
@@ -46,10 +50,13 @@ const Number = glamorous.span({
   position:  'absolute',
   left:  '-85px',
   top:  '-60px',
+  [mediaQueries.phone]: {
+    left:  '-5px',
+    fontSize:  '80px',
+  },
 });
 
 const HiwStep = ({ number, title, type, reverse, children }) => (
-  
   <Wrapper reverse={reverse}>
     <Screenshot type={type} />
 

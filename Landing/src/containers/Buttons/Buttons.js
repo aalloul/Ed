@@ -2,10 +2,7 @@ import React from 'react';
 import glamorous from 'glamorous';
 
 import Button from '../../components/Button/Button';
-
-const mediaQueries = {
-	phone: '@media only screen and (max-width: 1000px)',
-}
+import mediaQueries from '../../components/Comon/mediaQueries';
 
 const Wrapper = glamorous.div({
   display: 'flex',
@@ -14,6 +11,7 @@ const Wrapper = glamorous.div({
   width: '100%',
   [mediaQueries.phone]: {
     flexDirection: 'column',
+    margin: '20px auto 40px',
   },
 });
 

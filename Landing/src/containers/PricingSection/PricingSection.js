@@ -3,8 +3,9 @@ import glamorous from 'glamorous';
 
 import Buttons from '../Buttons/Buttons';
 
+
 const mediaQueries = {
-	phone: '@media only screen and (max-width: 1000px)',
+	phone: '@media only screen and (max-width: 700px)',
 }
 
 const Wrapper = glamorous.section({
@@ -12,7 +13,7 @@ const Wrapper = glamorous.section({
   padding: '350px 0 250px',
   [mediaQueries.phone]: {
     background: 'none',
-    padding: '20px 0 20px',
+    padding: '0 20px',
   },
 });
 
@@ -29,21 +30,29 @@ const Price = glamorous.h2({
   fontSize: '60px',
   color: '#844728',
   mixBlendMode: 'difference',
+  [mediaQueries.phone]: {
+    fontSize: '40px',
+  },
 });
 
 const Trial = glamorous.ul({
   fontSize: '48px',
   display: 'flex',
   justifyContent: 'space-evenly',
-  marginTop: '125px',
+  margin: '125px auto 0px',
+  padding: '0px',
   [mediaQueries.phone]: {
     flexDirection: 'column',
+    marginTop: '20px',
   },
 });
   
 const Condition = glamorous.li({
   display: 'inline',
   fontSize: '24px',
+  [mediaQueries.phone]: {
+    fontSize: '30px',
+  },
 });
 
 export default () => (
