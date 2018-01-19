@@ -102,7 +102,6 @@ const getBoxWidth = ({ from_x, to_x }) => getWidth(from_x, to_x);
 
 // safe implementation for double numbers
 const isEqual = (a, b, EPSILON = 0.001) => Math.abs(Number(a) - Number(b)) <= EPSILON;
-const isNotInternalTable = isInternalTable => !isInternalTable;
 
 // build HTML table from result columns
 function buildTableColumn({ width, blocks }, totalWidth, totalHeight, isInternalTable) {
@@ -115,7 +114,12 @@ function buildTableColumn({ width, blocks }, totalWidth, totalHeight, isInternal
   }
 
   function renderInternalTable() {
-    const internalTableData = { points: blocks, width: totalWidth, height: totalHeight, isInternalTable: true };
+    const internalTableData = {
+      points: blocks,
+      width: totalWidth,
+      height: totalHeight,
+      isInternalTable: true,
+    };
 
     return `
       <td>
@@ -124,7 +128,7 @@ function buildTableColumn({ width, blocks }, totalWidth, totalHeight, isInternal
     `;
   }
 
-  return isNotInternalTable(isInternalTable) && blocks.length > 1
+  return !isInternalTable && blocks.length > 1
     ? renderInternalTable()
     : renderBlocks();
 }
@@ -138,7 +142,7 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight, isInternalTable) 
       return;
     }
 
-    const shouldAddFirstSpacedColumn = !isEqual(columnBlocks[0].from_x, left) && isNotInternalTable(isInternalTable);
+    const shouldAddFirstSpacedColumn = !isEqual(columnBlocks[0].from_x, left) && !isInternalTable;
 
     if (shouldAddFirstSpacedColumn) {
       spacedColumns.push({
@@ -162,7 +166,7 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight, isInternalTable) 
 
   const shouldAddLastSpacedColumn = lastColumnBlocks.length
     && !isEqual(lastColumnBlocks[0].to_x, totalWidth)
-    && isNotInternalTable(isInternalTable);
+    && !isInternalTable;
 
   if (shouldAddLastSpacedColumn) {
     spacedColumns.push({
