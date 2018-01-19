@@ -3,9 +3,9 @@ import glamorous from 'glamorous';
 
 import Buttons from '../Buttons/Buttons';
 
-
 const mediaQueries = {
-	phone: '@media only screen and (max-width: 700px)',
+  phone: '@media only screen and (max-width: 700px)',
+  tablet: '@media only screen and (min-width: 701px) and (max-width: 1000px)',
 }
 
 const Wrapper = glamorous.section({
@@ -32,6 +32,9 @@ const Price = glamorous.h2({
   mixBlendMode: 'difference',
   [mediaQueries.phone]: {
     fontSize: '40px',
+  },
+  [mediaQueries.tablet]: {
+    fontSize: '50px',
   },
 });
 

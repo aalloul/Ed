@@ -8,6 +8,7 @@ import Screenshot from '../Screenshot/Screenshot';
 
 const mediaQueries = {
   phone: '@media only screen and (max-width: 700px)',
+  tablet: '@media only screen and (min-width: 701px) and (max-width: 1000px)',
 }
 
 const Wrapper = glamorous.div(({ reverse }) => ({
@@ -32,6 +33,9 @@ const Title = glamorous.h3({
     paddingBottom: '540px',
     width: '100%',
   },
+  [mediaQueries.tablet]: {
+    fontSize: '45px',
+  },
 });
 
 const Text = glamorous.p({
@@ -40,6 +44,9 @@ const Text = glamorous.p({
   [mediaQueries.phone]: {
     margin: '10px 0px',
     fontSize: '30px',
+  },
+  [mediaQueries.tablet]: {
+    fontSize: '33px',
   },
 });
 
@@ -53,6 +60,9 @@ const Number = glamorous.span({
   [mediaQueries.phone]: {
     left:  '-5px',
     fontSize:  '80px',
+  },
+  [mediaQueries.tablet]: {
+    fontSize: '90px',
   },
 });
 

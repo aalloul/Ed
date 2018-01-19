@@ -95,7 +95,7 @@ export default glamorous.div({
       [mediaQueries.phone]: {
         height: '80%',
         width: '90%',
-        top: '-100px',
+        top: '-80px',
         left: '18px',
       },
     },
