@@ -29,7 +29,7 @@ const MenuItem = glamorous.a({
 export default () => (
   <Header>
     <Logo>
-      <img src="/img/smail_logo.png" width="100" />
+      <img src="/img/smail_logo.png" width="100" alt="SMail app logotype (envelop with @ sign inside)" />
     </Logo>
     <Menu>
       <MenuItem>Top</MenuItem>

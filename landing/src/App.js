@@ -6,6 +6,7 @@ import PrivacyPolicy from './routes/PrivacyPolicy';
 
 import Footer from './containers/Footer/Footer';
 import Header from './containers/Header/Header';
+import Favicons from './containers/Favicons/Favicons';
 import NotifyModal from './components/NotifyModal/NotifyModal';
 import FbMessenger from './components/FbMessenger/FbMessenger';
 
@@ -13,12 +14,13 @@ const Router = typeof document !== 'undefined'
   ? BrowserRouter
   : StaticRouter;
 
-// This context object contains the results of the render
-const context = {};
-
 export default props => (
   <React.Fragment>
     <title>{props.title}</title>
+
+    <meta name="description" content={props.description} />
+
+    <Favicons />
 
     <style dangerouslySetInnerHTML={{
       __html: 'body { margin: 0; padding: 0; font-family: "Lato", sans-serif; font-size: 15px; background: #f5f2f1; color: #714f4f; -webkit-font-smoothing: antialiased; }'
@@ -76,3 +78,6 @@ export default props => (
     </script>
   </React.Fragment>
 );
+
+// This context object contains the results of the render
+const context = {};
