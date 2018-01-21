@@ -120,18 +120,18 @@ const EmailForm = ({ onPress, onInput, errorText, resetError, email }) => (
       the translation
     </PrimaryText>
 
-    <IconButton
-      onPress={createSignIn(onInput, onPress)}
-      buttonStyle={styles.signInButton}
-      iconSource={require('./GoogleIcon.png')}
-      iconStyle={styles.signInIcon}
-      title="Sign In"
-      titleStyle={styles.signInTitle}
-    />
+    {/*<IconButton*/}
+      {/*onPress={createSignIn(onInput, onPress)}*/}
+      {/*buttonStyle={styles.signInButton}*/}
+      {/*iconSource={require('./GoogleIcon.png')}*/}
+      {/*iconStyle={styles.signInIcon}*/}
+      {/*title="Sign In"*/}
+      {/*titleStyle={styles.signInTitle}*/}
+    {/*/>*/}
 
-    <DividerText>
-      or
-    </DividerText>
+    {/*<DividerText>*/}
+      {/*or*/}
+    {/*</DividerText>*/}
 
     <TextInput
       keyboardType="email-address"
