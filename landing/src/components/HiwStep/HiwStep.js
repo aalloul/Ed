@@ -5,11 +5,8 @@ import glamorous from 'glamorous';
 import Buttons from '../../containers/Buttons/Buttons';
 import ContentWithScreenshot from '../ContentWithScreenshot/ContentWithScreenshot';
 import Screenshot from '../Screenshot/Screenshot';
+import mediaQueries from '../../common/mediaQueries';
 
-const mediaQueries = {
-  phone: '@media only screen and (max-width: 700px)',
-  tablet: '@media only screen and (min-width: 701px) and (max-width: 1000px)',
-}
 
 const Wrapper = glamorous.div(({ reverse }) => ({
   display:  'flex',

@@ -1,9 +1,6 @@
 import React from 'react';
 import glamorous from 'glamorous';
-
-const mediaQueries = {
-	phone: '@media only screen and (max-width: 700px)',
-}
+import mediaQueries from '../../common/mediaQueries';
 
 const Wrapper = glamorous.section({
   backgroundColor: '#e9ebee',

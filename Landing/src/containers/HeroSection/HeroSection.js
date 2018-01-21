@@ -4,7 +4,7 @@ import glamorous from 'glamorous';
 import Buttons from '../Buttons/Buttons';
 import Section from '../../components/ContentWithScreenshot/ContentWithScreenshot';
 import Screenshot from '../../components/Screenshot/Screenshot';
-import mediaQueries from '../../components/Comon/mediaQueries';
+import mediaQueries from '../../common/mediaQueries';
 
 const Wrapper = glamorous.section({
   background: '#172438',

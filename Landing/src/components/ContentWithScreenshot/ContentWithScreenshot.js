@@ -1,5 +1,5 @@
 import glamorous from 'glamorous';
-import mediaQueries from '../Comon/mediaQueries';
+import mediaQueries from '../../common/mediaQueries';
 
 export default glamorous.div({
   alignItems:  'center',

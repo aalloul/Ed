@@ -1,6 +1,6 @@
 import glamorous from 'glamorous';
 import consts from '../consts';
-import mediaQueries from '../Comon/mediaQueries';
+import mediaQueries from '../../common/mediaQueries';
 
 export default glamorous.a({
   fontSize: '30px',
