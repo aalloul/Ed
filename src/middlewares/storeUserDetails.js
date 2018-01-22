@@ -1,11 +1,13 @@
 import { AsyncStorage } from 'react-native';
-import { REQUEST_TRANSLATION_PROMISE, TAKE_PHOTO_PROMISE } from '../actions/applicationActions';
+import {
+  LOAD_STORED_USER_STATE,
+  REQUEST_TRANSLATION_PROMISE,
+  GO_TO_SCAN,
+} from '../actions/applicationActions';
 
 export default function storeUserDetails({ getState, dispatch }) {
   return next => async (action) => {
     const { language, email } = getState().application;
-
-    console.log('state', getState());
 
     if (action.type === REQUEST_TRANSLATION_PROMISE) {
       try {
@@ -17,24 +19,26 @@ export default function storeUserDetails({ getState, dispatch }) {
       }
     }
 
-    if (action.type === TAKE_PHOTO_PROMISE) {
-      const userDetails = await AsyncStorage.getItem('userDetails');
-
+    if (action.type === GO_TO_SCAN) {
       try {
+        const userDetails = await AsyncStorage.getItem('userDetails');
+
         if (userDetails) {
-          const parserUserDetails = JSON.parse(userDetails);
+          const parsedUserDetails = JSON.parse(userDetails);
 
           dispatch({
-            type: 'LOAD_STORED_USER_STATE',
-            ...parserUserDetails,
+            type: LOAD_STORED_USER_STATE,
+            ...parsedUserDetails,
           });
 
-          console.log('parsed', parserUserDetails);
+          console.log('parsed', parsedUserDetails);
         }
       } catch (e) {
         console.error('error loading userDetails', e);
       }
     }
+
+    console.log('state', getState());
 
     return next(action);
   }

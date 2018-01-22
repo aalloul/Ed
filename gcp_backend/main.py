@@ -122,13 +122,13 @@ def translate():
         return ans
     except Exception as ex:
         logger.error("exception = {}".format(ex.message))
-        return page_not_found(ex, request.data, str(request.headers))
+        return page_not_found(ex, request.data)
 
 
 @app.errorhandler(404)
-def page_not_found(e, req, rhead):
+def page_not_found(e, req):
     return jsonify({
         "error_message": e.message,
         # "received_request": req,
-        "request_header": rhead
+        # "request_header": rhead
     }), 404

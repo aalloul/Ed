@@ -94,7 +94,6 @@ function groupPointsByRows(rows) {
   return columns;
 }
 
-
 // todo:pavlik build points recursively unless all points are processed
 
 const getWordFromPoint = ({ word = '' }) => word.replace(/([^>])\n/g, '$1<br/>');
@@ -105,24 +104,36 @@ const getBoxWidth = ({ from_x, to_x }) => getWidth(from_x, to_x);
 const isEqual = (a, b, EPSILON = 0.001) => Math.abs(Number(a) - Number(b)) <= EPSILON;
 
 // build HTML table from result columns
-function buildTableColumn({ width, blocks }, totatWidth, totalHeight) {
-  return `
-    <td valign="top" width="${coordToPercents(width, totatWidth)}%">
-      ${blocks.map(getWordFromPoint).filter(Boolean).join('<br>')}
-    </td>
-  `;
+function buildTableColumn({ width, blocks }, totalWidth, totalHeight, isInternalTable) {
+  function renderBlocks() {
+    return `
+      <td valign="top" width="${coordToPercents(width, totalWidth)}%">
+          ${blocks.map(getWordFromPoint).filter(Boolean).join('<br>')}
+      </td>
+    `;
+  }
 
-  // todo finish it
-  return `
-    <td>
-      ${Array.isArray(cell[0]) && Array.isArray(cell[0][0])
-        ? buildTable(cell)
-        : cell.word}
-    </td>
-  `;
+  function renderInternalTable() {
+    const internalTableData = {
+      points: blocks,
+      width: totalWidth,
+      height: totalHeight,
+      isInternalTable: true,
+    };
+
+    return `
+      <td>
+        ${build(internalTableData)}
+      </td>
+    `;
+  }
+
+  return !isInternalTable && blocks.length > 1
+    ? renderInternalTable()
+    : renderBlocks();
 }
 
-function buildTableRow(groupedColumn, totalWidth, totalHeight) {
+function buildTableRow(groupedColumn, totalWidth, totalHeight, isInternalTable) {
   // to preserve formatting add gap columns
   let left = 0;
   const spacedColumns = [];
@@ -131,7 +142,9 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
       return;
     }
 
-    if (!isEqual(columnBlocks[0].from_x, left)) {
+    const shouldAddFirstSpacedColumn = !isEqual(columnBlocks[0].from_x, left) && !isInternalTable;
+
+    if (shouldAddFirstSpacedColumn) {
       spacedColumns.push({
         width: getWidth(columnBlocks[0].from_x, left),
         blocks: [],
@@ -150,14 +163,19 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
   });
 
   const lastColumnBlocks = groupedColumn[groupedColumn.length - 1] || [];
-  if (lastColumnBlocks.length && !isEqual(lastColumnBlocks[0].to_x, totalWidth)) {
+
+  const shouldAddLastSpacedColumn = lastColumnBlocks.length
+    && !isEqual(lastColumnBlocks[0].to_x, totalWidth)
+    && !isInternalTable;
+
+  if (shouldAddLastSpacedColumn) {
     spacedColumns.push({
       width: getWidth(totalWidth, lastColumnBlocks[0].to_x),
       blocks: [],
     });
   }
 
-  console.log({ spacedColumns });
+  // console.log({ spacedColumns });
 
   return `
     <tr>
@@ -165,7 +183,7 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
         <table width="100%" cellspacing="0" cellpadding="0" border="0">
           <tr>
             ${spacedColumns.map(
-              columnDescriptor => buildTableColumn(columnDescriptor, totalWidth, totalHeight)
+              columnDescriptor => buildTableColumn(columnDescriptor, totalWidth, totalHeight, isInternalTable)
             ).join('')}
           </tr>
         </table>
@@ -174,28 +192,31 @@ function buildTableRow(groupedColumn, totalWidth, totalHeight) {
   `;
 }
 
-function buildTable(groupedColumns, totalWidth, totalHeight) {
+function buildTable(groupedColumns, totalWidth, totalHeight, isInternalTable) {
   return `
     <table width="100%" cellspacing="0" cellpadding="0" border="0">
-      ${groupedColumns.map(groupedColumn => buildTableRow(groupedColumn, totalWidth, totalHeight)).join('')}
+      ${groupedColumns.map(
+          groupedColumn => buildTableRow(groupedColumn, totalWidth, totalHeight, isInternalTable)
+        ).join('')
+      }
     </table>
   `;
 }
 
 // console.log('overall result', buildTable(columns));
 
-function build({ points, totalWidth, totalHeight }) {
+function build({ points, width: totalWidth, height: totalHeight, isInternalTable = false }) {
   const disjointLines = getDisjointLines(points, DISJOINT_LINES.HORIZONTAL);
   const rows = groupPoints(points, disjointLines, DISJOINT_LINES.HORIZONTAL);
   const columns = groupPointsByRows(rows);
 
-  return buildTable(columns, totalWidth, totalHeight);
+  return buildTable(columns, totalWidth, totalHeight, isInternalTable);
 }
 
 // For development environment take data from table folder and don't start the server
 if ('NODE_ENV' in process.env && process.env.NODE_ENV === 'development') {
   const fs = require('fs');
-  const input = require('./5');
+  const input = require('./4');
   const result = build(input);
 
   fs.writeFile("./table.html", result, function(err) {

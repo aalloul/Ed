@@ -6,6 +6,7 @@ import PrivacyPolicy from './routes/PrivacyPolicy';
 
 import Footer from './containers/Footer/Footer';
 import Header from './containers/Header/Header';
+import Favicons from './containers/Favicons/Favicons';
 import NotifyModal from './components/NotifyModal/NotifyModal';
 import FbMessenger from './components/FbMessenger/FbMessenger';
 
@@ -13,16 +14,34 @@ const Router = typeof document !== 'undefined'
   ? BrowserRouter
   : StaticRouter;
 
-// This context object contains the results of the render
-const context = {};
-
 export default props => (
   <React.Fragment>
-      <title>{props.title}</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{props.title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={props.description} />
+
+    <style dangerouslySetInnerHTML={{
+    __html: 'body { margin: 0; padding: 0; font-family: "Lato", sans-serif; font-size: 15px; background: #f5f2f1; color: #714f4f; -webkit-font-smoothing: antialiased; }'
+    }} />
+
+    <Favicons />
+
     <style dangerouslySetInnerHTML={{
       __html: 'body { margin: 0; padding: 0; font-family: "Lato", sans-serif; font-size: 15px; background: #f5f2f1; color: #714f4f; -webkit-font-smoothing: antialiased; }'
     }} />
+
+    <script dangerouslySetInnerHTML={{
+      __html: `
+        (function(d) {
+          var g = d.createElement('script');
+          g.type = 'text/javascript';
+          g.src = d.location.protocol + '//s.growity.me/cj76v2o9cwapc0131tqxxfn57.js';
+          d.head.appendChild(g);
+        })(document);
+      `
+    }}>
+    </script>
+
     <div className="content">
       <Header />
       <Router
@@ -120,3 +139,6 @@ export default props => (
     </script>
   </React.Fragment>
 );
+
+// This context object contains the results of the render
+const context = {};
