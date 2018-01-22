@@ -100,8 +100,8 @@ class OCRParser(object):
             }
         elif self.orientation == 270:
             return {
-                "from_x": min(ys),
-                "to_x": max(ys),
+                "from_x": page_max_y - max(ys),
+                "to_x": page_max_y - min(ys),
                 "from_y": min(xs),
                 "to_y": max(xs),
                 "word": paragraph

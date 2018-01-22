@@ -106,7 +106,7 @@ class AutomaticTranslator(Translator):
         }
 
         logger.info("added points level")
-        logger.debug(dumps(b, indent=4))
+        # logger.debug(dumps(b, indent=4))
         r = fetch(self.html_parser_url,
               payload=dumps(b),
               method=POST,

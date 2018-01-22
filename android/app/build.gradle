@@ -102,7 +102,7 @@ android {
         minSdkVersion 16
         multiDexEnabled true
         targetSdkVersion 22
-        versionCode 4
+        versionCode 5
         versionName "1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -123,13 +123,13 @@ android {
                 keyAlias MYAPP_RELEASE_KEY_ALIAS
                 keyPassword MYAPP_RELEASE_KEY_PASSWORD
         }
-        pavlik {
+        /*pavlik {
             storeFile file('/Users/pavlik/.android/debug.keystore')
             keyAlias 'androiddebugkey'
             keyPassword 'android'
             storePassword 'android'
         }
-        /*
+        
         arthur {
             storeFile file('C:/Users/User/.android/debug.keystore')
             keyAlias 'androiddebugkey'
@@ -142,8 +142,8 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            /*signingConfig signingConfigs.release*/
-            signingConfig signingConfigs.pavlik
+            signingConfig signingConfigs.release
+            //signingConfig signingConfigs.pavlik
         }
     }
     // applicationVariants are e.g. debug, release
@@ -162,6 +162,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-billing')
     compile project(':react-native-restart')
     compile(project(':react-native-google-sign-in')) {
         exclude group: "com.google.android.gms"

@@ -39,7 +39,7 @@ class Sendgrid(object):
 
         subject = 'Smail - Your mail scanned, translated and ready for ' \
                   'archiving'
-        logger.info(self.html)
+        # logger.info(self.html)
         content = mail.Content('text/html', self.html)
         logger.debug("  - Content done")
 
