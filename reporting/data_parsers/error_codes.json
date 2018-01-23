@@ -1,0 +1,37 @@
+[{
+        "error_code": 0,
+        "description": "Unknown error happened. User should retry later because service is unavailable."
+    },
+    {
+        "error_code": 1,
+        "description": "JSON malformed: The JSON sent as a body is incorrect -- Check implementation"
+    },
+    {
+        "error_code": 2,
+        "description": "Incomplete request body. The JSON sent does not contain all required fields -- Check implementation"
+    },
+    {
+        "error_code": 3,
+        "description": "Unable to decode image (from String to Bytes). Something went wrong when encoding the JPEG to base64."
+    },
+    {
+        "error_code": 4,
+        "description": "Unknown error in OCR module. Ask user to retry later."
+    },
+    {
+        "error_code": 5,
+        "description": "Unknown error in Translation module. Ask user to retry later."
+    },
+    {
+        "error_code": 6,
+        "description": "Error with HTML formatting service. Ask user to retry later."
+    },
+    {
+        "error_code": 7,
+        "description": "No text found in image. Ask user to check the image for text, improve picture."
+    },
+    {
+        "error_code": 8,
+        "description": "Something went wrong with the e-mail. Request the user to check his e-mail/retry"
+    }
+]
