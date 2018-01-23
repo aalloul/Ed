@@ -1,5 +1,6 @@
 import React from 'react';
 import glamorous from 'glamorous';
+import mediaQueries from '../../common/mediaQueries';
 
 const Wrapper = glamorous.section({
   backgroundColor: '#e9ebee',
@@ -16,6 +17,9 @@ const Review = glamorous.div({
   font: 'SF Optimized, system-ui, -apple-system, BlinkMacSystemFont, ".SFNSText-Regular", sans-serif',
   color: '#1d2129',
   display: 'inline-block',
+  [mediaQueries.phone]: {
+    width: '90%',
+  },
 });
 
 const ReviewHeader = glamorous.div({

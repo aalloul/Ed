@@ -1,4 +1,5 @@
 import glamorous from 'glamorous';
+import mediaQueries from '../../common/mediaQueries';
 
 export default glamorous.div({
   height: '650px',
@@ -18,6 +19,14 @@ export default glamorous.div({
     position: 'absolute',
     top: '0',
     width: '100%',
+    [mediaQueries.phone]: {
+      display: 'none',
+      top: '-150px',
+    },
+  },
+  [mediaQueries.phone]: {
+    position: 'absolute',
+    margin: '0px auto',
   },
 }, ({ type }) => ({
   success: {
@@ -31,7 +40,10 @@ export default glamorous.div({
     },
     ':after': {
       backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.jpg")',
-    }
+    },
+    [mediaQueries.phone]: {
+      display: 'none',
+    },
   },
   scan: {
     ':before': {
@@ -40,6 +52,12 @@ export default glamorous.div({
       left: '18px',
       top: '57px',
       width: '75%',
+      [mediaQueries.phone]: {
+        height: '80%',
+        width: '90%',
+        top: '-50px',
+        left: '18px',
+      },
     },
     ':after': {
       backgroundImage: 'url("/img/Samsung Galaxy S8 Midnight Black.jpg")',
@@ -53,6 +71,12 @@ export default glamorous.div({
       left: '24px',
       top: '97px',
       width: '79%',
+      [mediaQueries.phone]: {
+        height: '80%',
+        width: '90%',
+        top: '-100px',
+        left: '18px',
+      },
     },
     ':after': {
       backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.jpg")',
@@ -65,6 +89,12 @@ export default glamorous.div({
       left: '7px',
       top: '80px',
       width: '83%',
+      [mediaQueries.phone]: {
+        height: '80%',
+        width: '90%',
+        top: '-80px',
+        left: '18px',
+      },
     },
     ':after': {
       backgroundImage: 'url("/img/Google Pixel 2 Just Black.png")',

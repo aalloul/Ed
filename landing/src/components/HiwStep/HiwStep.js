@@ -5,12 +5,18 @@ import glamorous from 'glamorous';
 import Buttons from '../../containers/Buttons/Buttons';
 import ContentWithScreenshot from '../ContentWithScreenshot/ContentWithScreenshot';
 import Screenshot from '../Screenshot/Screenshot';
+import mediaQueries from '../../common/mediaQueries';
+
 
 const Wrapper = glamorous.div(({ reverse }) => ({
   display:  'flex',
   justifyContent:  'space-evenly',
-  padding:  '30px 0',
+  padding: '30px 0',
   flexDirection: reverse ? 'row-reverse' : 'row',
+  [mediaQueries.phone]: {
+    padding: '10px 0',
+    flexDirection: 'column',
+  },
 }));
 
 const Title = glamorous.h3({
@@ -18,11 +24,27 @@ const Title = glamorous.h3({
   fontWeight:  '900',
   position:  'relative',
   marginBottom:  '40px',
+  [mediaQueries.phone]: {
+    marginBottom: '10px',
+    fontSize: '38px',
+    paddingBottom: '540px',
+    width: '100%',
+  },
+  [mediaQueries.tablet]: {
+    fontSize: '45px',
+  },
 });
 
 const Text = glamorous.p({
   fontSize:  '36px',
   position:  'relative',
+  [mediaQueries.phone]: {
+    margin: '10px 0px',
+    fontSize: '30px',
+  },
+  [mediaQueries.tablet]: {
+    fontSize: '33px',
+  },
 });
 
 const Number = glamorous.span({
@@ -32,6 +54,13 @@ const Number = glamorous.span({
   position:  'absolute',
   left:  '-85px',
   top:  '-60px',
+  [mediaQueries.phone]: {
+    left:  '-5px',
+    fontSize:  '80px',
+  },
+  [mediaQueries.tablet]: {
+    fontSize: '90px',
+  },
 });
 
 const HiwStep = ({ number, title, type, reverse, children }) => (

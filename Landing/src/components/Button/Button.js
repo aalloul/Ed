@@ -1,5 +1,6 @@
 import glamorous from 'glamorous';
 import consts from '../consts';
+import mediaQueries from '../../common/mediaQueries';
 
 export default glamorous.a({
   fontSize: '30px',
@@ -13,9 +14,14 @@ export default glamorous.a({
   boxShadow: '0 20px 55px rgba(0, 0, 0, 0.33)',
   color: '#fff',
   textAlign: 'left',
+  margin: '20px auto 40px',
   ':hover': {
     background: '#1efcd0',
     color: '#171838',
     textDecoration: 'none',
-  }
+  },
+  [mediaQueries.phone]: {
+    width: '80%',
+    maxWidth: '350px',
+  },
 });
