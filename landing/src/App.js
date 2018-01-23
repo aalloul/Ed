@@ -66,6 +66,8 @@ export default props => (
     </div>
 
     <NotifyModal />
+    <FbMessenger />
+    
     <script dangerouslySetInnerHTML={{
       __html: `
       (function (window) {
