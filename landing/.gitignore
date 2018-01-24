@@ -5,7 +5,18 @@
 /coverage
 
 # production
-/dist
+public/index.html
+public/privacy-policy/index.html
+/public/index.html
+/public/privacy-policy/index.html
+Landing/public/index.html
+Landing/public/privacy-policy/index.html
+/Landing/public/index.html
+/Landing/public/privacy-policy/index.html
+landing/public/index.html
+landing/public/privacy-policy/index.html
+/landing/public/index.html
+/landing/public/privacy-policy/index.html
 
 # misc
 .DS_Store
