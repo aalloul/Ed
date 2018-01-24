@@ -42,7 +42,7 @@ export default props => (
     }}>
     </script>
 
-    <div className="content" style={{overflowX: 'hidden'}}>
+    <div className="content">
       <Header />
       <Router
         basename={props.basename}
