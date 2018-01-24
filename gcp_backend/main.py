@@ -9,7 +9,8 @@ import logging
 from sys import stdout
 from analytics.analytics import Analytics
 from time import time
-from custom_exceptions.custom_exceptions import NoTextFoundException
+from custom_exceptions.custom_exceptions import NoTextFoundException, \
+    UnknownError, UnknownEmailException, GenericSmailException
 
 
 # Logging
@@ -36,7 +37,8 @@ def request_human_translation(parsed_request, reporter):
         logger.exception("Email not sent with status code = {}, "
                          "body = {}, "
                          "headers = {}".format(status_code, body, headers))
-        raise Exception("Something went wrong with the e-mail! Check logs")
+        raise UnknownEmailException("Something went wrong with the e-mail! "
+                                    "Check logs")
 
 
 def request_automatic_translation(parsed_request, reporter):
@@ -46,10 +48,10 @@ def request_automatic_translation(parsed_request, reporter):
     try:
         parsed_ocr = Ocr(parsed_request.get_image(),
                   parsed_request.get_input_language()).ocr_answer
-    except NoTextFoundException as ex:
+    except NoTextFoundException:
         logger.error("No text was found in the provided image")
         reporter.add_event("exception", "no_text_found_in_image")
-        return Answer(exception=ex).get_answer()
+        raise
 
     reporter.add_event("ocr_processing_time", round(time() - start_ocr, 3))
     reporter.add_event("n_chars_image", len(parsed_ocr.full_text))
@@ -89,7 +91,7 @@ def request_automatic_translation(parsed_request, reporter):
         logger.exception("Email not sent with status code = {}, "
                          "body = {}, "
                          "headers = {}".format(status_code, body, headers))
-        raise Exception("Something went wrong with the e-mail! Check logs")
+        raise UnknownEmailException()
 
 
 # Flask app
@@ -120,15 +122,15 @@ def translate():
         reporter.commit()
         logger.info("  -> Done")
         return ans
-    except Exception as ex:
+    except GenericSmailException as ex:
+        logger.error("ex.__class__ {}".format(ex.__class__))
         logger.error("exception = {}".format(ex.message))
-        return page_not_found(ex, request.data)
+        return custom_error(ex)
+    except Exception:
+        logger.error("werwrwerewrwe")
+        return custom_error(UnknownError())
 
 
-@app.errorhandler(404)
-def page_not_found(e, req):
-    return jsonify({
-        "error_message": e.message,
-        # "received_request": req,
-        # "request_header": rhead
-    }), 404
+@app.errorhandler(500)
+def custom_error(e):
+    return jsonify(e.get_json()), 500

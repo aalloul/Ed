@@ -2,6 +2,7 @@ import sendgrid
 from sendgrid.helpers import mail
 import logging
 from sys import stdout
+from custom_exceptions.custom_exceptions import UnknownEmailException
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -92,7 +93,8 @@ class Sendgrid(object):
 
     def _get_content_for_human_translations(self):
         logger.debug("Building content for human translation")
-        logger.debug("self.initial_request.get_email() = ".format(self.initial_request.get_email()))
+        logger.debug("self.initial_request.get_email() = ".format(
+            self.initial_request.get_email()))
         message = """Dear translator, 
         
         user with e-mail address {} requires a human translation for the 
@@ -142,9 +144,9 @@ class Sendgrid(object):
             response = sg.client.mail.send.post(
                 request_body=self._build_message().get())
         except Exception as ex:
-            logger.error("ERror!!! {}".format(ex))
+            logger.error("Error!!! {}".format(ex))
             logger.error(ex.message)
-            raise
+            raise UnknownEmailException(ex.message)
 
         logger.info("Email sent")
         return response.status_code, response.body, response.headers

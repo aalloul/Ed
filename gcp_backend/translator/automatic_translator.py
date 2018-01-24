@@ -3,8 +3,8 @@ from google.appengine.api.urlfetch import fetch, POST
 import logging
 from sys import stdout
 from json import load, dumps, loads, dump
-import requests
-import requests_toolbelt.adapters.appengine
+from custom_exceptions.custom_exceptions import UnknownTranslationError, \
+    HTMLFormattingServiceException
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -28,7 +28,7 @@ class AutomaticTranslator(Translator):
         ))
         self.pages = pages
         self.api_key = "AIzaSyB5KLbSquVl7pYsYjVpCOhOsrqjYTbuf-8"
-        self.url = "https://translation.googleapis.com/language/translate/v2"\
+        self.url = "https://translation.googleapis.com/language/translate/v2" \
                    "?key={}".format(self.api_key)
         self.DEBUG = False
         self.html_parser_url = "http://table-builder-dot-linear-asset-184705." \
@@ -54,11 +54,13 @@ class AutomaticTranslator(Translator):
         except Exception as ex:
             logger.error("Caught exception while fetching translation.")
             logger.error("Exception = {}".format(ex))
-            return None
+            raise UnknownTranslationError(ex.message)
 
         if resp.status_code < 200 or resp.status_code > 299:
             logger.error("Status code is {}".format(resp.status_code))
-            return None
+            raise UnknownTranslationError(
+                "Status code = {}".format(resp.status_code))
+
         logger.debug("Load content of fetch result")
         resp_json = loads(resp.content)
 
@@ -72,6 +74,7 @@ class AutomaticTranslator(Translator):
 
         if self.DEBUG:
             return self._fixture()
+
         logger.debug("Getting words from pages")
         words_to_translate = [word['word'] for word in self.pages[1]]
         logger.debug("Translating everyone together")
@@ -106,16 +109,17 @@ class AutomaticTranslator(Translator):
         }
 
         logger.info("added points level")
-        # logger.debug(dumps(b, indent=4))
         r = fetch(self.html_parser_url,
-              payload=dumps(b),
-              method=POST,
-              headers={"Content-Type": "application/json"}
-              )
+                  payload=dumps(b),
+                  method=POST,
+                  headers={"Content-Type": "application/json"}
+                  )
+
         if r.status_code < 200 or r.status_code > 299:
             logger.error("HTML parser Status code is {}".format(
                 r.status_code))
-            raise Exception("HTML parser not found")
+            raise HTMLFormattingServiceException(
+                "Status code = {}".format(r.status_code))
 
         logger.info("HTML received")
         return b, r.content

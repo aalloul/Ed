@@ -1,7 +1,6 @@
 from json import loads
 from PIL import Image, ImageDraw, ExifTags
 from io import BytesIO
-from base64 import b64decode
 from custom_exceptions.custom_exceptions import NoTextFoundException
 import logging
 from sys import stdout
@@ -15,7 +14,7 @@ logger.setLevel(logging.DEBUG)
 
 class OCRParser(object):
 
-    def __init__(self, ocr_resp, orientation):
+    def __init__(self, ocr_resp, ori):
         logger.info("Start OCRParser")
 
         self.ocr_resp = loads(ocr_resp)
@@ -33,7 +32,7 @@ class OCRParser(object):
             self.pages = self.ocr_resp['responses'][0]['fullTextAnnotation'][
                 'pages']
             logger.debug("pages done")
-            self.orientation = orientation
+            self.orientation = ori
             logger.debug("orientation done")
             self.parsed_pages = self.parse_pages()
             logger.debug("pages parsed")
@@ -57,7 +56,6 @@ class OCRParser(object):
             else:
                 widths.append(page_max_y)
                 heights.append(page_max_x)
-
 
         out["heights"] = heights
         out["widths"] = widths
@@ -115,7 +113,8 @@ class OCRParser(object):
                 "word": paragraph
             }
 
-    def _shift_all(self, page):
+    @staticmethod
+    def _shift_all(page):
         min_x = min([p["from_x"] for p in page])
         min_y = min([p["from_y"] for p in page])
 
@@ -150,7 +149,8 @@ class OCRParser(object):
 
         return p, xs, ys
 
-    def _extract_symbols(self, word):
+    @staticmethod
+    def _extract_symbols(word):
         w = ""
         xs = []
         ys = []
@@ -163,7 +163,8 @@ class OCRParser(object):
             if "detectedBreak" in symbol['property']:
                 if symbol['property']['detectedBreak']['type'] == "HYPHEN":
                     w += "-"
-                elif symbol['property']['detectedBreak']['type'] == "EOL_SURE_SPACE":
+                elif symbol['property'][
+                      'detectedBreak']['type'] == "EOL_SURE_SPACE":
                     w += "\n"
                 else:
                     w += " "
@@ -186,7 +187,7 @@ class OCRParser(object):
         _extract_paragraphs
         :return: List of JSON object, same format as input.
         """
-        tmp = sorted(words, key=lambda x: x['from_y'])
+        tmp = sorted(words, key=lambda t: t['from_y'])
 
         out = [tmp[0]]
         soft_hyphen = "(.+)([a-z A-Z]-)$"
@@ -194,7 +195,7 @@ class OCRParser(object):
         for ii in range(1, len(tmp)):
             if match(soft_hyphen, out[-1]['word']) and \
                     match(starts_with_letters, out[-1]['word']):
-                out[-1]['word'] = out[-1]["word"][0:len(out[-1]['word']) - 1]\
+                out[-1]['word'] = out[-1]["word"][0:len(out[-1]['word']) - 1] \
                                   + tmp[ii]['word']
                 out[-1]['from_x'] = min(out[-1]["from_x"], tmp[ii]["from_x"])
                 out[-1]['from_y'] = min(out[-1]["from_y"], tmp[ii]["from_y"])
@@ -207,34 +208,36 @@ class OCRParser(object):
 
 if __name__ == "__main__":
 
-    def get_orientation(im):
-        image = Image.open(BytesIO(im))
-        orientation = ""
+    def get_orientation(i):
+        image = Image.open(BytesIO(i))
+        ori = ""
 
         for orientations in ExifTags.TAGS.keys():
             if ExifTags.TAGS[orientations] == 'Orientation':
-                orientation = orientations
+                ori = orientations
 
         if image._getexif() is None:
             return 0
 
         exif = dict(image._getexif().items())
-        if not exif.has_key(orientation):
+
+        if ori not in exif:
             logger.info("Image has no orientation TAG")
             return 0
 
-        if exif[orientation] == 3:
+        if exif[ori] == 3:
             logger.info("Image has an orientation of 180")
             return 180
-        elif exif[orientation] == 6:
+        elif exif[ori] == 6:
             logger.info("Image has an orientation of 270")
             return 270
-        elif exif[orientation] == 8:
+        elif exif[ori] == 8:
             logger.info("Image has an orientation of 90")
             return 90
         else:
             logger.info("Image has an orientation of 0")
             return 0
+
 
     with open("../fixture/tmp.jpeg", "rb") as f:
         im = f.read()
@@ -251,14 +254,18 @@ if __name__ == "__main__":
     x = resp['responses'][0]['fullTextAnnotation']['pages'][0]['width']
     y = resp['responses'][0]['fullTextAnnotation']['pages'][0]['height']
     if orientation == 0:
-        img=Image.new("RGB", (x,y),"white")
+        img = Image.new("RGB", (x, y), "white")
     elif orientation == 90:
         img = Image.new("RGB", (y, x), "white")
     elif orientation == 270:
         img = Image.new("RGB", (y, x), "white")
+    else:
+        img = Image.new("RGB", (y, x), "white")
+
     draw = ImageDraw.Draw(img)
     for line in parsed_pages[1]:
-        draw.text((line['from_x'], line['from_y']),line['word'].encode("utf-8"),
+        draw.text((line['from_x'], line['from_y']),
+                  line['word'].encode("utf-8"),
                   'black')
 
     draw = ImageDraw.Draw(img)

@@ -1,4 +1,3 @@
-from json import dumps
 from google.appengine.api.urlfetch import fetch, POST
 import logging
 from sys import stdout
@@ -6,7 +5,8 @@ from PIL import Image, ExifTags
 from io import BytesIO
 from base64 import b64decode
 from ocr_parser import OCRParser
-
+from custom_exceptions.custom_exceptions import UnknownOCRException
+# from json import dumps
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -28,7 +28,7 @@ class Ocr(object):
         self._payload = self._get_payload()
         logger.debug("Payload constructed")
         self.ocr_answer = self._get_ocr_answer()
-        logger.debug(("OCR answer received. Text follows"))
+        logger.debug("OCR answer received. Text follows")
         logger.debug(self.ocr_answer.full_text[0:20])
 
     def _get_payload(self):
@@ -49,7 +49,8 @@ class Ocr(object):
             ]
         }
 
-    def _get_fixture(self):
+    @staticmethod
+    def _get_fixture():
         logger.debug("DEBUG Mode enabled: reading ocr answer from fixture")
         pass
 
@@ -57,6 +58,7 @@ class Ocr(object):
         if self.DEBUG:
             return self._get_fixture()
 
+        logger.debug("Fetching result")
         response = fetch(
             "https://vision.googleapis.com/v1/images:annotate?key=" +
             self.api_key,
@@ -66,7 +68,12 @@ class Ocr(object):
         )
 
         logger.info("Response status code = {}".format(response.status_code))
-        return OCRParser(response.content, self.get_orientation(self.image))
+        if 200 <= response.status_code < 300:
+            return OCRParser(response.content, self.get_orientation(self.image))
+        else:
+            logger.error("OCR answer with status "
+                         "code = {}".format(response.status_code))
+            raise UnknownOCRException("OCR Error")
 
     @staticmethod
     def get_orientation(im):
@@ -81,7 +88,7 @@ class Ocr(object):
             return 0
 
         exif = dict(image._getexif().items())
-        if not exif.has_key(orientation):
+        if orientation not in exif:
             logger.info("Image has no orientation TAG")
             return 0
 
@@ -98,28 +105,31 @@ class Ocr(object):
             logger.info("Image has an orientation of 0")
             return 0
 
+
 if __name__ == "__main__":
     from json import load, dumps
+
     with open("/Users/adamalloul/TNT/downloads/translation_request.json",
               "r") as f:
         t = load(f)
     from requests import post
+
     payload = {
-            "requests": [
-                {
-                    "image": {
-                        "content": t['image']
-                    },
-                    "features": [
-                        {
-                            "type": "DOCUMENT_TEXT_DETECTION"
-                        }],
-                    "imageContext": {
-                        "languageHints": ["nl"],
-                    }
+        "requests": [
+            {
+                "image": {
+                    "content": t['image']
+                },
+                "features": [
+                    {
+                        "type": "DOCUMENT_TEXT_DETECTION"
+                    }],
+                "imageContext": {
+                    "languageHints": ["nl"],
                 }
-            ]
-        }
+            }
+        ]
+    }
     api_key = "AIzaSyB5KLbSquVl7pYsYjVpCOhOsrqjYTbuf-8"
 
     r = post(
@@ -127,4 +137,3 @@ if __name__ == "__main__":
         api_key,
         data=dumps(payload)
     )
-
