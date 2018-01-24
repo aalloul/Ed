@@ -83,7 +83,7 @@ const Checkbox = glamorous.input({
   },
   ':checked ~ span:nth-last-child(2)': {
       opacity: '1',
-      transform: 'rotate(-45deg) translate(0, -1px)',
+      transform: 'rotate(-45deg) translate(1px, 0px)',
   },
   ':checked ~ ul': {
     transform: 'scale(1.0, 1.0)',
@@ -102,7 +102,7 @@ const Dash = glamorous.span({
   background: '#cdcdcd',
   borderRadius: '3px',
   zIndex: '1',
-  transformOrigin: '4px 0px',
+  transformOrigin: '3px 3px',
   transition: 'transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0)',
   transition: 'background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),',
   transition: 'opacity 0.55s ease',
