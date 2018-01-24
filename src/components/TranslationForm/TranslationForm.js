@@ -69,20 +69,6 @@ const TranslationForm = ({
 
     <View style={styles.actions}>
       <IconButton
-        onPress={onHumanTranslationPress}
-        buttonStyle={styles.actionButton}
-        iconSource={require('./HumanIcon.png')}
-        iconStyle={{
-          width: 54,
-          height: 70,
-          marginTop: 20,
-          marginBottom: 20,
-        }}
-        title="Human"
-        titleStyle={styles.actionTitle}
-        price="€3"
-      />
-      <IconButton
         onPress={onMachineTranslationPress}
         buttonStyle={styles.actionButton}
         iconSource={require('./MachineIcon.png')}
@@ -92,9 +78,9 @@ const TranslationForm = ({
           marginTop: 30,
           marginBottom: 30,
         }}
-        title="Auto"
+        title="Next"
         titleStyle={styles.actionTitle}
-        price="FREE"
+        price=""
       />
     </View>
   </View>
