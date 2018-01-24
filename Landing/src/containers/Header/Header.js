@@ -19,7 +19,6 @@ const Menu =  glamorous.ul({
   textAlign: 'center',
   display: 'flex',
   justifyContent: 'space-around',
-  width: '50%',
   alignItems: 'center',
   [mediaQueries.phone]: {
     flexDirection: 'column',
