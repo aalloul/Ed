@@ -60,7 +60,7 @@ export default () => (
       <Price>€5 per month</Price>
 
       <Trial>
-        <Condition>First letter is free trial</Condition>
+        <Condition>First month is free trial</Condition>
         <Condition>No credit card required</Condition>
         <Condition>Cancel anytime</Condition>
       </Trial>
