@@ -10,6 +10,6 @@ export default () => (
     <HeroSection />
     <HiwSection />
     <PricingSection />
-    <ReviewsSection />
+    {/*<ReviewsSection />*/}
   </React.Fragment>
 );
