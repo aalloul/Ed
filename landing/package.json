@@ -23,7 +23,7 @@
     "serve": "^6.1.0"
   },
   "x0": {
-    "title": "SMail.rocks &mdash; mobile app for mail translation",
+    "title": "SMail.rocks — mobile app for mail translation",
     "description": "SMail is a mobile application to translate physical mail and send it to email in no time. Try it now!",
     "meta": "how to translate mail, translate mail, translate mail to Spanish, translate mail to English, translation mail app",
     "routes": [
