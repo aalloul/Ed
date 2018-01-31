@@ -103,9 +103,14 @@ def translate():
     logger.info("Received a request")
 
     try:
-        reporter = Analytics()
+        parsed_request = RequestParser(request.data).parse()
 
-        parsed_request = RequestParser(request.data)
+        if parsed_request.version >= 0.2:
+            debug = parsed_request.debug
+        else:
+            debug = False
+
+        reporter = Analytics(debug)
         reporter.add_request_summary(parsed_request.get_request_summary())
         reporter.add_image(parsed_request.image)
 
@@ -126,8 +131,8 @@ def translate():
         logger.error("ex.__class__ {}".format(ex.__class__))
         logger.error("exception = {}".format(ex.message))
         return custom_error(ex)
-    except Exception:
-        logger.error("werwrwerewrwe")
+    except Exception as ex:
+        logger.error(ex.message)
         return custom_error(UnknownError())
 
 

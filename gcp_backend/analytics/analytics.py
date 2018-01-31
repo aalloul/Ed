@@ -15,12 +15,19 @@ logger.setLevel(logging.DEBUG)
 
 
 class Analytics(object):
-    def __init__(self):
+    def __init__(self, debug):
         self._secret = self._load_secrets()
+        self.debug = debug
+        logger.info("Will be working in debug mode")
+
+        table_id = self._secret["table_id"]
+        if self.debug is True:
+            table_id = table_id + "_debug"
+
         self.url = "https://www.googleapis.com/bigquery/v2/projects/" \
                    "{google_cloud_project}/datasets/{datasetId}/tables/" \
                    "{tableId}/insertAll".format(
-                        tableId=self._secret["table_id"],
+                        tableId=table_id,
                         datasetId=self._secret["dataset_id"],
                         google_cloud_project=self._secret["project_id"])
 
