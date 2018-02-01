@@ -7,6 +7,8 @@ target 'mailapprn' do
   pod 'React', :path => '../node_modules/react-native', :subspecs => [
     'Core',
     'DevSupport', # Include this to enable In-App Devmenu if RN >= 0.43
+    'BatchedBridge', # https://github.com/facebook/react-native/issues/14749
+    'CxxBridge', # https://github.com/facebook/react-native/issues/14925
     'RCTText',
     'RCTNetwork',
     'RCTWebSocket', # needed for debugging

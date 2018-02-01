@@ -22,8 +22,9 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		42BB59BE40B344308159BB2B /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4936752047A4DEF82872C84 /* libRCTCamera.a */; };
+		4A0F329220212531000AC4B2 /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA91DF850E9000B6D8A /* libcxxreact.a */; };
+		4A0F329320212538000AC4B2 /* libjschelpers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EAD1DF850E9000B6D8A /* libjschelpers.a */; };
 		4A341FF61FF2BE4C00D1DB73 /* GoogleSignIn.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A341FF51FF2BE4C00D1DB73 /* GoogleSignIn.bundle */; };
 		4A341FF81FF2BE8900D1DB73 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A341FF71FF2BE8900D1DB73 /* SafariServices.framework */; };
 		4A341FFA1FF2BE9900D1DB73 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A341FF91FF2BE9800D1DB73 /* SystemConfiguration.framework */; };
@@ -35,6 +36,7 @@
 		4A3420071FF3E91600D1DB73 /* RNGoogleSignInBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3420041FF3E91500D1DB73 /* RNGoogleSignInBridge.m */; };
 		4A3420081FF3E91600D1DB73 /* RNGoogleSignInEventsBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A3420051FF3E91500D1DB73 /* RNGoogleSignInEventsBridge.m */; };
 		4A3420091FF3E91600D1DB73 /* RNGoogleSignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3420061FF3E91600D1DB73 /* RNGoogleSignIn.swift */; };
+		4AC4FAD6201FF605007BCC80 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AC4FAD5201FF605007BCC80 /* GameKit.framework */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		6ADC680103E54479AA44DF7C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BB0545D17A5470399CB5469 /* libRNDeviceInfo.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -352,6 +354,7 @@
 		4A3420041FF3E91500D1DB73 /* RNGoogleSignInBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNGoogleSignInBridge.m; path = "../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn/RNGoogleSignInBridge.m"; sourceTree = "<group>"; };
 		4A3420051FF3E91500D1DB73 /* RNGoogleSignInEventsBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RNGoogleSignInEventsBridge.m; path = "../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn/RNGoogleSignInEventsBridge.m"; sourceTree = "<group>"; };
 		4A3420061FF3E91600D1DB73 /* RNGoogleSignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RNGoogleSignIn.swift; path = "../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn/RNGoogleSignIn.swift"; sourceTree = "<group>"; };
+		4AC4FAD5201FF605007BCC80 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		77371A64BA3E874983B02303 /* libPods-mailapprn.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-mailapprn.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -380,6 +383,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A0F329320212538000AC4B2 /* libjschelpers.a in Frameworks */,
+				4A0F329220212531000AC4B2 /* libcxxreact.a in Frameworks */,
 				4A341FFE1FF2C0BD00D1DB73 /* GoogleSignIn.framework in Frameworks */,
 				4A341FFF1FF2C0BD00D1DB73 /* GoogleSignInDependencies.framework in Frameworks */,
 				4A341FFB1FF2C0BC00D1DB73 /* GoogleSignIn.bundle in Frameworks */,
@@ -387,7 +392,6 @@
 				4A341FF81FF2BE8900D1DB73 /* SafariServices.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
-				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
@@ -395,6 +399,7 @@
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
+				4AC4FAD6201FF605007BCC80 /* GameKit.framework in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
@@ -524,6 +529,7 @@
 		200C158C83944EF780E7AFD1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4AC4FAD5201FF605007BCC80 /* GameKit.framework */,
 				4A341FFC1FF2C0BD00D1DB73 /* GoogleSignIn.framework */,
 				4A341FFD1FF2C0BD00D1DB73 /* GoogleSignInDependencies.framework */,
 				4A341FF91FF2BE9800D1DB73 /* SystemConfiguration.framework */,
@@ -730,7 +736,17 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = T9S7E768A7;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = T9S7E768A7;
+						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1291,8 +1307,10 @@
 			baseConfigurationReference = BBE3E3A8B3C0914A0F03F144 /* Pods-mailapprn.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = T9S7E768A7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1308,15 +1326,20 @@
 					"$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn/**",
 				);
 				INFOPLIST_FILE = mailapprn/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.growity.smail.dev;
 				PRODUCT_NAME = mailapprn;
+				PROVISIONING_PROFILE = "b02be375-7143-4a7c-8812-f88208e4d345";
+				PROVISIONING_PROFILE_SPECIFIER = "SMail Development";
 				SWIFT_OBJC_BRIDGING_HEADER = "mailapprn-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1326,7 +1349,9 @@
 			baseConfigurationReference = 305111E031B1F7BE2AEDA621 /* Pods-mailapprn.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9S7E768A7;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1342,15 +1367,20 @@
 					"$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn/**",
 				);
 				INFOPLIST_FILE = mailapprn/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.growity.smail.dev;
 				PRODUCT_NAME = mailapprn;
+				PROVISIONING_PROFILE = "b02be375-7143-4a7c-8812-f88208e4d345";
+				PROVISIONING_PROFILE_SPECIFIER = "SMail Development";
 				SWIFT_OBJC_BRIDGING_HEADER = "mailapprn-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1374,6 +1404,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = T9S7E768A7;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1392,6 +1423,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE_SPECIFIER = /Users/pavlik/Downloads/SMail_Development.mobileprovision;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1415,6 +1447,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = T9S7E768A7;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1426,6 +1459,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE_SPECIFIER = /Users/pavlik/Downloads/SMail_Development.mobileprovision;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
