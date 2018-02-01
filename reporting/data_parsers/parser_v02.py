@@ -20,21 +20,32 @@ class Parser(object):
         self._required_fields = ['app_version', 'action',
                                  'phone_maker', 'phone_model', 'os_version',
                                  'user_id', 'timestamp', 'type', 'screen',
-                                 'screen_start', 'session_start']
+                                 'screen_start', 'session_start', 'debug']
+
         self._body = self._check_required_fields(body)
+
+        # The body is a list of dict objects. We use the first element to
+        # determine whether this is a debug batch of events or not.
+        self.debug = body[0]['debug']
+
+        [x.pop("debug") for x in self._body]
+
         logger.debug("Converting ms to seconds")
         self._convert_ms_to_s()
 
         logger.debug("Loading secrets")
         self._secret = self._load_secrets()
 
+        table_id = self._secret["table_id"]
+        if self.debug:
+            table_id = table_id + "_debug"
 
         self._add_row_hash()
 
         self.url = "https://www.googleapis.com/bigquery/v2/projects/" \
                    "{google_cloud_project}/datasets/{datasetId}/tables/" \
                    "{tableId}/insertAll".format(
-                        tableId=self._secret["table_id"],
+                        tableId=table_id,
                         datasetId=self._secret["dataset_id"],
                         google_cloud_project=self._secret["project_id"])
 
@@ -67,7 +78,7 @@ class Parser(object):
         for f in self._required_fields:
             for record in body:
                 self._check_required_fields_per_record(record, f)
-
+        logger.debug("Done")
         return body
 
     @staticmethod

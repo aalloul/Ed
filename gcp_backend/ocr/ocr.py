@@ -6,7 +6,7 @@ from io import BytesIO
 from base64 import b64decode
 from ocr_parser import OCRParser
 from custom_exceptions.custom_exceptions import UnknownOCRException
-# from json import dumps
+from json import dumps
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')

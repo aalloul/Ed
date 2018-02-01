@@ -21,7 +21,8 @@ def get_fixture_for_ocr(image):
         "output_language": "en",
         "timestamp": int(1000*time()),
         "user_id": "b8e75ce1bc2d0e5b",
-        "version": 0.1
+        "version": 0.2,
+        "debug": True
     }
 
 def get_ocr_payload(image, in_language="nl"):

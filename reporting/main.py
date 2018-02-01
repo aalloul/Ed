@@ -1,8 +1,9 @@
 import logging
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request
 from sys import stdout
 from json import loads
 import importlib
+from data_parsers.parser import Parser
 
 app = Flask(__name__)
 
@@ -16,26 +17,9 @@ logger.setLevel(logging.DEBUG)
 def page_not_found(e, req, rhead):
     return jsonify({
         "error_message": e.message,
-        "received_request": req,
-        "request_header": rhead
+        # "received_request": req,
+        # "request_header": rhead
     }), 404
-
-
-def check_datamodel_version(body):
-    dv = []
-    for rec in body:
-        if "datamodel_version" not in rec.keys():
-            logger.error("datamodel_version not found in at least one of the "
-                         "records")
-            abort(404)
-        else:
-            dv.append(rec["datamodel_version"])
-
-    if len(list(set(dv))) > 1:
-        logger.error("The received body has multiple datamodel_version")
-
-    logger.debug("Received request follows data model version {}".format(dv[0]))
-    return dv[0]
 
 
 @app.errorhandler(404)
@@ -45,10 +29,10 @@ def key_missing(e):
 
 @app.route('/events', methods=["POST"])
 def new_event():
-    logger.debug("Hi!")
     try:
         parsed_request = loads(request.data)
-        logger.debug("isinstance(parsed_request, list) = {}".format(isinstance(parsed_request, list)))
+        logger.debug("isinstance(parsed_request, list) "
+                     "= {}".format(isinstance(parsed_request, list)))
         if not isinstance(parsed_request, list):
             logger.debug("Received a non list body - casting to list")
             parsed_request = [parsed_request]
@@ -56,17 +40,12 @@ def new_event():
         logger.debug("Received following request {}".format(parsed_request))
         logger.info("Received request with {} rows".format(len(parsed_request)))
 
-        version = check_datamodel_version(parsed_request)
-        version = str(version).replace(".", "")
-
-        handler = importlib.import_module(
-            "data_parsers.parser_v{}".format(version))
-
-        handler.get_class(parsed_request).upload()
+        Parser(parsed_request).parse()
         return jsonify({'ack': 200})
 
     except Exception as ex:
         return page_not_found(ex, request.data, str(request.headers))
+
 
 @app.route('/newProspect', methods=['POST'])
 def new_prospect():

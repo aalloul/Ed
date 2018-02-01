@@ -11,6 +11,7 @@ The application is expected to generate a `POST` call towards the back-end follo
  - `device`: String representing which phone model (`ios`, `android`) generated the request.
  - `version`: Float to indicate the version of the app (0.1, alpha, ...etc).
  - `user_id`: UUID to uniquely identify a phone.
+ - `debug`: Boolean introduced from `version` `0.2`. When set to `true`, the request is treated as coming from the developers and its data is stored in a different BigQuery table. This way we can distinguish real users from developers.
 
 Non required fields:
  - `input_language`: String indicating the input language. If not present, we will assume `nl`.

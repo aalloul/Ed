@@ -1,6 +1,7 @@
 [
     {
-        "datamodel_version": 0.1,
+        "datamodel_version": 0.2,
+        "debug": true,
         "app_version": 0.2,
         "phone_maker": "Apple",
         "phone_model": "Iphone7",
@@ -15,7 +16,8 @@
         "session_start": 1510556210358
     },
     {
-        "datamodel_version": 0.1,
+        "datamodel_version": 0.2,
+        "debug": true,
         "app_version": 0.2,
         "phone_maker": "LG",
         "phone_model": "G7",
@@ -32,7 +34,8 @@
         "session_start": 1510556210358
     },
     {
-        "datamodel_version": 0.1,
+        "datamodel_version": 0.2,
+        "debug": true,
         "app_version": 0.2,
         "phone_maker": "Apple",
         "phone_model": "Iphone7",

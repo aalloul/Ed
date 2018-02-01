@@ -1,6 +1,7 @@
 {
-  "datamodel_version": 0.1,
+  "datamodel_version": 0.2,
   "app_version": 0.2,
+  "debug": true,
   "phone_maker": "Apple",
   "phone_model": "Iphone7",
   "os_version": "11.0.3",
