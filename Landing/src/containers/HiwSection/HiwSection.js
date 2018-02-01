@@ -3,7 +3,7 @@ import React from 'react';
 import HiwStep from '../../components/HiwStep/HiwStep';
 
 export default () => (
-  <section className="hiw">
+  <section className="hiw" data-growity="hiw-section">
     <HiwStep
       number="01"
       title="Take a picture"

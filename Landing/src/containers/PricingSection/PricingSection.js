@@ -55,7 +55,7 @@ const Condition = glamorous.li({
 });
 
 export default () => (
-  <Wrapper>
+  <Wrapper data-growity="pricing-section">
     <Item>
       <Price>€5 per month</Price>
 
@@ -69,3 +69,31 @@ export default () => (
     </Item>
   </Wrapper>
 );
+
+/*
+буэ
+Wrapper
+  Item
+    Price
+      children=€5 per month
+    Trial
+      children=(
+        Condition
+          children=First month is free trial
+        Condition
+          children=No credit card required
+        Condition
+          children=Cancel anytime
+      )
+
+React.Experiment
+  name="..."
+  targeting=???
+  audience
+  ctr={() => (
+    React.Fragment
+      ...option 1
+  )}
+  exp
+
+ */

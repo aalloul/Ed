@@ -23,11 +23,11 @@ const Icon = glamorous.img({
 
 export default () => (
   <Wrapper>
-    <Button href="#" data-modal="notify-ios" className="iOS">
+    <Button href="#" data-modal="notify-ios" data-growity="appstore-button" className="iOS">
       <Icon src="/img/icon-appstore1.svg" alt="Icon" />
       APP STORE
     </Button>
-    <Button href="https://play.google.com/store/apps/details?id=com.smail.app.android" target="_blank" className="Android">
+    <Button href="https://play.google.com/store/apps/details?id=com.smail.app.android" data-growity="google-play-button" target="_blank" className="Android">
       <Icon src="/img/icon-googleplay1.svg" alt="Icon"/>
       GOOGLE PLAY
     </Button>

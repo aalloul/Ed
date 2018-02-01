@@ -33,7 +33,7 @@ const Text = glamorous.p({
 });
 
 export default () => (
-  <Wrapper>
+  <Wrapper data-growity="hero-section">
     <Screenshot type="success" />
 
     <Section>
