@@ -252,7 +252,7 @@ app.post('/', (req, res) => {
 });
 
 if (module === require.main) {
-  const server = app.listen(process.env.PORT || 8081, () => {
+  const server = app.listen(process.env.PORT || 3030, () => {
     const port = server.address().port;
     console.log(`App listening on port ${port}`);
   });
