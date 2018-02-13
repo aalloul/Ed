@@ -1,12 +1,11 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import mediaQueries from '../../common/mediaQueries';
-import consts from '../../components/consts';
+
+import consts from '../../common/consts';
 
 const Header = glamorous.header({
-  width: '100%',
   background: '#172438',
-  padding: '5px 0',
+  padding: '20px 20px 30px',
   display: 'flex',
   justifyContent: 'space-between',
 });
@@ -15,125 +14,99 @@ const Logo =  glamorous.div({
   textAlign: 'center',
 });
 
-const Menu =  glamorous.ul({
+const Navigation = glamorous.nav();
+const MenuToggle = glamorous.img({
+  display: 'none',
+  [consts.media.phone]: {
+    display: 'block',
+  },
+});
+
+const Menu = glamorous.ul({
   textAlign: 'center',
   display: 'flex',
   justifyContent: 'space-around',
   alignItems: 'center',
-  [mediaQueries.phone]: {
+  listStyleType: 'none',
+  [consts.media.phone]: {
     flexDirection: 'column',
     position: 'absolute',
-    width: '200px',
-    margin: '-100px 0 0 0',
-    padding: '50px',
-    paddingTop: '125px',
-    right: '-100px',
+    top: 0,
+    left: 0,
+    right: 0,
+    padding: '20px 0',
+    margin: 0,
     background: '#50D2C2',
-    listStyleType: 'none',
-    transformOrigin: '0% 0%',
-    transform: 'translate(100%, 0)',
-    transition: 'transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0)',
+
+    zIndex: 1,
+    opacity: 0,
+    pointerEvents: 'none',
+  },
+  '.menu-visible': {
+    opacity: 1,
+    pointerEvents: 'auto',
   },
 });
 
-const MenuItem = glamorous.a({
-  color: '#fff',
-  cursor: 'pointer',
-  [mediaQueries.phone]: {
+const MenuItem = glamorous.li({
+  paddingRight: '40px',
+  [consts.media.phone]: {
     marginTop: '20px',
-    fontSize: '30px',
+    padding: '0',
     width: '100%',
-  }
+  },
 });
 
-const Navigation = glamorous.nav({
-  width: '50%',
+const MenuLink = glamorous.a({
+  color: '#fff',
+  [consts.media.phone]: {
+    fontSize: '30px',
+    textDecoration: 'none',
+  },
 });
-
-const MenuToggle = glamorous.div({
-  [mediaQueries.phone]: {
-    display: 'block',
-    position: 'absolute',
-    top: '15px',
-    right: '50px',
-    zIndex: '1',
-  }
-});
-
-const Checkbox = glamorous.input({
-  display: 'none',
-[mediaQueries.phone]: {
-  display: 'block',
-  width: '40px',
-  height: '32px',
-  position: 'absolute',
-  top: '-7px',
-  left: '-5px',
-  cursor: 'pointer',
-  opacity: '0',
-  zIndex: '2', 
-  ':checked ~ span': {
-    opacity: '1',
-    transform: 'rotate(45deg) translate(-2px, -1px)',
-  },
-  ':checked ~ span:nth-last-child(3)': {
-      opacity: '0',
-      transform: 'rotate(0deg) scale(0.2, 0.2)',
-  },
-  ':checked ~ span:nth-last-child(2)': {
-      opacity: '1',
-      transform: 'rotate(-45deg) translate(1px, 0px)',
-  },
-  ':checked ~ ul': {
-    transform: 'scale(1.0, 1.0)',
-    opacity: '1',
-  },
-}
-});
-
-const Dash = glamorous.span({
-[mediaQueries.phone]: {
-  display: 'block',
-  width: '33px',
-  height: '4px',
-  marginBottom: '5px',
-  position: 'relative',
-  background: '#cdcdcd',
-  borderRadius: '3px',
-  zIndex: '1',
-  transformOrigin: '3px 3px',
-  transition: 'transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0)',
-  transition: 'background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),',
-  transition: 'opacity 0.55s ease',
-  ':first-child': {
-    transformOrigin: '0% 0%',
-  },
-  'nthLastChild(2)': {
-    transformOrigin: '0% 100%',
-  }
-}
-});
-
 
 export default () => (
-  <Header>
+  <Header id="header">
     <Logo>
       <img src="/img/smail_logo.png" width="100" alt="SMail app logotype (envelop with @ sign inside)" />
     </Logo>
     <Navigation>
-      <MenuToggle>
-        <Checkbox type='checkbox'/>
-        <Dash/>
-        <Dash/>
-        <Dash/>
-        <Menu>
-          <MenuItem>Top</MenuItem>
-          <MenuItem>How it works</MenuItem>
-          <MenuItem>Reviews</MenuItem>
-          <MenuItem>Pricing</MenuItem>
-          <MenuItem>Contact</MenuItem>
-        </Menu>
-      </MenuToggle>
+      <MenuToggle src="/img/icon-menu.png" id="menu-toggle" />
+
+      <Menu id="menu">
+        <MenuItem>
+          <MenuLink href="#header">Top</MenuLink>
+        </MenuItem>
+        <MenuItem>
+          <MenuLink href="#how-it-works">How it works</MenuLink>
+        </MenuItem>
+        <MenuItem>
+          <MenuLink href="#pricing">Pricing</MenuLink>
+        </MenuItem>
+        <MenuItem>
+          <MenuLink href="#contact">Contact</MenuLink>
+        </MenuItem>
+      </Menu>
+      <script dangerouslySetInnerHTML={{
+        __html: `
+        (function() {
+          var menu = document.getElementById('menu');
+          var menuClassList = menu.classList;
+          var menuToggle = document.getElementById('menu-toggle');
+          var className = 'menu-visible';
+          menuToggle.addEventListener('click', function(e) {
+            if (!menuClassList.contains(className)) {
+              e.stopPropagation();
+              menuClassList.add(className);
+            }
+          });
+          document.body.addEventListener('click', function() {
+            menuClassList.remove(className);
+          });
+        })();
+      `}}
+      >
+      </script>
     </Navigation>
   </Header>
 );

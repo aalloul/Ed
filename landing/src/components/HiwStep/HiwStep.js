@@ -5,7 +5,7 @@ import glamorous from 'glamorous';
 import Buttons from '../../containers/Buttons/Buttons';
 import ContentWithScreenshot from '../ContentWithScreenshot/ContentWithScreenshot';
 import Screenshot from '../Screenshot/Screenshot';
-import mediaQueries from '../../common/mediaQueries';
+import consts from '../../common/consts';
 
 
 const Wrapper = glamorous.div(({ reverse }) => ({
@@ -13,7 +13,7 @@ const Wrapper = glamorous.div(({ reverse }) => ({
   justifyContent:  'space-evenly',
   padding: '30px 0',
   flexDirection: reverse ? 'row-reverse' : 'row',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     padding: '10px 0',
     flexDirection: 'column',
   },
@@ -24,13 +24,13 @@ const Title = glamorous.h3({
   fontWeight:  '900',
   position:  'relative',
   marginBottom:  '40px',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     marginBottom: '10px',
     fontSize: '38px',
     paddingBottom: '540px',
     width: '100%',
   },
-  [mediaQueries.tablet]: {
+  [consts.media.tablet]: {
     fontSize: '45px',
   },
 });
@@ -38,11 +38,11 @@ const Title = glamorous.h3({
 const Text = glamorous.p({
   fontSize:  '36px',
   position:  'relative',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     margin: '10px 0px',
     fontSize: '30px',
   },
-  [mediaQueries.tablet]: {
+  [consts.media.tablet]: {
     fontSize: '33px',
   },
 });
@@ -54,11 +54,11 @@ const Number = glamorous.span({
   position:  'absolute',
   left:  '-85px',
   top:  '-60px',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     left:  '-5px',
     fontSize:  '80px',
   },
-  [mediaQueries.tablet]: {
+  [consts.media.tablet]: {
     fontSize: '90px',
   },
 });

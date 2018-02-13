@@ -1,6 +1,6 @@
 import glamorous from 'glamorous';
-import consts from '../consts';
-import mediaQueries from '../../common/mediaQueries';
+
+import consts from '../../common/consts';
 
 export default glamorous.a({
   fontSize: '30px',
@@ -8,7 +8,7 @@ export default glamorous.a({
   lineHeight: '78px',
   height: '78px',
   display: 'inline-block',
-  background: consts.mainColor,
+  background: consts.colors.main,
   borderRadius: '5px',
   padding: '0 30px',
   boxShadow: '0 20px 55px rgba(0, 0, 0, 0.33)',
@@ -20,7 +20,7 @@ export default glamorous.a({
     color: '#171838',
     textDecoration: 'none',
   },
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     width: '80%',
     maxWidth: '350px',
   },

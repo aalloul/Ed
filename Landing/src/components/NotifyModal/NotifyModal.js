@@ -1,6 +1,7 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import consts from '../consts';
+
+import consts from '../../common/consts';
 
 const ModalWindow = glamorous.div({
   display: 'none',

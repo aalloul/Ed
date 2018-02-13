@@ -2,12 +2,12 @@ import React from 'react';
 import glamorous from 'glamorous';
 
 import Buttons from '../Buttons/Buttons';
-import mediaQueries from '../../common/mediaQueries';
+import consts from '../../common/consts';
 
 const Wrapper = glamorous.section({
   background: 'url("/img/cloud_image.jpg") center top no-repeat',
   padding: '350px 0 250px',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     background: 'none',
     padding: '0 20px',
   },
@@ -17,7 +17,7 @@ const Item = glamorous.div({
   margin: '0 auto',
   textAlign: 'center',
   width: '800px',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     width: '100%',
   },
 });
@@ -26,10 +26,10 @@ const Price = glamorous.h2({
   fontSize: '60px',
   color: '#844728',
   mixBlendMode: 'difference',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     fontSize: '40px',
   },
-  [mediaQueries.tablet]: {
+  [consts.media.tablet]: {
     fontSize: '50px',
   },
 });
@@ -40,7 +40,7 @@ const Trial = glamorous.ul({
   justifyContent: 'space-evenly',
   margin: '125px auto 0px',
   padding: '0px',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     flexDirection: 'column',
     marginTop: '20px',
   },
@@ -49,13 +49,13 @@ const Trial = glamorous.ul({
 const Condition = glamorous.li({
   display: 'inline',
   fontSize: '24px',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     fontSize: '30px',
   },
 });
 
 export default () => (
-  <Wrapper data-growity="pricing-section">
+  <Wrapper id="pricing">
     <Item>
       <Price>€5 per month</Price>
 

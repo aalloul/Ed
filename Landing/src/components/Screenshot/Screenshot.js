@@ -1,5 +1,6 @@
 import glamorous from 'glamorous';
-import mediaQueries from '../../common/mediaQueries';
+
+import consts from '../../common/consts';
 
 export default glamorous.div({
   height: '650px',
@@ -19,12 +20,12 @@ export default glamorous.div({
     position: 'absolute',
     top: '0',
     width: '100%',
-    [mediaQueries.phone]: {
+    [consts.media.phone]: {
       display: 'none',
       top: '-150px',
     },
   },
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     position: 'absolute',
     margin: '0px auto',
   },
@@ -41,7 +42,7 @@ export default glamorous.div({
     ':after': {
       backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.jpg")',
     },
-    [mediaQueries.phone]: {
+    [consts.media.phone]: {
       display: 'none',
     },
   },
@@ -52,7 +53,7 @@ export default glamorous.div({
       left: '18px',
       top: '57px',
       width: '75%',
-      [mediaQueries.phone]: {
+      [consts.media.phone]: {
         height: '80%',
         width: '90%',
         top: '-50px',
@@ -71,7 +72,7 @@ export default glamorous.div({
       left: '24px',
       top: '97px',
       width: '79%',
-      [mediaQueries.phone]: {
+      [consts.media.phone]: {
         height: '80%',
         width: '90%',
         top: '-100px',
@@ -89,7 +90,7 @@ export default glamorous.div({
       left: '7px',
       top: '80px',
       width: '83%',
-      [mediaQueries.phone]: {
+      [consts.media.phone]: {
         height: '80%',
         width: '90%',
         top: '-80px',

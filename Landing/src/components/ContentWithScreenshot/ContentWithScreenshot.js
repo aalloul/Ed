@@ -1,5 +1,6 @@
 import glamorous from 'glamorous';
-import mediaQueries from '../../common/mediaQueries';
+
+import consts from '../../common/consts';
 
 export default glamorous.div({
   alignItems:  'center',
@@ -8,7 +9,7 @@ export default glamorous.div({
   justifyContent:  'center',
   maxWidth:  '650px',
   textAlign:  'center',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     maxWidth: '700px',
     margin: '0px 20px',
   },

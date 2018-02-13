@@ -2,14 +2,14 @@ import React from 'react';
 import glamorous from 'glamorous';
 
 import Button from '../../components/Button/Button';
-import mediaQueries from '../../common/mediaQueries';
+import consts from '../../common/consts';
 
 const Wrapper = glamorous.div({
   display: 'flex',
   justifyContent: 'space-between',
   marginTop: '70px',
   width: '100%',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     flexDirection: 'column',
     margin: '20px auto 40px',
   },

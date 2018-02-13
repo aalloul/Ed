@@ -66,7 +66,7 @@ const SocialListItem = glamorous.li({
 });
 
 export default () => (
-  <Footer>
+  <Footer id="contact">
     <FooterWrapper>
       <Credits>
         <Anchor href="/">Smail.rocks</Anchor>

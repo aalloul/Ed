@@ -1,6 +1,7 @@
 import React from 'react';
 import glamorous from 'glamorous';
-import mediaQueries from '../../common/mediaQueries';
+
+import consts from '../../common/consts';
 
 const Wrapper = glamorous.section({
   backgroundColor: '#e9ebee',
@@ -17,7 +18,7 @@ const Review = glamorous.div({
   font: 'SF Optimized, system-ui, -apple-system, BlinkMacSystemFont, ".SFNSText-Regular", sans-serif',
   color: '#1d2129',
   display: 'inline-block',
-  [mediaQueries.phone]: {
+  [consts.media.phone]: {
     width: '90%',
   },
 });
@@ -65,7 +66,7 @@ const ReviewAuthorLink = glamorous.a({
   ':hover': {
     textDecoration: 'underline',
   },
-})
+});
 
 const Grade = glamorous.i({
   color: '#ffffff',
