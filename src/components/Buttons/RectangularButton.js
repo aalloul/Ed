@@ -4,6 +4,7 @@ import { ActivityIndicator, Text, TouchableHighlight, ViewPropTypes } from 'reac
 
 const styles = {
   title: {
+    color: '#fff',
     fontSize: 22,
   },
   button: {

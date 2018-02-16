@@ -81,7 +81,7 @@ class SplashScreen extends PureComponent {
         <Image source={require('./SplashImage.png')} style={styles.image} />
         <SecondaryText>
           Send the translated{"\n"}
-          version of a paper mail{"\n"}
+          version of a physical mail{"\n"}
           to your email
         </SecondaryText>
         <RectangularButton
