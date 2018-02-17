@@ -80,9 +80,9 @@ export default () => (
         <MenuItem>
           <MenuLink href="#how-it-works">How it works</MenuLink>
         </MenuItem>
-        <MenuItem>
-          <MenuLink href="#pricing">Pricing</MenuLink>
-        </MenuItem>
+        { /* <MenuItem> */ }
+          { /* <MenuLink href="#pricing">Pricing</MenuLink> */ }
+        { /* </MenuItem> */ }
         <MenuItem>
           <MenuLink href="#contact">Contact</MenuLink>
         </MenuItem>
