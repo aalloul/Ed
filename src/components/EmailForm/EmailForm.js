@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, KeyboardAvoidingView } from 'react-native';
 
 import GoogleSignIn from 'react-native-google-sign-in';
 
@@ -114,7 +114,7 @@ const renderError = (errorText) => {
 };
 
 const EmailForm = ({ onPress, onInput, errorText, resetError, email }) => (
-  <View style={styles.container}>
+  <KeyboardAvoidingView style={styles.container} keyboardVerticalOffset={0} behavior="padding">
     <PrimaryText>
       Where should we send{'\n'}
       the translation
@@ -152,7 +152,7 @@ const EmailForm = ({ onPress, onInput, errorText, resetError, email }) => (
       title="Send"
       titleStyle={styles.title}
     />
-  </View>
+  </KeyboardAvoidingView>
 );
 
 EmailForm.displayName = 'EmailForm';

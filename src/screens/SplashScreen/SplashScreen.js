@@ -12,16 +12,19 @@ import { headerStyle } from '../../common/navigationHelpers';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
     justifyContent: 'center',
+    paddingBottom: 10,
+  },
+  imageWrapper: {
+    flex: 1,
+    marginTop: 20,
+    marginBottom: 20,
   },
   image: {
-    height: 255,
-    marginBottom: 35,
-    marginTop: 35,
-    width: 240,
+    flex: 1
   },
 });
 
@@ -78,7 +81,10 @@ class SplashScreen extends PureComponent {
           Never miss{"\n"}
           what’s important
         </PrimaryText>
-        <Image source={require('./SplashImage.png')} style={styles.image} />
+        <View style={styles.imageWrapper}>
+          <Image source={require('./SplashImage.png')} style={styles.image} resizeMode="contain" />
+        </View>
+
         <SecondaryText>
           Send the translated{"\n"}
           version of a physical mail{"\n"}

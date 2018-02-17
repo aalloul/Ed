@@ -9,6 +9,7 @@ const styles = {
   },
   button: {
     backgroundColor: '#50D2C2',
+    height: 38,
     marginTop: 25,
     paddingBottom: 5,
     paddingLeft: 10,
@@ -32,7 +33,7 @@ const DisabledButton = ({ style }) => (
     underlayColor="#4FC8B8"
     style={styles.button}
   >
-    <ActivityIndicator size="large" color="#00ff00" />
+    <ActivityIndicator size="large" color="#ffffff" />
   </TouchableHighlight>
 );
 
