@@ -32,15 +32,15 @@ export default glamorous.div({
 }, ({ type }) => ({
   success: {
     ':before': {
-      background: 'url("/img/4-Success.jpg") 0 78px no-repeat',
-      backgroundSize: 'contain',
-      height: '100%',
+      background: 'url("/img/4-Success.jpg") center center no-repeat',
+      backgroundSize: '90%',
+      height: '71%',
       left: '20px',
-      top: '20px',
+      top: '94px',
       width: '82%',
     },
     ':after': {
-      backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.jpg")',
+      backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.png")',
     },
     [consts.media.phone]: {
       display: 'none',
@@ -48,7 +48,7 @@ export default glamorous.div({
   },
   scan: {
     ':before': {
-      background: 'url("/img/1-Scan.png") -34px -50px no-repeat',
+      background: 'url("/img/1-Scan.png") center -50px no-repeat',
       height: '83%',
       left: '18px',
       top: '57px',
@@ -61,14 +61,14 @@ export default glamorous.div({
       },
     },
     ':after': {
-      backgroundImage: 'url("/img/Samsung Galaxy S8 Midnight Black.jpg")',
+      backgroundImage: 'url("/img/Samsung Galaxy S8 Midnight Black.png")',
     }
   },
   translation: {
     ':before': {
-      background: '#fff url("/img/2-Translation.jpg") 0 0 no-repeat',
+      background: '#fff url("/img/2-Translation.jpg") center center no-repeat',
       backgroundSize: 'contain',
-      height: '80%',
+      height: '71%',
       left: '24px',
       top: '97px',
       width: '79%',
@@ -80,16 +80,17 @@ export default glamorous.div({
       },
     },
     ':after': {
-      backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.jpg")',
+      backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.png")',
     }
   },
   email: {
     ':before': {
-      background: 'url("/img/3-Email.jpg") -34px -50px no-repeat',
-      height: '80%',
-      left: '7px',
+      background: 'url("/img/3-Email.jpg") 15px 5px no-repeat',
+      backgroundSize: 'contain',
+      height: '75%',
+      left: '8px',
       top: '80px',
-      width: '83%',
+      width: '85%',
       [consts.media.phone]: {
         height: '80%',
         width: '90%',

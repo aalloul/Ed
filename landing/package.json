@@ -5,21 +5,23 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "x0 dev src/App.js",
-    "build": "x0 build src/App.js --out-dir public --static --cssLibrary=glamorous",
-    "serve": "yarn build && serve public -p 3000",
-    "deploy": "yarn build && firebase deploy"
+    "start": "npm run copy-images && x0 dev src/App.js -o",
+    "build": "npm run copy-images && x0 build src/App.js --out-dir public --static --cssLibrary=glamorous",
+    "serve": "npm run build && serve public -p 3000",
+    "deploy": "npm run build && firebase deploy",
+    "copy-images": "copy ./src/img ./public/img"
   },
   "dependencies": {
-    "@compositor/x0": "^3.0.2",
+    "@compositor/x0": "^3.2.0",
     "glamor": "^2.20.40",
     "glamorous": "^4.11.2",
     "prop-types": "^15.6.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
+    "copy-dir-cli": "0.0.3",
     "serve": "^6.1.0"
   },
   "x0": {
