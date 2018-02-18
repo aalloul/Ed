@@ -1,22 +1,13 @@
 # dependencies
-/node_modules
+node_modules/
 
 # testing
-/coverage
+coverage/
 
 # production
 public/index.html
 public/privacy-policy/index.html
-/public/index.html
-/public/privacy-policy/index.html
-Landing/public/index.html
-Landing/public/privacy-policy/index.html
-/Landing/public/index.html
-/Landing/public/privacy-policy/index.html
-landing/public/index.html
-landing/public/privacy-policy/index.html
-/landing/public/index.html
-/landing/public/privacy-policy/index.html
+public/img/
 
 # misc
 .DS_Store
