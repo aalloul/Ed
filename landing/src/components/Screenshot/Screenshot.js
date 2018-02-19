@@ -48,7 +48,7 @@ export default glamorous.div({
   },
   scan: {
     ':before': {
-      background: 'url("/img/1-Scan.png") center -50px no-repeat',
+      background: 'url("/img/1-Scan.jpg") center -50px no-repeat',
       height: '83%',
       left: '18px',
       top: '57px',
