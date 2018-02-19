@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, Picker } from 'react-native';
+import { StyleSheet, View, Picker, Dimensions } from 'react-native';
 
-import RectangularButton from '../Buttons/RectangularButton';
 import PrimaryText from '../Texts/PrimaryText';
-import SecondaryText from '../Texts/SecondaryText';
 import IconButton from '../Buttons/IconButton';
 
 const styles = StyleSheet.create({
@@ -14,13 +12,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  actions: {
-    alignItems: 'stretch',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    height: 180,
-    width: 360,
-  },
+  actions: Dimensions.get('window').height < 600
+    ? {
+      flex: 1,
+    }
+    : {
+      alignItems: 'stretch',
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      height: 180,
+      width: 360,
+    }
+  ,
   actionButton: {
     alignItems: 'center',
     flexDirection: 'column',

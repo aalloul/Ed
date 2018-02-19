@@ -1,12 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Dimensions, StyleSheet, Text } from 'react-native';
+
+const win = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   text: {
     color: '#999',
     fontFamily: 'Avenir',
     textAlign: 'center',
-    fontSize: 32,
+    fontSize: win.height < 600 ? 24 : 32,
   },
 });
 
