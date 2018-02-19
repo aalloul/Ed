@@ -40,8 +40,6 @@ const AdvantageText = glamorous.div({
   fontSize: 30,
 });
 
-
-
 export default () => (
   <Issues>
     <Heading>SMail is for you if</Heading>
