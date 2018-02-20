@@ -7,7 +7,6 @@ import PrivacyPolicy from './routes/PrivacyPolicy';
 import Footer from './containers/Footer/Footer';
 import Header from './containers/Header/Header';
 import Favicons from './containers/Favicons/Favicons';
-import NotifyModal from './components/NotifyModal/NotifyModal';
 import FbMessenger from './components/FbMessenger/FbMessenger';
 
 const Router = typeof document !== 'undefined'
@@ -61,7 +60,6 @@ export default props => (
       <Footer />
     </div>
 
-    <NotifyModal />
     <FbMessenger />
     
     <script dangerouslySetInnerHTML={{
