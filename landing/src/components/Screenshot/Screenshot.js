@@ -49,10 +49,11 @@ export default glamorous.div({
   scan: {
     ':before': {
       background: 'url("/img/1-Scan.jpg") center -50px no-repeat',
-      height: '83%',
-      left: '18px',
-      top: '57px',
-      width: '75%',
+      backgroundSize: 'contain',
+      height: '71%',
+      left: '24px',
+      top: '97px',
+      width: '79%',
       [consts.media.phone]: {
         height: '80%',
         width: '90%',
@@ -61,7 +62,8 @@ export default glamorous.div({
       },
     },
     ':after': {
-      backgroundImage: 'url("/img/Samsung Galaxy S8 Midnight Black.png")',
+      backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.png")',
+      // backgroundImage: 'url("/img/Samsung Galaxy S8 Midnight Black.png")',
     }
   },
   translation: {
@@ -99,7 +101,8 @@ export default glamorous.div({
       },
     },
     ':after': {
-      backgroundImage: 'url("/img/Google Pixel 2 Just Black.png")',
+      backgroundImage: 'url("/img/Apple iPhone 8 Space Grey.png")',
+      // backgroundImage: 'url("/img/Google Pixel 2 Just Black.png")',
     }
   },
 }[type]));
