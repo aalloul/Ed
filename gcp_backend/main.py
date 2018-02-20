@@ -132,10 +132,11 @@ def translate():
         logger.error("exception = {}".format(ex.message))
         return custom_error(ex)
     except Exception as ex:
-        logger.error(ex.message)
-        return custom_error(UnknownError())
+        logger.error(ex)
+        return custom_error(UnknownError(ex.message))
 
 
 @app.errorhandler(500)
 def custom_error(e):
+    logger.info("e = {}".format(e))
     return jsonify(e.get_json()), 500

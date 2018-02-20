@@ -68,3 +68,10 @@
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 -dontwarn okio.**
+
+# Adam: from https://github.com/luggit/react-native-config/pull/30/files
+-keep class com.smail.app.android.BuildConfig { *; }
+-keep class com.google.android.gms.* { public *; }
+-dontwarn com.google.android.gms.**
+-allowaccessmodification
+-repackageclasses com.smail.app.android

@@ -60,10 +60,10 @@ def get_ocr_result(payload):
 
 
 if __name__=="__main__":
-    """ Small script to create new fixtures as we add more test cases to the 
+    """ Small script to create new fixtures as we add more test cases to the
     back-end API.
     """
-    filename = "request_rotation_270_2.jpeg"
+    filename = "request_01.jpeg"
 
     im = read_image(filename)
 
@@ -71,8 +71,8 @@ if __name__=="__main__":
 
     ocr_res = get_ocr_result(get_ocr_payload(im))
 
-    with open("request_rotation_270_2.json", "w") as f:
+    with open("request_01.json", "w") as f:
         dump(ocr_fix, f, indent=4)
 
-    with open("request_rotation_270_2_ocr.json", "w") as f:
+    with open("request_01_ocr.json", "w") as f:
         dump(ocr_res, f, indent=4)

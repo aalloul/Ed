@@ -26,6 +26,8 @@ class OCRParser(object):
 
         else:
             logger.info("Parsing text from OCR answer")
+            logger.debug("OCR Response = {}".format(self.ocr_resp['responses'][0]))
+            
             self.full_text = self.ocr_resp['responses'][0][
                 'fullTextAnnotation']['text']
             logger.debug("full_text done")
@@ -47,7 +49,9 @@ class OCRParser(object):
             page_max_y = page['height']
             page_max_x = page['width']
             out[cnt] = self._extract_blocks(page, page_max_x, page_max_y)
+            logger.debug("_combine_words")
             out[cnt] = self._combine_words(out[cnt])
+            logger.debug("_shift_all")
             out[cnt] = self._shift_all(out[cnt])
 
             if self.orientation in [0, 180]:
@@ -67,6 +71,7 @@ class OCRParser(object):
         blocks = []
         for block in page['blocks']:
             blocks += self._extract_paragraphs(block, page_max_x, page_max_y)
+        logger.debug("_extract_blocks done")
         return blocks
 
     def _extract_paragraphs(self, block, page_max_x, page_max_y):
@@ -77,6 +82,7 @@ class OCRParser(object):
             paragraphs.append(
                 self._fix_orientation(p, xs, ys, page_max_x, page_max_y))
 
+        logger.debug("_extract_paragraphs done")
         return paragraphs
 
     def _fix_orientation(self, paragraph, xs, ys, page_max_x, page_max_y):
@@ -136,9 +142,10 @@ class OCRParser(object):
         p = ""
 
         logger.debug("Extracting boundingBox for paragraphs")
-        tmpx = [v['x'] for v in paragraph['boundingBox']['vertices']]
+        tmpx = [v['x'] for v in paragraph['boundingBox']['vertices'] if 'x'
+                in v]
         xs = [min(tmpx), max(tmpx)]
-        tmpy = [v['y'] for v in paragraph['boundingBox']['vertices']]
+        tmpy = [v['y'] for v in paragraph['boundingBox']['vertices'] if 'y' in v]
         ys = [min(tmpy), max(tmpy)]
 
         for word in paragraph['words']:
@@ -157,8 +164,10 @@ class OCRParser(object):
 
         for symbol in word['symbols']:
             w += symbol['text']
-            xs += [s['x'] for s in symbol['boundingBox']['vertices']]
-            ys += [s['y'] for s in symbol['boundingBox']['vertices']]
+            xs += [s['x'] for s in symbol['boundingBox']['vertices'] if 'x'
+                   in s]
+            ys += [s['y'] for s in symbol['boundingBox']['vertices'] if 'y'
+                   in s]
 
             if "detectedBreak" in symbol['property']:
                 if symbol['property']['detectedBreak']['type'] == "HYPHEN":
@@ -239,34 +248,34 @@ if __name__ == "__main__":
             return 0
 
 
-    with open("../fixture/tmp.jpeg", "rb") as f:
+    with open("../fixture/request_01.jpeg", "rb") as f:
         im = f.read()
         orientation = get_orientation(im)
 
-    with open("../fixture/tmp.json", "r") as f:
+    with open("../fixture/request_01_ocr.json", "r") as f:
         resp = f.read()
 
     ocrparser = OCRParser(resp, orientation)
     parsed_pages = ocrparser.parse_pages()
     # parsed_pages[1] = combine_words(parsed_pages[1])
 
-    resp = loads(resp)
-    x = resp['responses'][0]['fullTextAnnotation']['pages'][0]['width']
-    y = resp['responses'][0]['fullTextAnnotation']['pages'][0]['height']
-    if orientation == 0:
-        img = Image.new("RGB", (x, y), "white")
-    elif orientation == 90:
-        img = Image.new("RGB", (y, x), "white")
-    elif orientation == 270:
-        img = Image.new("RGB", (y, x), "white")
-    else:
-        img = Image.new("RGB", (y, x), "white")
-
-    draw = ImageDraw.Draw(img)
-    for line in parsed_pages[1]:
-        draw.text((line['from_x'], line['from_y']),
-                  line['word'].encode("utf-8"),
-                  'black')
-
-    draw = ImageDraw.Draw(img)
-    img.save("../fixture/test.png")
+    # resp = loads(resp)
+    # x = resp['responses'][0]['fullTextAnnotation']['pages'][0]['width']
+    # y = resp['responses'][0]['fullTextAnnotation']['pages'][0]['height']
+    # if orientation == 0:
+    #     img = Image.new("RGB", (x, y), "white")
+    # elif orientation == 90:
+    #     img = Image.new("RGB", (y, x), "white")
+    # elif orientation == 270:
+    #     img = Image.new("RGB", (y, x), "white")
+    # else:
+    #     img = Image.new("RGB", (y, x), "white")
+    #
+    # draw = ImageDraw.Draw(img)
+    # for line in parsed_pages[1]:
+    #     draw.text((line['from_x'], line['from_y']),
+    #               line['word'].encode("utf-8"),
+    #               'black')
+    #
+    # draw = ImageDraw.Draw(img)
+    # img.save("../fixture/test.png")

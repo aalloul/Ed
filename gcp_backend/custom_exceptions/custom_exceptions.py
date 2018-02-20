@@ -90,3 +90,7 @@ class UnknownEmailException(GenericSmailException):
         self.description = "Something went wrong with the e-mail. Request the" \
                            "user to check his e-mail/retry"
         self.message = args[0]
+
+
+if __name__ == "__main__":
+    raise UnknownError("werewr")

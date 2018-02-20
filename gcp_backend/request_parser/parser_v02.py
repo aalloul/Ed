@@ -66,7 +66,7 @@ class Parser(object):
 
     def _set_input_language(self, request):
         if "input_language" not in request:
-            self.input_language = "nl"
+            self.input_language = ""
         else:
             self.input_language = request["input_language"]
 
@@ -184,7 +184,9 @@ class Parser(object):
             "humman_translation_requested":
                 self.get_human_translation_requested(),
             "user_id": self.get_user_id(),
-            "device": self.get_device()
+            "device": self.get_device(),
+            "language_detection": True if self.get_input_language() == "" else
+            False
         }
 
     def __str__(self):

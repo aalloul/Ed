@@ -31,11 +31,11 @@ class AutomaticTranslator(Translator):
         self.url = "https://translation.googleapis.com/language/translate/v2" \
                    "?key={}".format(self.api_key)
         self.DEBUG = False
-        self.html_parser_url = "http://table-builder-dot-linear-asset-184705." \
-                               "appspot.com"
+        self.html_parser_url = "http://35.197.43.208:3030"
         logger.debug("Init done")
 
-    def _fixture(self):
+    @staticmethod
+    def _fixture():
         logger.debug("DEBUG mode enabled. Returning translation result from "
                      "fixture")
         with open("fixture/test_translation.json", "r") as f:
