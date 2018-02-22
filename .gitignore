@@ -109,6 +109,10 @@ DerivedData/
 *.perspectivev3
 !default.perspectivev3
 xcuserdata/
+perspective_correction/fixtures/request_01.jpeg
+perspective_correction/fixtures/request_first_user.jpeg
+perspective_correction/fixtures/request_first_user_rotated.jpeg
+perspective_correction/output/*
 
 ## Other
 *.moved-aside

@@ -12,7 +12,6 @@ from time import time
 from custom_exceptions.custom_exceptions import NoTextFoundException, \
     UnknownError, UnknownEmailException, GenericSmailException
 
-
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
@@ -47,7 +46,7 @@ def request_automatic_translation(parsed_request, reporter):
 
     try:
         parsed_ocr = Ocr(parsed_request.get_image(),
-                  parsed_request.get_input_language()).ocr_answer
+                         parsed_request.get_input_language()).ocr_answer
     except NoTextFoundException:
         logger.error("No text was found in the provided image")
         reporter.add_event("exception", "no_text_found_in_image")
