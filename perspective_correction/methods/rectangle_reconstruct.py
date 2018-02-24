@@ -130,7 +130,7 @@ if __name__ == "__main__":
         im64 = b64encode(f.read())
 
     rectangle = RectangleReconstruct(im64, 900, threshold=0.4)
-    scan = rectangle.get_scanned_version()
+    # scan = rectangle.get_scanned_version()
 
 
     from cv2 import imshow, waitKey, destroyAllWindows, drawContours, imwrite
@@ -146,13 +146,6 @@ if __name__ == "__main__":
     #     waitKey()
     # destroyAllWindows()
 
-    kernel = ones((30, 30), uint8)
-    closed = morphologyEx(rectangle.image, MORPH_CLOSE, kernel)
-    imshow("Dilated", closed)
-    waitKey()
-    destroyAllWindows()
-
-
     dilated = rectangle._dilate()
 
     edges = rectangle._find_edges(dilated)
@@ -165,11 +158,10 @@ if __name__ == "__main__":
     imshow("Contours", rectangle.image)
     waitKey()
     destroyAllWindows()
-    # #
-    # #
-    # box = rectangle._get_box(contour)
-    # warped = rectangle._apply_transformation(box, blackwhite=False)
-    # imshow("Contours", imutils.resize(warped, height=500))
-    # waitKey()
-    # destroyAllWindows()
-    #
+
+
+    box = rectangle._get_box(contour)
+    warped = rectangle._apply_transformation(box, blackwhite=False)
+    imshow("Contours", imutils.resize(warped, height=500))
+    waitKey()
+    destroyAllWindows()
