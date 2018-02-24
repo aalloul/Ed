@@ -17,9 +17,10 @@ logger.setLevel(logging.DEBUG)
 
 
 class Naive(object):
-    def __init__(self, base64_image, factor=500, threshold=0.4):
+    def __init__(self, base64_image, factor=500, threshold=0.4, border=False):
         image = self._read_image(base64_image)
-        image = self._add_border(image)
+        if border:
+            image = self._add_border(image)
         self.original, self.image, self.ratio = self._resize_image(image,
                                                                    factor)
         self.edges = None
@@ -39,7 +40,7 @@ class Naive(object):
     @staticmethod
     def _add_border(im):
         return copyMakeBorder(im, 15, 15, 15, 15, BORDER_CONSTANT,
-                              value=[0, 0,0])
+                              value=[0, 0, 0])
 
     def _find_edges(self):
         gray = cvtColor(self.image, COLOR_BGR2GRAY)
@@ -50,28 +51,32 @@ class Naive(object):
     def _find_contours(e):
         cnts = findContours(e.copy(), RETR_LIST, CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if imutils.is_cv2() else cnts[1]
-        cnts = sorted(cnts, key=contourArea, reverse=True)[:5]
 
-        # loop over the contours
+        def get_area(contour):
+            peri = arcLength(contour, True)
+            approx = approxPolyDP(contour, 0.10 * peri, True)
+            return contourArea(approx), approx
+
+        maxarea = 0
+        approx = None
         for c in cnts:
-            # approximate the contour
-            peri = arcLength(c, True)
-            approx = approxPolyDP(c, 0.02 * peri, True)
+            area, approx_ = get_area(c)
+            if area > maxarea and len(approx_) == 4:
+                maxarea = area
+                approx = approx_
 
-            # if our approximated contour has four points, then we
-            # can assume that we have found our screen
-            if len(approx) == 4:
-                return approx
+        return approx
 
-    def _apply_transformation(self, ctr):
+    def _apply_transformation(self, ctr, blackwhite=False):
         wrp = four_point_transform(self.original,
                                    ctr.reshape(4, 2) * self.ratio)
 
         # convert the warped image to grayscale, then threshold it
         # to give it that 'black and white' paper effect
-        wrp = cvtColor(wrp, COLOR_BGR2GRAY)
-        t = threshold_local(wrp, 11, offset=10, method="gaussian")
-        wrp = (wrp > t).astype("uint8") * 255
+        if blackwhite:
+            wrp = cvtColor(wrp, COLOR_BGR2GRAY)
+            t = threshold_local(wrp, 11, offset=10, method="gaussian")
+            wrp = (wrp > t).astype("uint8") * 255
         return wrp
 
     @staticmethod
@@ -86,13 +91,19 @@ class Naive(object):
     def get_scanned_version(self):
         e = self._find_edges()
         ctr = self._find_contours(e)
-        wrp = self._apply_transformation(ctr)
 
-        if self._compare_warped_to_original(wrp) <= self.threshold:
+        if ctr is None:
+            return None
+
+        wrp = self._apply_transformation(ctr, blackwhite=False)
+        area_ratio = self._compare_warped_to_original(wrp)
+        if area_ratio <= self.threshold:
             logger.debug("Result is too small wrp to original {}"
-                         .format(self._compare_warped_to_original(wrp)))
+                         .format(area_ratio))
             return None
         else:
+            logger.debug("Area ratio = {}"
+                         .format(area_ratio))
             return wrp
 
     @staticmethod
@@ -102,25 +113,38 @@ class Naive(object):
 
 
 if __name__ == "__main__":
-    path = "/Users/adamalloul/Ed/gcp_backend/fixture/request_first_user.jpeg"
+    files = ["example_02.jpg", "example_03.jpg", "example_04.jpg",
+             "example_05.jpg", "example_06.jpg", "example_07.jpg",
+             "example_08.jpg", "example_09.jpg", "example_10.jpg",
+             "example_11.jpg"]
+
+    path = "../fixtures/" + files[7]
 
     with open(path, "rb") as f:
         im64 = b64encode(f.read())
 
-    naive_method = Naive(im64, 500)
-    # sc = naive_method.get_scanned_version()
-    #
-    #
-    #
-    # from cv2 import imshow, waitKey, destroyAllWindows, drawContours
-    # if sc is not None:
-    #     imshow("Scanned", imutils.resize(sc, height=650))
-    #     waitKey(0)
-    #     destroyAllWindows()
-    #
-    # edges = naive_method._find_edges()
-    # contour = naive_method._find_contours(edges)
-    # # warped = naive_method._apply_transformation(contour)
-    # drawContours(naive_method.image, [contour], -1, (0, 255, 0), 2)
-    # imshow("Outline", naive_method.image)
-    # imshow("Edges", edges)
+    naive = Naive(im64, 900, threshold=0.4, border=True)
+    scan = naive.get_scanned_version()
+
+    from cv2 import imshow, waitKey, destroyAllWindows, drawContours, imwrite
+
+    # if scan is not None:
+    #     imshow("Scan found",
+    #            imutils.resize(naive.original, height=650))
+    #     imshow("Scanned", imutils.resize(scan, height=650))
+    #     waitKey()
+    # else:
+    #     imshow("No Scan found",
+    #            imutils.resize(naive.original, height=650))
+    #     waitKey()
+    # destroyAllWindows()
+    e = naive._find_edges()
+    imshow("Dilated", e)
+    waitKey()
+    destroyAllWindows()
+
+    ctr = naive._find_contours(e)
+    drawContours(naive.image, [ctr], -1, [0, 255, 0])
+    imshow("Contours", naive.image)
+    waitKey()
+    destroyAllWindows()
