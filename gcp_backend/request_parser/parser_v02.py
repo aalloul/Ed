@@ -65,10 +65,12 @@ class Parser(object):
             self.email = request["email"]
 
     def _set_input_language(self, request):
-        if "input_language" not in request:
-            self.input_language = ""
-        else:
-            self.input_language = request["input_language"]
+        # if "input_language" not in request:
+        #     self.input_language = ""
+        # else:
+        #     self.input_language = request["input_language"]
+        # Deprecating it!
+        self.input_language = ""
 
     def _set_output_language(self, request):
         if "output_language" not in request:
