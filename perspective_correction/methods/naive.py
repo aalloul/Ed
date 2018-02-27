@@ -17,19 +17,14 @@ logger.setLevel(logging.DEBUG)
 
 
 class Naive(object):
-    def __init__(self, base64_image, factor=500, threshold=0.4, border=False):
-        image = self._read_image(base64_image)
+    def __init__(self, in_image, factor=500, threshold=0.4, border=False):
+        image = in_image
         if border:
             image = self._add_border(image)
         self.original, self.image, self.ratio = self._resize_image(image,
                                                                    factor)
         self.edges = None
         self.threshold = threshold
-
-    @staticmethod
-    def _read_image(base64encoded):
-        nparr = fromstring(base64encoded.decode('base64'), uint8)
-        return imdecode(nparr, IMREAD_COLOR)
 
     @staticmethod
     def _resize_image(im, factor):
@@ -106,11 +101,6 @@ class Naive(object):
                          .format(area_ratio))
             return wrp
 
-    @staticmethod
-    def encode_to_b64(array):
-        _, im = imencode(".jpg", array)
-        return b64encode(im)
-
 
 if __name__ == "__main__":
     files = ["example_02.jpg", "example_03.jpg", "example_04.jpg",
@@ -118,33 +108,30 @@ if __name__ == "__main__":
              "example_08.jpg", "example_09.jpg", "example_10.jpg",
              "example_11.jpg"]
 
-    path = "../fixtures/" + files[7]
-
-    with open(path, "rb") as f:
-        im64 = b64encode(f.read())
-
-    naive = Naive(im64, 900, threshold=0.4, border=True)
+    from cv2 import imread
+    image = imread("../fixtures/example_{}.jpg".format("02"))
+    naive = Naive(image, 900, threshold=0.4, border=True)
     scan = naive.get_scanned_version()
 
     from cv2 import imshow, waitKey, destroyAllWindows, drawContours, imwrite
 
-    # if scan is not None:
-    #     imshow("Scan found",
-    #            imutils.resize(naive.original, height=650))
-    #     imshow("Scanned", imutils.resize(scan, height=650))
-    #     waitKey()
-    # else:
-    #     imshow("No Scan found",
-    #            imutils.resize(naive.original, height=650))
-    #     waitKey()
+    if scan is not None:
+        imshow("Scan found",
+               imutils.resize(naive.original, height=650))
+        imshow("Scanned", imutils.resize(scan, height=650))
+        waitKey()
+    else:
+        imshow("No Scan found",
+               imutils.resize(naive.original, height=650))
+        waitKey()
+    destroyAllWindows()
+    # e = naive._find_edges()
+    # imshow("Dilated", e)
+    # waitKey()
     # destroyAllWindows()
-    e = naive._find_edges()
-    imshow("Dilated", e)
-    waitKey()
-    destroyAllWindows()
-
-    ctr = naive._find_contours(e)
-    drawContours(naive.image, [ctr], -1, [0, 255, 0])
-    imshow("Contours", naive.image)
-    waitKey()
-    destroyAllWindows()
+    #
+    # ctr = naive._find_contours(e)
+    # drawContours(naive.image, [ctr], -1, [0, 255, 0])
+    # imshow("Contours", naive.image)
+    # waitKey()
+    # destroyAllWindows()
