@@ -3,6 +3,7 @@ package com.smail.app.android;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.idehub.Billing.InAppBillingBridgePackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
+            new GoogleAnalyticsBridgePackage(),
         new InAppBillingBridgePackage(),
         new ReactNativeRestartPackage(),
         new RNDeviceInfo(),

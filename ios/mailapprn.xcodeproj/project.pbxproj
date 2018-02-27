@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -42,6 +41,10 @@
 		9A47CF77370842648700C5FE /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3155254D2F8C4BA7BBD01F3A /* libRNFetchBlob.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		DF50577A33131967F6FB80B5 /* libPods-mailapprn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77371A64BA3E874983B02303 /* libPods-mailapprn.a */; };
+		CE5402B1404848C19C9A6D24 /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E067CBD48B484FC4B9C1E07E /* libRCTGoogleAnalyticsBridge.a */; };
+		E86F8AFA1B9E46669D2F3A06 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78B573B6465640D3A3E92FAC /* CoreData.framework */; };
+		0E6AB3A5B0B2462793B4CDB8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E2534E68AD340DF91D22F6E /* libz.tbd */; };
+		41FF7513D5984FBC91447F5C /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4339D32AF23A48378666E05D /* libsqlite3.0.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -375,6 +378,11 @@
 		E1A700D2A09148809DD39583 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		EB3A25DA3C02496890A58B3D /* InAppUtils.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = InAppUtils.xcodeproj; path = "../node_modules/react-native-in-app-utils/InAppUtils.xcodeproj"; sourceTree = "<group>"; };
 		F9613E8C1B5C4784A3EDE0A2 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTRestart.xcodeproj; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; };
+		5DCF1CDC58B44D9FBA08D434 /* RCTGoogleAnalyticsBridge.xcodeproj */ = {isa = PBXFileReference; name = "RCTGoogleAnalyticsBridge.xcodeproj"; path = "../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/RCTGoogleAnalyticsBridge.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		E067CBD48B484FC4B9C1E07E /* libRCTGoogleAnalyticsBridge.a */ = {isa = PBXFileReference; name = "libRCTGoogleAnalyticsBridge.a"; path = "libRCTGoogleAnalyticsBridge.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		78B573B6465640D3A3E92FAC /* CoreData.framework */ = {isa = PBXFileReference; name = "CoreData.framework"; path = "System/Library/Frameworks/CoreData.framework"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
+		3E2534E68AD340DF91D22F6E /* libz.tbd */ = {isa = PBXFileReference; name = "libz.tbd"; path = "usr/lib/libz.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
+		4339D32AF23A48378666E05D /* libsqlite3.0.tbd */ = {isa = PBXFileReference; name = "libsqlite3.0.tbd"; path = "usr/lib/libsqlite3.0.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -408,6 +416,10 @@
 				6ADC680103E54479AA44DF7C /* libRNDeviceInfo.a in Frameworks */,
 				0E89F7B27AF7408A93F6399B /* libRCTRestart.a in Frameworks */,
 				7EDEBBAE4BE94A1182CDCA25 /* libInAppUtils.a in Frameworks */,
+				CE5402B1404848C19C9A6D24 /* libRCTGoogleAnalyticsBridge.a in Frameworks */,
+				E86F8AFA1B9E46669D2F3A06 /* CoreData.framework in Frameworks */,
+				0E6AB3A5B0B2462793B4CDB8 /* libz.tbd in Frameworks */,
+				41FF7513D5984FBC91447F5C /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +547,9 @@
 				4A341FF91FF2BE9800D1DB73 /* SystemConfiguration.framework */,
 				4A341FF71FF2BE8900D1DB73 /* SafariServices.framework */,
 				77371A64BA3E874983B02303 /* libPods-mailapprn.a */,
+				78B573B6465640D3A3E92FAC /* CoreData.framework */,
+				3E2534E68AD340DF91D22F6E /* libz.tbd */,
+				4339D32AF23A48378666E05D /* libsqlite3.0.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -632,6 +647,7 @@
 				E1A700D2A09148809DD39583 /* RNDeviceInfo.xcodeproj */,
 				F9613E8C1B5C4784A3EDE0A2 /* RCTRestart.xcodeproj */,
 				EB3A25DA3C02496890A58B3D /* InAppUtils.xcodeproj */,
+				5DCF1CDC58B44D9FBA08D434 /* RCTGoogleAnalyticsBridge.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1244,6 +1260,7 @@
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn/**",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
+					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
 				);
 				INFOPLIST_FILE = mailapprn/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1261,6 +1278,10 @@
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/mailapprn\"",
+				);
 			};
 			name = Debug;
 		};
@@ -1287,6 +1308,7 @@
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn/**",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
+					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
 				);
 				INFOPLIST_FILE = mailapprn/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1304,6 +1326,10 @@
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/mailapprn\"",
+				);
 			};
 			name = Release;
 		};

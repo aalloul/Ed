@@ -1,8 +1,15 @@
 import { generateBasicStatisticsRequest } from '../common/requestDataHelpers';
 import { SCREEN_START, screenStart } from '../actions/statisticsActions';
 import { getCurrentRouteName } from '../common/navigationHelpers';
+import { GoogleAnalyticsTracker, GoogleAnalyticsSettings } from "react-native-google-analytics-bridge";
+
+GoogleAnalyticsSettings.setDispatchInterval(3);
+
+const tracker = new GoogleAnalyticsTracker('UA-93678494-4');
 
 function sendStatisticsRequest(statisticsRequest) {
+  tracker.trackScreenView(statisticsRequest.screen);
+
   return fetch('https://reporting-dot-linear-asset-184705.appspot.com/events', {
     method: 'POST',
     headers: {
