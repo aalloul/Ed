@@ -31,6 +31,17 @@ const Text = glamorous.p({
   margin: '30px auto 0',
 });
 
+const WithBadge = glamorous.span({
+    background: 'url(/img/badge.png) center no-repeat',
+    backgroundSize: 'contain',
+    display: 'inline-block',
+    height: 150,
+    lineHeight: '140px',
+    margin: '0 auto',
+    textAlign: 'center',
+    width: 140,
+});
+
 export default () => (
   <Wrapper id="hero">
     <Screenshot type="success" />
@@ -38,6 +49,7 @@ export default () => (
     <Section>
       <Title>Tired of endless letters?</Title>
       <Text>Convert them to emails<br/>with automatic translation!</Text>
+      <Text>Absolutely for <WithBadge>FREE</WithBadge></Text>
 
       <Buttons />
     </Section>
