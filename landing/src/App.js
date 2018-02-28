@@ -25,17 +25,19 @@ export default props => (
       __html: 'body { margin: 0; padding: 0; font-family: "Lato", sans-serif; font-size: 15px; background: #f5f2f1; color: #714f4f; -webkit-font-smoothing: antialiased; }'
     }} />
 
+    <link id="g-css" href="https://s.growity.me/cjci7s8025dnc0124nr8nys2k.css" rel="stylesheet" />
     <script dangerouslySetInnerHTML={{
       __html: `
-        (function(d) {
-          var g = d.createElement('script');
-          g.type = 'text/javascript';
-          g.src = d.location.protocol + '//s.growity.me/cj76v2o9cwapc0131tqxxfn57.js';
-          d.head.appendChild(g);
-        })(document);
+        (function(w, d, to) {
+          var c = d.getElementById('g-css');
+          if (!c) return;
+          var t = w.setTimeout(function() { c.parentNode.removeChild(c); t = null; }, to);
+          c.onload = function() { if (t) { w.clearTimeout(t); t = null; } }
+        }(window, document, 2000));
       `
     }}>
     </script>
+    <script async src="https://s.growity.me/cjci7s8025dnc0124nr8nys2k.js" />
 
     <div className="content">
       <Header />
