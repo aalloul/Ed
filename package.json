@@ -31,6 +31,7 @@
     "react-native-fetch-blob": "^0.10.8",
     "react-native-google-analytics-bridge": "^5.6.1",
     "react-native-google-sign-in": "^1.0.16",
+    "react-native-in-app-utils": "^6.0.0",
     "react-native-restart": "0.0.6",
     "react-navigation": "^1.0.0-beta.19",
     "react-redux": "^5.0.6",
