@@ -134,15 +134,14 @@ class FilterBased(object):
 
         cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
 
+        boxes = map(FilterBased._get_box, cnts[1])
         if sortby == "contourArea":
             areas = map(contourArea, cnts[1])
-            return cnts[1][areas.index(max(areas))]
         elif sortby == "box_area":
-            boxes = map(FilterBased._get_box, cnts[1])
             areas = map(contourArea, boxes)
-            return boxes[areas.index(max(areas))]
         else:
             raise ValueError("Unknown value {} for sortby".format(sortby))
+        return boxes[areas.index(max(areas))]
 
     def apply_filter(self):
         self.thresold = self._find_correct_threshold()
@@ -157,7 +156,6 @@ class FilterBased(object):
             reopened = reopened.astype(uint8)
             thebox = self.get_bounding_box(reopened,
                                            sortby="box_area")
-
         return four_point_transform(self.image, thebox * self.ratio)
 
 # if __name__ == "__main__":
