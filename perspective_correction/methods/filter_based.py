@@ -133,7 +133,7 @@ class FilterBased(object):
         else:
             edges = Canny(im, 75, 200)
 
-        if len(edges == 0) or edges is None:
+        if len(edges) == 0 or edges is None:
             raise NoImprovementFound("No edges found")
 
         cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
