@@ -1,8 +1,7 @@
-from numpy import uint8, ones, int0, array, zeros, percentile, where, diff
-from cv2 import Canny, findContours, RETR_LIST, CHAIN_APPROX_SIMPLE, imshow, \
-    contourArea, MORPH_OPEN, morphologyEx, MORPH_CLOSE, boxPoints, imread, \
-    minAreaRect, waitKey, destroyAllWindows, threshold, THRESH_BINARY, \
-    copyMakeBorder, BORDER_CONSTANT
+from numpy import uint8, ones, int0, array, percentile, where, diff
+from cv2 import Canny, findContours, RETR_LIST, CHAIN_APPROX_SIMPLE, \
+    threshold, boxPoints, MORPH_OPEN, contourArea, morphologyEx, MORPH_CLOSE, \
+    minAreaRect, THRESH_BINARY, copyMakeBorder, BORDER_CONSTANT
 from methods.transform import four_point_transform
 import imutils
 import logging
@@ -25,10 +24,10 @@ class FilterBased(object):
         self.thresold = 0
 
     def _find_correct_threshold(self):
-        # Remove text with MORP_CLOSE
-        closed = self.open_close(self.resized, MORPH_CLOSE, 5, 5)
+        # Remove text with MORPH_CLOSE
+        closed_ = self.open_close(self.resized, MORPH_CLOSE, 5, 5)
 
-        if closed.std() < 25:
+        if closed_.std() < 25:
             # If the standard deviation is so small, it means the whole
             # picture has the same color. So we assume the user made sure
             # that the page occupies more than 90% of the picture
@@ -36,10 +35,10 @@ class FilterBased(object):
 
         # Here we compute all percentile values, then find the one where the
         # slope changes significantly.
-        perc_ = [percentile(closed.flatten(), _) for _ in range(5, 100)]
+        perc_ = percentile(closed_, range(5, 75))
         perc_ = self._find_position(perc_)
 
-        val = percentile(closed.flatten(), perc_)
+        val = percentile(closed_.flatten(), perc_)
         logger.debug("Found percentile value {}".format(perc_))
         logger.debug("Threshold value = {}".format(val))
         return val
@@ -102,13 +101,10 @@ class FilterBased(object):
 
     @staticmethod
     def zero_values(im):
-        out = zeros(im.shape)
-        for x in range(im.shape[0]):
-            for y in range(im.shape[1]):
-                if (im[x, y] == [255, 255, 255]).all():
-                    out[x, y] = [255, 255, 255]
-                else:
-                    continue
+        out = im.copy()
+        out[(out[:, :, 0] != 255) |
+            (out[:, :, 1] != 255) |
+            (out[:, :, 2] != 255)] = 0
         return out
 
     @staticmethod
@@ -127,7 +123,7 @@ class FilterBased(object):
                               value=[0, 0, 0])
 
     @staticmethod
-    def get_bounding_box(im, add_border=False, sortby=contourArea):
+    def get_bounding_box(im, add_border=False, sortby="contourArea"):
         if add_border:
             edges = Canny(FilterBased._add_border(im), 75, 200)
         else:
@@ -137,8 +133,16 @@ class FilterBased(object):
             raise NoImprovementFound("No edges found")
 
         cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
-        cnts = sorted(cnts[1], key=sortby, reverse=True)[0]
-        return FilterBased._get_box(cnts)
+
+        if sortby == "contourArea":
+            areas = map(contourArea, cnts[1])
+            return cnts[1][areas.index(max(areas))]
+        elif sortby == "box_area":
+            boxes = map(FilterBased._get_box, cnts[1])
+            areas = map(contourArea, boxes)
+            return boxes[areas.index(max(areas))]
+        else:
+            raise ValueError("Unknown value {} for sortby".format(sortby))
 
     def apply_filter(self):
         self.thresold = self._find_correct_threshold()
@@ -152,27 +156,79 @@ class FilterBased(object):
             reopened = self.open_close(zeroed, MORPH_OPEN, 40, 40)
             reopened = reopened.astype(uint8)
             thebox = self.get_bounding_box(reopened,
-                                           sortby=FilterBased.box_area)
+                                           sortby="box_area")
 
         return four_point_transform(self.image, thebox * self.ratio)
 
+# if __name__ == "__main__":
+#     from time import time
+#     from cv2 import imshow, imread, waitKey, destroyAllWindows
+#
+#     # , "03", "04", "05", "06", "07", "08", "09", "10", "11"]:
+#     for ii in ["02"]:
+#         start = time()
+#         original_image = imread("../fixtures/example_{}.jpg".format(ii))
+#         print("Reading image took {}s".format(time() - start))
+#         new_start = time()
+#         filterbased = FilterBased(original_image)
+#         print("Instantiation of class took {}s".format(time() - new_start))
+#         new_start = time()
+#         warped = filterbased.apply_filter()
+#         print("Filter apply took {}s".format(time() - new_start))
+#         print("Total duration = {}s".format(time() - start))
+#         imshow("Original", imutils.resize(original_image, height=500))
+#         imshow("Scanned", imutils.resize(warped, height=500))
+#         waitKey()
+#         destroyAllWindows()
 
-if __name__ == "__main__":
-    from time import time
 
-    # , "03", "04", "05", "06", "07", "08", "09", "10", "11"]:
-    for ii in ["02"]:
-        start = time()
-        original_image = imread("../fixtures/example_{}.jpg".format(ii))
-        print("Reading image took {}s".format(time() - start))
-        new_start = time()
-        filterbased = FilterBased(original_image)
-        print("Instantiation of class took {}s".format(time() - new_start))
-        new_start = time()
-        warped = filterbased.apply_filter()
-        print("Filter apply took {}s".format(time() - new_start))
-        print("Total duration = {}s".format(time() - start))
-        imshow("Original", imutils.resize(original_image, height=500))
-        imshow("Scanned", imutils.resize(warped, height=500))
-        waitKey()
-        destroyAllWindows()
+# from time import time
+#
+# original_image = imread("../fixtures/example_{}.jpg".format("02"))
+# start = time()
+# filterbased = FilterBased(original_image)
+# logger.info("Instantiated in {}".format(time() - start))
+#
+# start = time()
+# thresold = filterbased._find_correct_threshold()
+# logger.info("_find_correct_threshold in {}".format(time() - start))
+#
+# start = time()
+# thresholded = filterbased._apply_threshold(filterbased.resized, thresold, 255)
+# logger.info("_apply_threshold in {}".format(time() - start))
+#
+# start = time()
+# closed = filterbased.open_close(thresholded, MORPH_CLOSE, 5, 5)
+# logger.info("open_close in {}".format(time() - start))
+#
+# start = time()
+# zeroed = filterbased.zero_values(closed)
+# logger.info("zero_values in {}".format(time() - start))
+#
+# start = time()
+# reopened = filterbased.open_close(zeroed, MORPH_OPEN, 40, 40)
+# logger.info("open_close in {}".format(time() - start))
+#
+# reopened = reopened.astype(uint8)
+#
+# start = time()
+# thebox = filterbased.get_bounding_box(reopened, sortby=FilterBased.box_area)
+# logger.info("get_bounding_box in {}".format(time() - start))
+#
+# # edges = Canny(reopened, 75, 200)
+# #
+# #
+# # cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
+# #
+# # start = time()
+# # cnts = sorted(cnts[1], key=FilterBased.box_area, reverse=True)[0]
+# # box_ = FilterBased._get_box(cnts)
+# # logger.info("_get_box in {}".format(time() - start))
+# #
+# #
+# # cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
+# # start = time()
+# # boxes = map(FilterBased._get_box, cnts[1])
+# # areas = map(contourArea, boxes)
+# # box_ = boxes[areas.index(max(areas))]
+# # logger.info("_get_box in {}".format(time() - start))
