@@ -19,18 +19,12 @@ logger.setLevel(logging.DEBUG)
 
 class RectangleReconstruct(object):
 
-    def __init__(self, base64_image, div_image_by=500, threshold=0.4):
-        image = self._read_image(base64_image)
-        image = self._add_border(image, 15, 15, 15, 15, [0, 0, 0])
+    def __init__(self, in_image, div_image_by=500, threshold=0.4):
+        image = self._add_border(in_image, 15, 15, 15, 15, [0, 0, 0])
         self.original, self.image, self.ratio = self._resize_image(image,
                                                                    div_image_by)
         self.edges = None
         self.threshold = threshold
-
-    @staticmethod
-    def _read_image(base64encoded):
-        nparr = fromstring(base64encoded.decode('base64'), uint8)
-        return imdecode(nparr, IMREAD_COLOR)
 
     @staticmethod
     def _add_border(im, top, bottom, left, right, color):
@@ -54,6 +48,7 @@ class RectangleReconstruct(object):
     @staticmethod
     def _find_edges(im):
         gray = cvtColor(im, COLOR_BGR2GRAY)
+        # Apply histogram equalization - The parameters below are good
         clahe = createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
         gray = clahe.apply(gray)
         gray = GaussianBlur(gray, (5, 5), 0)
@@ -86,17 +81,6 @@ class RectangleReconstruct(object):
 
         return warped
 
-    @staticmethod
-    def _get_area(array):
-        return float(array.shape[0] * array.shape[1])
-
-    def _compare_warped_to_original(self, contour):
-        original_area = self._get_area(self.original)
-        transformed_area = self._get_area(contour)
-        logger.debug(
-            "Area ratio is {}".format(transformed_area / original_area))
-        return transformed_area / original_area
-
     def get_scanned_version(self):
         dilated = self._dilate()
         edges = self._find_edges(dilated)
@@ -104,18 +88,10 @@ class RectangleReconstruct(object):
         box = self._get_box(contour)
         warped = self._apply_transformation(box, blackwhite=False)
 
-        if self._compare_warped_to_original(warped) <= self.threshold:
-            return None
-        else:
-            r = float(self.original.shape[0])/self.original.shape[1]
-            yp = 20
-            xp = int(r*20)
-            return self._add_border(warped, yp, yp, xp, xp, [0, 0, 0])
-
-    @staticmethod
-    def encode_to_b64(array):
-        _, im = imencode(".jpg", array)
-        return b64encode(im)
+        r = float(self.original.shape[0])/self.original.shape[1]
+        yp = 20
+        xp = int(r*20)
+        return self._add_border(warped, yp, yp, xp, xp, [0, 0, 0])
 
 
 if __name__ == "__main__":
@@ -131,10 +107,7 @@ if __name__ == "__main__":
 
     rectangle = RectangleReconstruct(im64, 900, threshold=0.4)
     # scan = rectangle.get_scanned_version()
-
-
-    from cv2 import imshow, waitKey, destroyAllWindows, drawContours, imwrite
-
+    # from cv2 import imshow, waitKey, destroyAllWindows, drawContours, imwrite
     # if scan is not None:
     #     imshow("Scan found",
     #            imutils.resize(rectangle.original,height=650))
@@ -145,23 +118,3 @@ if __name__ == "__main__":
     #            imutils.resize(rectangle.original, height=650))
     #     waitKey()
     # destroyAllWindows()
-
-    dilated = rectangle._dilate()
-
-    edges = rectangle._find_edges(dilated)
-    imshow("Dilated", edges)
-    waitKey()
-    destroyAllWindows()
-    #
-    contour = rectangle._find_contours(edges)
-    drawContours(rectangle.image, [contour], -1, [0,255,0])
-    imshow("Contours", rectangle.image)
-    waitKey()
-    destroyAllWindows()
-
-
-    box = rectangle._get_box(contour)
-    warped = rectangle._apply_transformation(box, blackwhite=False)
-    imshow("Contours", imutils.resize(warped, height=500))
-    waitKey()
-    destroyAllWindows()
