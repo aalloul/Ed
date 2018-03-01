@@ -8,7 +8,7 @@ GoogleAnalyticsSettings.setDispatchInterval(3);
 const tracker = new GoogleAnalyticsTracker('UA-93678494-4');
 
 function sendStatisticsRequest(statisticsRequest) {
-  tracker.trackScreenView(statisticsRequest.screen);
+  console.log('statisticsRequest', statisticsRequest);
 
   return fetch('https://reporting-dot-linear-asset-184705.appspot.com/events', {
     method: 'POST',
@@ -34,7 +34,7 @@ export default function sendStatistics({ getState, dispatch }) {
       return next(action);
     }
 
-    let statisticsRequest = generateBasicStatisticsRequest(getState, action, dispatch);
+    const statisticsRequest = generateBasicStatisticsRequest(getState, action, dispatch);
 
     const currentScreen = getCurrentRouteName(getState().navigation);
     const result = next(action);
@@ -43,21 +43,23 @@ export default function sendStatistics({ getState, dispatch }) {
     statisticsRequest.screen = currentScreen;
 
     if (nextScreen !== currentScreen) {
-      statisticsRequest.screen_end = Date.now();
+      tracker.trackScreenView(nextScreen);
 
-      sendStatisticsRequest(statisticsRequest);
+      // send statistics about the current screen
+      // current - the one that was before the action of transition to the new(next) screen
+      // it's done, to be able to send "screen_end" time
+      sendStatisticsRequest({
+        ...statisticsRequest,
+        screen_end: Date.now()
+      });
 
-      // remove screen_end from statisticsRequest in functional way
-      const { screen_end, ...cleanStatisticsRequest } = statisticsRequest;
+      statisticsRequest.screen_start = Date.now();
+      statisticsRequest.screen = nextScreen;
 
-      cleanStatisticsRequest.screen_start = Date.now();
-      cleanStatisticsRequest.screen = nextScreen;
-      dispatch(screenStart(cleanStatisticsRequest.screen_start));
-
-      statisticsRequest = cleanStatisticsRequest;
+      dispatch(screenStart(statisticsRequest.screen_start));
     }
 
-    console.log('statisticsRequest', statisticsRequest);
+    // now send statistics about the new(next) screen
     sendStatisticsRequest(statisticsRequest);
 
     return result;
