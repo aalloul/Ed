@@ -58,6 +58,7 @@ def main():
     try:
         res = filter_based.apply_filter()
         if compare_warped_to_original(image, res) >= 0.4:
+            logger.info("Took {}s".format(time() - start))
             return jsonify({"result": encode_to_b64(res)})
     except Exception as ex:
         logger.warning("FilterBased method did not work")

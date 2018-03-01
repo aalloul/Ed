@@ -11,7 +11,7 @@ from json import dumps
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 class Ocr(object):
