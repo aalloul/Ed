@@ -1,5 +1,5 @@
 import { generateBasicStatisticsRequest } from '../common/requestDataHelpers';
-import { SCREEN_START, screenStart } from '../actions/statisticsActions';
+import { APP_START, SCREEN_START, screenStart } from '../actions/statisticsActions';
 import { getCurrentRouteName } from '../common/navigationHelpers';
 import { GoogleAnalyticsTracker, GoogleAnalyticsSettings } from "react-native-google-analytics-bridge";
 
@@ -39,6 +39,12 @@ export default function sendStatistics({ getState, dispatch }) {
     const currentScreen = getCurrentRouteName(getState().navigation);
     const result = next(action);
     const nextScreen = getCurrentRouteName(getState().navigation);
+
+    // for now the only way we can catch app starting the APP_START action
+    // so we use it to send the Home screen to GA
+    if (action.type === APP_START) {
+      tracker.trackScreenView(currentScreen);
+    }
 
     statisticsRequest.screen = currentScreen;
 
