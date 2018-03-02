@@ -3821,10 +3821,15 @@ react-native-action-button@^2.8.1:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-camera@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-0.10.0.tgz#5d973c9a8aab95f68aede395ba310eae0c3cecdd"
+react-native-billing@^2.5.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-billing/-/react-native-billing-2.7.0.tgz#c4d7f915d9d918528a05ada46374ab0060858e5e"
+
+react-native-camera@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.0.1.tgz#ebb131226394b4ee3ec6692979a257522b3ac0c1"
   dependencies:
+    lodash "^4.17.4"
     prop-types "^15.5.10"
 
 react-native-confetti@0.0.6:
@@ -3858,9 +3863,17 @@ react-native-fetch-blob@^0.10.8:
     base-64 "0.1.0"
     glob "7.0.6"
 
+react-native-google-analytics-bridge@^5.6.1:
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-google-analytics-bridge/-/react-native-google-analytics-bridge-5.6.1.tgz#3edad3d145f1b20f2cdccc6c1ec14035b6a7e2e8"
+
 react-native-google-sign-in@^1.0.16:
   version "1.0.16"
   resolved "https://registry.yarnpkg.com/react-native-google-sign-in/-/react-native-google-sign-in-1.0.16.tgz#94d59b4ff7613955d9d51ceb4623a2162b3cb5d2"
+
+react-native-in-app-utils@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-in-app-utils/-/react-native-in-app-utils-6.0.0.tgz#9f0f1cf9b0cf2ef74d52c277ec2b58f6c9a153e2"
 
 react-native-restart@0.0.6:
   version "0.0.6"

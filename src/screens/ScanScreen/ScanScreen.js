@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 
-import Camera from 'react-native-camera';
+import { RNCamera } from 'react-native-camera';
 
 import RoundButton from '../../components/Buttons/RoundButton';
 import { takePhotoRoutine } from '../../actions/applicationActions';
@@ -62,13 +62,14 @@ class ScanScreen extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        <Camera
+        <RNCamera
           ref={(cam) => {
             this.camera = cam;
           }}
           style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}
-          orientation="portrait"
+          flashMode={RNCamera.Constants.FlashMode.on}
+          permissionDialogTitle={'Permission to use camera'}
+          permissionDialogMessage={'We need your permission to use your camera phone'}
         >
           <View style={styles.camera}>
             {/* <Text style={styles.text}>List of scanned letters goes here</Text> */}
@@ -77,7 +78,7 @@ class ScanScreen extends PureComponent {
               onPress={this.scan}
             />
           </View>
-        </Camera>
+        </RNCamera>
       </View>
     );
   }
