@@ -60,7 +60,6 @@ export function takePhotoRoutine(camera) {
       return camera
         .takePictureAsync(options)
         .then((data) => {
-          console.log('data', data.base64);
           dispatch(takePhotoResolve(data.base64));
           next();
         })

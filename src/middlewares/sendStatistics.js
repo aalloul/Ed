@@ -49,7 +49,10 @@ export default function sendStatistics({ getState, dispatch }) {
     statisticsRequest.screen = currentScreen;
 
     if (nextScreen !== currentScreen) {
-      tracker.trackScreenView(nextScreen);
+      // avoid queue actions because they keeps old screen
+      if (!action.queue) {
+        tracker.trackScreenView(nextScreen);
+      }
 
       // send statistics about the current screen
       // current - the one that was before the action of transition to the new(next) screen
