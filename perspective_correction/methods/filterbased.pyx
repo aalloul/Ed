@@ -165,8 +165,8 @@ cdef read_image2(base64encoded):
 
 def read_image(b64):
     cdef str str_ = b64.decode('base64')
-    # cdef np.ndarray nparr = np.frombuffer(str_, np.uint8)
-    # return imdecode(nparr, IMREAD_COLOR)
+    cdef np.ndarray nparr = np.frombuffer(str_, np.uint8)
+    return imdecode(nparr, IMREAD_COLOR)
 
 def apply_filter(np.ndarray image):
     cdef np.ndarray resized = resize2(image, height=500)

@@ -20,11 +20,11 @@ DEBUG = True
 app = Flask(__name__)
 
 @app.route('/correct_image', methods=['POST'])
-def main(data):
+def main():
     logger.info("New image to crop!")
     start = time()
     logger.info("0- Loading image")
-    image_64 = loads(data)['image']
+    image_64 = loads(request.data)['image']
     image = read_image(image_64)
 
     # Method 1: Naive. Works fine when the page is put on, e.g., a table and
@@ -82,4 +82,4 @@ def custom_error(e):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
