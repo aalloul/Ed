@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -22,7 +21,6 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		41FF7513D5984FBC91447F5C /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 4339D32AF23A48378666E05D /* libsqlite3.0.tbd */; };
-		42BB59BE40B344308159BB2B /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4936752047A4DEF82872C84 /* libRCTCamera.a */; };
 		4A0F329220212531000AC4B2 /* libcxxreact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA91DF850E9000B6D8A /* libcxxreact.a */; };
 		4A0F329320212538000AC4B2 /* libjschelpers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EAD1DF850E9000B6D8A /* libjschelpers.a */; };
 		4A341FF61FF2BE4C00D1DB73 /* GoogleSignIn.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4A341FF51FF2BE4C00D1DB73 /* GoogleSignIn.bundle */; };
@@ -46,6 +44,7 @@
 		CE5402B1404848C19C9A6D24 /* libRCTGoogleAnalyticsBridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E067CBD48B484FC4B9C1E07E /* libRCTGoogleAnalyticsBridge.a */; };
 		DF50577A33131967F6FB80B5 /* libPods-mailapprn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77371A64BA3E874983B02303 /* libPods-mailapprn.a */; };
 		E86F8AFA1B9E46669D2F3A06 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78B573B6465640D3A3E92FAC /* CoreData.framework */; };
+		61F653C347004552960BF045 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 821DE63F58DF4FAFA6070778 /* libRNCamera.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -280,13 +279,6 @@
 			remoteGlobalIDString = ADD01A681E09402E00F6D226;
 			remoteInfo = "RCTBlob-tvOS";
 		};
-		4AB40F601FB8E96C000E744B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E124767CD03A49ED8F942D59 /* RCTCamera.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
-			remoteInfo = RCTCamera;
-		};
 		4AB40F721FB8E96C000E744B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
@@ -384,13 +376,13 @@
 		9BB0545D17A5470399CB5469 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		A5F23E889AB3419D8BF6A41B /* libRCTRestart.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTRestart.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
-		B4936752047A4DEF82872C84 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 		BBE3E3A8B3C0914A0F03F144 /* Pods-mailapprn.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mailapprn.debug.xcconfig"; path = "Pods/Target Support Files/Pods-mailapprn/Pods-mailapprn.debug.xcconfig"; sourceTree = "<group>"; };
 		E067CBD48B484FC4B9C1E07E /* libRCTGoogleAnalyticsBridge.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTGoogleAnalyticsBridge.a; sourceTree = "<group>"; };
-		E124767CD03A49ED8F942D59 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		E1A700D2A09148809DD39583 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		EB3A25DA3C02496890A58B3D /* InAppUtils.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = InAppUtils.xcodeproj; path = "../node_modules/react-native-in-app-utils/InAppUtils.xcodeproj"; sourceTree = "<group>"; };
 		F9613E8C1B5C4784A3EDE0A2 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTRestart.xcodeproj; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; };
+		59586443289F4B78A79BD4CD /* RNCamera.xcodeproj */ = {isa = PBXFileReference; name = "RNCamera.xcodeproj"; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		821DE63F58DF4FAFA6070778 /* libRNCamera.a */ = {isa = PBXFileReference; name = "libRNCamera.a"; path = "libRNCamera.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -418,7 +410,6 @@
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
-				42BB59BE40B344308159BB2B /* libRCTCamera.a in Frameworks */,
 				DF50577A33131967F6FB80B5 /* libPods-mailapprn.a in Frameworks */,
 				9A47CF77370842648700C5FE /* libRNFetchBlob.a in Frameworks */,
 				6ADC680103E54479AA44DF7C /* libRNDeviceInfo.a in Frameworks */,
@@ -428,6 +419,7 @@
 				E86F8AFA1B9E46669D2F3A06 /* CoreData.framework in Frameworks */,
 				0E6AB3A5B0B2462793B4CDB8 /* libz.tbd in Frameworks */,
 				41FF7513D5984FBC91447F5C /* libsqlite3.0.tbd in Frameworks */,
+				61F653C347004552960BF045 /* libRNCamera.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -617,14 +609,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4AB40F541FB8E96B000E744B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4AB40F611FB8E96C000E744B /* libRCTCamera.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -658,13 +642,13 @@
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
 				00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */,
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
-				E124767CD03A49ED8F942D59 /* RCTCamera.xcodeproj */,
 				47E45396C85D4DCE9D3D9392 /* RNImageToBase64.xcodeproj */,
 				855D659B41534E4D81F8CB5B /* RNFetchBlob.xcodeproj */,
 				E1A700D2A09148809DD39583 /* RNDeviceInfo.xcodeproj */,
 				F9613E8C1B5C4784A3EDE0A2 /* RCTRestart.xcodeproj */,
 				EB3A25DA3C02496890A58B3D /* InAppUtils.xcodeproj */,
 				5DCF1CDC58B44D9FBA08D434 /* RCTGoogleAnalyticsBridge.xcodeproj */,
+				59586443289F4B78A79BD4CD /* RNCamera.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -797,10 +781,6 @@
 				{
 					ProductGroup = ADBDB9201DFEBF0600ED6528 /* Products */;
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
-				},
-				{
-					ProductGroup = 4AB40F541FB8E96B000E744B /* Products */;
-					ProjectRef = E124767CD03A49ED8F942D59 /* RCTCamera.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -1094,13 +1074,6 @@
 			remoteRef = 4AB40F5D1FB8E96C000E744B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		4AB40F611FB8E96C000E744B /* libRCTCamera.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTCamera.a;
-			remoteRef = 4AB40F601FB8E96C000E744B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		4AB40F731FB8E96C000E744B /* libfishhook.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1281,7 +1254,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/GoogleSignIn.framework",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-to-base64/ios",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo/**",
@@ -1289,6 +1261,7 @@
 					"$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn/**",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = mailapprn/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1329,7 +1302,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/GoogleSignIn.framework",
-					"$(SRCROOT)/../node_modules/react-native-camera/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-to-base64/ios",
 					"$(SRCROOT)/../node_modules/react-native-fetch-blob/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-device-info/RNDeviceInfo/**",
@@ -1337,6 +1309,7 @@
 					"$(SRCROOT)/../node_modules/react-native-google-sign-in/ios/RNGoogleSignIn/**",
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
+					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
 				);
 				INFOPLIST_FILE = mailapprn/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

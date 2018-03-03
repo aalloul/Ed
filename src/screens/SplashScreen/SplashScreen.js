@@ -58,14 +58,7 @@ class SplashScreen extends PureComponent {
   }
 
   handlePress() {
-    this.setState(
-      { loading: true },
-      // setTimeout is needed because of instantly starting
-      // loading the Camera the Preloader couldn't be in time
-      () => setTimeout(
-        () => this.props.goToScan().then(this.disableLoading),
-        150
-      ));
+    this.props.goToScan();
   }
 
   scanMore() {

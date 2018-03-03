@@ -1,5 +1,3 @@
-import RNFetchBlob from 'react-native-fetch-blob';
-
 import { generateTranslationRequest } from '../common/requestDataHelpers';
 
 const MAIN_FLOW_QUEUE = 'MAIN_FLOW_QUEUE';
@@ -57,26 +55,13 @@ export function takePhotoRoutine(camera) {
     callback: (next, dispatch) => {
       dispatch(takePhotoPromise());
 
+      const options = { base64: true };
+
       return camera
-        .capture()
+        .takePictureAsync(options)
         .then((data) => {
-          // @property {String} data.path: Returns the path of the captured image or video file on disk
-          console.log('all data', data);
-
-          return RNFetchBlob.fs.readStream(data.path, 'base64', 4095);
-        })
-        .then((ifstream) => {
-          let buffer = '';
-
-          ifstream.open();
-          ifstream.onData(chunk => buffer += chunk);
-          ifstream.onError((err) => {
-            throw err;
-          });
-          ifstream.onEnd(() => {
-            dispatch(takePhotoResolve(buffer));
-            next();
-          });
+          dispatch(takePhotoResolve(data.base64));
+          next();
         })
         .catch(err => {
           dispatch(takePhotoReject(err));
