@@ -1,7 +1,8 @@
 from numpy import uint8, ones, int0, array, percentile, where, diff
 from cv2 import Canny, findContours, RETR_LIST, CHAIN_APPROX_SIMPLE, \
     threshold, boxPoints, MORPH_OPEN, contourArea, morphologyEx, MORPH_CLOSE, \
-    minAreaRect, THRESH_BINARY, copyMakeBorder, BORDER_CONSTANT
+    minAreaRect, THRESH_BINARY, copyMakeBorder, BORDER_CONSTANT, resize, \
+    INTER_AREA
 from methods.transform import four_point_transform
 import imutils
 import logging
@@ -35,7 +36,7 @@ class FilterBased(object):
 
         # Here we compute all percentile values, then find the one where the
         # slope changes significantly.
-        perc_ = percentile(closed_, range(5, 75))
+        perc_ = percentile(closed_, xrange(5, 75))
         perc_ = self._find_position(perc_)
 
         val = percentile(closed_.flatten(), perc_)
@@ -49,7 +50,7 @@ class FilterBased(object):
         deriv_1 = diff(perc_vals)
         position = None
         max_slope = where(deriv_1 == deriv_1.max())[0][0]
-        for _ in range(max_slope, len(deriv_1)):
+        for _ in xrange(max_slope, len(deriv_1)):
             slope = deriv_1[_]
             if slope >= 2:
                 pos += 1
@@ -78,16 +79,16 @@ class FilterBased(object):
 
         if x is not None:
             if st:
-                rng = range(0, length)
+                rng = xrange(0, length)
             else:
-                rng = range(image.shape[1] - length, image.shape[1])
+                rng = xrange(image.shape[1] - length, image.shape[1])
 
             return array([image[x, y_] for y_ in rng])
 
         if st:
-            rng = range(0, length)
+            rng = xrange(0, length)
         else:
-            rng = range(image.shape[0] - length, image.shape[0])
+            rng = xrange(image.shape[0] - length, image.shape[0])
         return array([image[x_, y] for x_ in rng])
 
     @staticmethod
