@@ -190,6 +190,7 @@ def apply_filter(np.ndarray image):
         reopened = open_close(zeroed, MORPH_OPEN, 40, 40)
         reopened = reopened.astype(np.uint8)
         thebox = get_bounding_box(reopened, add_border=0, sortby="box_area")
+    logger.info("about to return")
     return four_point_transform(image, thebox * ratio)
 
 
