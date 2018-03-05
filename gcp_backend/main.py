@@ -96,6 +96,7 @@ def request_automatic_translation(parsed_request, reporter):
 # Flask app
 app = Flask(__name__)
 
+
 @app.route('/request_translation', methods=['POST'])
 def translate():
     logger.info("Received a request")
