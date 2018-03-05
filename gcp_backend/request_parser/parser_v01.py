@@ -4,7 +4,7 @@ from sys import stdout
 from base64 import b64decode
 from custom_exceptions.custom_exceptions import IncompleteRequestBody, \
     ImageDecodingException
-from request_parser.correct_perspective import correct
+from correct_perspective import correct
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')

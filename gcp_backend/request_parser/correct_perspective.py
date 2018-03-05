@@ -1,7 +1,6 @@
 import logging
 from sys import stdout
 from json import dumps, loads
-from sys import platform
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -11,7 +10,7 @@ logger.setLevel(logging.DEBUG)
 
 def _request_library(url, data):
     h = {"Content-Type": "application/json"}
-    if platform == "darwin":
+    if __name__ == "__main__":
         from requests import post
         return post(
             url, data=data,
@@ -32,11 +31,11 @@ def correct(b64):
 
     req = _request_library(_url, dumps({"image": b64}))
     if req.status_code >= 300:
-        logger.info("Received error from server {}".format(req.text))
+        logger.info("Received error from server {}".format(req.content))
         return b64
     else:
         if 'result' not in req.content:
-            logger.info("Result not in response".format(req.text))
+            logger.info("Result not in response".format(req.content))
             return b64
         else:
             logger.info("All good, returning")
