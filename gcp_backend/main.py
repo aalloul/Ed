@@ -100,7 +100,7 @@ app = Flask(__name__)
 @app.route('/request_translation', methods=['POST'])
 def translate():
     logger.info("Received a request")
-
+    reporter = None
     try:
         parsed_request = RequestParser(request.data).parse()
 
@@ -129,9 +129,13 @@ def translate():
     except GenericSmailException as ex:
         logger.error("ex.__class__ {}".format(ex.__class__))
         logger.error("exception = {}".format(ex.message))
+        if reporter is not None:
+            reporter.commit()
         return custom_error(ex)
     except Exception as ex:
         logger.error(ex)
+        if reporter is not None:
+            reporter.commit()
         return custom_error(UnknownError(ex.message))
 
 
