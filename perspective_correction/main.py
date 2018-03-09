@@ -33,12 +33,13 @@ def main():
     # filter_based = FilterBased(image)
     try:
         res = apply_filter(image)  # filter_based.apply_filter()
-        if compare_warped_to_original(image, res) >= 0.4:
+        if compare_warped_to_original(image, res) >= 0.6:
             logger.info("Took {}s".format(time() - start))
             return jsonify({"result": encode_to_b64(res)})
     except Exception as ex:
         logger.warning("FilterBased method did not work")
         logger.warning("Message = {}".format(ex))
+        return jsonify({"error": "No improvement possible"})
 
     # Method 2: This method is used as a last hope. It tries to find a
     # rectangle in the picture.
