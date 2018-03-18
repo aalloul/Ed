@@ -1,10 +1,11 @@
 from json import loads
-from PIL import Image, ImageDraw, ExifTags
+from PIL import Image, ExifTags
 from io import BytesIO
 from custom_exceptions.custom_exceptions import NoTextFoundException
 import logging
 from sys import stdout
 from re import match
+from bill_parser import find_bill
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -19,15 +20,17 @@ class OCRParser(object):
 
         self.ocr_resp = loads(ocr_resp)
 
-        if self.ocr_resp['responses'][0].keys == {}:
+        if self.ocr_resp['responses'][0].keys == {} or \
+                'fullTextAnnotation' not in self.ocr_resp['responses'][0]:
             logger.error("No text found in image")
             self.full_text = ""
             raise NoTextFoundException("no_text_found")
 
         else:
             logger.info("Parsing text from OCR answer")
-            logger.debug("OCR Response = {}".format(self.ocr_resp['responses'][0]))
-            
+            logger.debug(
+                "OCR Response = {}".format(self.ocr_resp['responses'][0]))
+
             self.full_text = self.ocr_resp['responses'][0][
                 'fullTextAnnotation']['text']
             logger.debug("full_text done")
@@ -38,6 +41,7 @@ class OCRParser(object):
             logger.debug("orientation done")
             self.parsed_pages = self.parse_pages()
             logger.debug("pages parsed")
+            self.price_to_pay = find_bill(self.full_text)
 
     def parse_pages(self):
         out = {}
@@ -145,7 +149,8 @@ class OCRParser(object):
         tmpx = [v['x'] for v in paragraph['boundingBox']['vertices'] if 'x'
                 in v]
         xs = [min(tmpx), max(tmpx)]
-        tmpy = [v['y'] for v in paragraph['boundingBox']['vertices'] if 'y' in v]
+        tmpy = [v['y'] for v in paragraph['boundingBox']['vertices'] if
+                'y' in v]
         ys = [min(tmpy), max(tmpy)]
 
         for word in paragraph['words']:
@@ -173,7 +178,7 @@ class OCRParser(object):
                 if symbol['property']['detectedBreak']['type'] == "HYPHEN":
                     w += "-"
                 elif symbol['property'][
-                      'detectedBreak']['type'] == "EOL_SURE_SPACE":
+                        'detectedBreak']['type'] == "EOL_SURE_SPACE":
                     w += "\n"
                 else:
                     w += " "

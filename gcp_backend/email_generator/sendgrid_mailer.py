@@ -14,9 +14,18 @@ class Sendgrid(object):
     """
 
     """
+    NO_TEXT_FOUND = "Dear user,\n\n" \
+                    "unfortunately we have not been able to decode your letter \
+                     and extract the text to translate from it. \n\n" \
+                    "May we please ask you to try again and please make sure" \
+                    " the image is not blurry. and the text is readable?\n\n" \
+                    "If you need any assistance, please get in touch with us " \
+                    "through e-mail (smail.app.rocks@gmail.com) or via " \
+                    "Facebook (https://www.facebook.com/smailrocks).\n\n" \
+                    "Your friends from Sm@il."
 
-    def __init__(self, initial_request, html, parsed_ocr=None,
-                 human_translation=False):
+    def __init__(self, initial_request, html, text=None, parsed_ocr=None,
+                 human_translation=False, price_to_pay=()):
 
         logger.info("Initializing Sendgrid client")
         self.api_key = \
@@ -28,6 +37,30 @@ class Sendgrid(object):
         self.parsed_ocr = parsed_ocr
         self.DEBUG = False
         self.html = html
+        self.text = text
+        self.price_to_pay = max(price_to_pay) if len(price_to_pay) > 0 else 0
+
+    def _get_subject(self):
+        if self.price_to_pay:
+            return "Sm@il - Your scanned mail - !! Bill found !!"
+        else:
+            return 'Smail - Your mail scanned, translated and ready for ' \
+                   'archiving'
+
+    def _get_bill_text(self):
+        if not self.price_to_pay:
+            return ""
+        elif self.html is None:
+            return """Payment required:\n\n
+                    We have detected in the letter you received that you
+                    are required to pay {} Eur\n\n""".format(self.price_to_pay)
+        else:
+            return """<h2>Bill found</h2>
+                    <p>We have detected in the letter you received 
+                    that you are 
+                    required to pay <b>{} Euros</b>.</p>
+
+                    <h2>Translated mail</h2>\n""".format(self.price_to_pay)
 
     def _build_message_for_auto_translation(self):
         """Builds the message when the required translation is automatic"""
@@ -38,16 +71,21 @@ class Sendgrid(object):
         from_email = mail.Email(self.sendgrid_sender)
         logger.debug("  - from {}".format(from_email))
 
-        subject = 'Smail - Your mail scanned, translated and ready for ' \
-                  'archiving'
-        # logger.info(self.html)
-        content = mail.Content('text/html', self.html)
+        subject = self._get_subject()
+        bill_text = self._get_bill_text()
+
+        if self.html is None:
+            content = mail.Content('text', bill_text+self.text)
+        else:
+            content = mail.Content('text/html', bill_text+self.html)
         logger.debug("  - Content done")
 
         message = mail.Mail(from_email=from_email, subject=subject,
                             to_email=to_email, content=content)
 
-        message.add_attachment(self._build_attachment())
+        if self.initial_request is not None:
+            message.add_attachment(self._build_attachment())
+
         logger.debug("  -> Message built")
         return message
 
