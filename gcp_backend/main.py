@@ -56,10 +56,11 @@ def request_automatic_translation(parsed_request, reporter):
     reporter.add_event("n_chars_image", len(parsed_ocr.full_text))
     reporter.add_extracted_text(parsed_ocr.ocr_resp)
 
-    if len(parsed_ocr.price_to_pay)>0:
+    if parsed_ocr.price_to_pay.amount is not None:
         reporter.add_event("bill_found", "|".join(
-            map(str, parsed_ocr.price_to_pay)
+            map(str, parsed_ocr.price_to_pay.amount)
         ))
+        reporter.add_event("accept_giro", parsed_ocr.price_to_pay.acceptgiro)
     else:
         reporter.add_event("bill_found", "0")
 

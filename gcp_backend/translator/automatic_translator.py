@@ -31,7 +31,7 @@ class AutomaticTranslator(Translator):
         self.url = "https://translation.googleapis.com/language/translate/v2" \
                    "?key={}".format(self.api_key)
         self.DEBUG = False
-        self.html_parser_url = "http://35.230.54.110:3030"
+        self.html_parser_url = "http://35.230.54.110:3031"
         logger.debug("Init done")
 
     @staticmethod

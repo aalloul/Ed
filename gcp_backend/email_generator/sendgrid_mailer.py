@@ -38,29 +38,68 @@ class Sendgrid(object):
         self.DEBUG = False
         self.html = html
         self.text = text
-        self.price_to_pay = max(price_to_pay) if len(price_to_pay) > 0 else 0
+        self.price_to_pay = price_to_pay
 
     def _get_subject(self):
-        if self.price_to_pay:
-            return "Sm@il - Your scanned mail - !! Bill found !!"
-        else:
+        if self.price_to_pay.amount is None:
             return 'Smail - Your mail scanned, translated and ready for ' \
                    'archiving'
 
-    def _get_bill_text(self):
-        if not self.price_to_pay:
-            return ""
-        elif self.html is None:
-            return """Payment required:\n\n
-                    We have detected in the letter you received that you
-                    are required to pay {} Eur\n\n""".format(self.price_to_pay)
+        if self.price_to_pay.acceptgiro:
+            return "Sm@il - Your scanned mail - Invoice from {}".format(
+                self.price_to_pay.sender)
         else:
-            return """<h2>Bill found</h2>
-                    <p>We have detected in the letter you received 
-                    that you are 
-                    required to pay <b>{} Euros</b>.</p>
+            return "Sm@il - Your scanned mail - /!\ Invoice found /!\ "
 
-                    <h2>Translated mail</h2>\n""".format(self.price_to_pay)
+    def _get_accept_giro_text(self, html=True):
+        out = ""
+
+        if not self.price_to_pay.acceptgiro:
+            return out
+
+        if html:
+            out += """<p>This amount can be paid through the Acceptgiro system.
+             Simply connect to your bank account and transfer the above """
+            out += "amount using the following details:</p>"
+            out += "<ul>"
+            out += "<li>Sender = {}</li>".format(self.price_to_pay.sender)
+            out += "<li>Payment reference (betalingskenmerk) =" \
+                   "{}</li>".format(self.price_to_pay.payment_reference)
+            out += "<li>IBAN: {}</li>".format(self.price_to_pay.iban)
+            out += "<li>BIC (usually not needed in EU): " \
+                   "{}</li>".format(self.price_to_pay.bic)
+            out += "</ul>"
+        else:
+            out += """This amount can be paid through the Acceptgiro system.
+                         Simply connect to your bank account and transfer the 
+                         above"""
+            out += """ amount using the following details:\n"""
+            out += "   - Beneficiary = {}\n".format(self.price_to_pay.sender)
+            out += "   - Payment reference (betalingskenmerk) =" \
+                   "{}\n".format(self.price_to_pay.payment_reference)
+            out += "   - IBAN: {}\n".format(self.price_to_pay.iban)
+            out += "   - BIC (usually not needed in EU): " \
+                   "{}\n\n".format(self.price_to_pay.bic)
+        return out
+
+    def _get_bill_text(self):
+        if self.price_to_pay.amount is None:
+            out = ""
+        elif self.price_to_pay.amount is not None and self.html is None:
+            out = "Payment required:"
+            out += "We have detected in the letter you received that you"
+            out += "are required to pay {} " \
+                   "Eur.\n".format(max(self.price_to_pay.amount))
+            out += self._get_accept_giro_text(False)
+
+        else:
+            out = """<h2>Invoice found</h2>
+                    <p>It seems that you are required to make a payment of 
+                    <b>{} Euros. </b>.</p>""".format(max(
+                self.price_to_pay.amount))
+            out += self._get_accept_giro_text(True)
+            out += """<h2>Translated mail</h2>\n"""
+        return out
 
     def _build_message_for_auto_translation(self):
         """Builds the message when the required translation is automatic"""
@@ -75,9 +114,9 @@ class Sendgrid(object):
         bill_text = self._get_bill_text()
 
         if self.html is None:
-            content = mail.Content('text', bill_text+self.text)
+            content = mail.Content('text', bill_text + self.text)
         else:
-            content = mail.Content('text/html', bill_text+self.html)
+            content = mail.Content('text/html', bill_text + self.html)
         logger.debug("  - Content done")
 
         message = mail.Mail(from_email=from_email, subject=subject,

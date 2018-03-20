@@ -44,7 +44,7 @@ class OCRParser(object):
             self.price_to_pay = find_bill(self.full_text)
 
     def parse_pages(self):
-        out = {}
+        out_ = {}
         cnt = 0
         heights = []
         widths = []
@@ -52,11 +52,11 @@ class OCRParser(object):
             cnt += 1
             page_max_y = page['height']
             page_max_x = page['width']
-            out[cnt] = self._extract_blocks(page, page_max_x, page_max_y)
+            out_[cnt] = self._extract_blocks(page, page_max_x, page_max_y)
             logger.debug("_combine_words")
-            out[cnt] = self._combine_words(out[cnt])
+            out_[cnt] = self._combine_words(out_[cnt])
             logger.debug("_shift_all")
-            out[cnt] = self._shift_all(out[cnt])
+            out_[cnt] = self._shift_all(out_[cnt])
 
             if self.orientation in [0, 180]:
                 widths.append(page_max_x)
@@ -65,11 +65,11 @@ class OCRParser(object):
                 widths.append(page_max_y)
                 heights.append(page_max_x)
 
-        out["heights"] = heights
-        out["widths"] = widths
+        out_["heights"] = heights
+        out_["widths"] = widths
 
         logger.debug("Pages parsing done")
-        return out
+        return out_
 
     def _extract_blocks(self, page, page_max_x, page_max_y):
         blocks = []
@@ -177,8 +177,8 @@ class OCRParser(object):
             if "detectedBreak" in symbol['property']:
                 if symbol['property']['detectedBreak']['type'] == "HYPHEN":
                     w += "-"
-                elif symbol['property'][
-                        'detectedBreak']['type'] == "EOL_SURE_SPACE":
+                elif symbol['property']['detectedBreak'][
+                        'type'] == "EOL_SURE_SPACE":
                     w += "\n"
                 else:
                     w += " "
@@ -203,21 +203,50 @@ class OCRParser(object):
         """
         tmp = sorted(words, key=lambda t: t['from_y'])
 
-        out = [tmp[0]]
+        out_ = [tmp[0]]
         soft_hyphen = "(.+)([a-z A-Z]-)$"
         starts_with_letters = "^[a-z A-Z](.+)"
         for ii in range(1, len(tmp)):
-            if match(soft_hyphen, out[-1]['word']) and \
-                    match(starts_with_letters, out[-1]['word']):
-                out[-1]['word'] = out[-1]["word"][0:len(out[-1]['word']) - 1] \
-                                  + tmp[ii]['word']
-                out[-1]['from_x'] = min(out[-1]["from_x"], tmp[ii]["from_x"])
-                out[-1]['from_y'] = min(out[-1]["from_y"], tmp[ii]["from_y"])
-                out[-1]['to_x'] = max(out[-1]["to_x"], tmp[ii]["to_x"])
-                out[-1]['to_x'] = max(out[-1]["to_x"], tmp[ii]["to_x"])
+            if match(soft_hyphen, out_[-1]['word']) and \
+                    match(starts_with_letters, out_[-1]['word']):
+                out_[-1]['word'] = \
+                    out_[-1]["word"][0:len(out_[-1]['word']) - 1] + tmp[ii][
+                        'word']
+                out_[-1]['from_x'] = min(out_[-1]["from_x"], tmp[ii]["from_x"])
+                out_[-1]['from_y'] = min(out_[-1]["from_y"], tmp[ii]["from_y"])
+                out_[-1]['to_x'] = max(out_[-1]["to_x"], tmp[ii]["to_x"])
+                out_[-1]['to_x'] = max(out_[-1]["to_x"], tmp[ii]["to_x"])
             else:
-                out.append(tmp[ii])
-        return out
+                out_.append(tmp[ii])
+        return out_
+
+
+def sortkeypicker(keynames):
+    negate = set()
+    for i, k in enumerate(keynames):
+        if k[:1] == '-':
+            keynames[i] = k[1:]
+            negate.add(k[1:])
+
+    def getit(adict):
+        composite = [adict[_] for _ in keynames]
+        for ii, (key, val) in enumerate(zip(keynames, composite)):
+            if key in negate:
+                composite[ii] = -val
+        return composite
+
+    return getit
+
+
+
+def format_line(el):
+    return ["&nbs;" if line is None else
+     ["<tr><td>{}</td></tr>".format(_) for _ in line]
+     for line in el
+     ]
+    # if el is None:
+    #     return "&nbsp;"
+    # return ["<tr><td>{}</td></tr>".format(_) for _ in el.split("\n")]
 
 
 if __name__ == "__main__":
@@ -253,34 +282,41 @@ if __name__ == "__main__":
             return 0
 
 
-    with open("../fixture/request_01.jpeg", "rb") as f:
+    with open("../fixture/test.jpeg", "rb") as f:
         im = f.read()
         orientation = get_orientation(im)
 
-    with open("../fixture/request_01_ocr.json", "r") as f:
+    with open("../fixture/test_ocr.json", "r") as f:
         resp = f.read()
 
     ocrparser = OCRParser(resp, orientation)
     parsed_pages = ocrparser.parse_pages()
-    # parsed_pages[1] = combine_words(parsed_pages[1])
 
-    # resp = loads(resp)
-    # x = resp['responses'][0]['fullTextAnnotation']['pages'][0]['width']
-    # y = resp['responses'][0]['fullTextAnnotation']['pages'][0]['height']
-    # if orientation == 0:
-    #     img = Image.new("RGB", (x, y), "white")
-    # elif orientation == 90:
-    #     img = Image.new("RGB", (y, x), "white")
-    # elif orientation == 270:
-    #     img = Image.new("RGB", (y, x), "white")
-    # else:
-    #     img = Image.new("RGB", (y, x), "white")
+    sorted_page = sorted(parsed_pages[1], key=sortkeypicker(['from_y',
+                                                             'from_x']))
+
+    min_x = min([_["from_x"] for _ in sorted_page])
+    min_y = min([_["from_y"] for _ in sorted_page])
+
+    # import numpy as np
     #
-    # draw = ImageDraw.Draw(img)
-    # for line in parsed_pages[1]:
-    #     draw.text((line['from_x'], line['from_y']),
-    #               line['word'].encode("utf-8"),
-    #               'black')
+    # table = np.empty((parsed_pages["heights"][0], parsed_pages["widths"][0]),
+    #          dtype=object)
     #
-    # draw = ImageDraw.Draw(img)
-    # img.save("../fixture/test.png")
+    # for el in sorted_page:
+    #     table[el["from_y"] - min_y, el["from_x"] - min_x] = el["word"]
+    #
+    # table_list = table.tolist()
+    # table_list2 = [format_line(el) for el in table_list]
+
+
+
+
+
+
+
+
+
+
+
+

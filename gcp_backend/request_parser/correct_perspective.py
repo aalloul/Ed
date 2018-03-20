@@ -35,12 +35,12 @@ def correct(b64):
     if req.status_code >= 300:
         logger.info("Received error from server {}, in {}s".format(
             req.content, time() - start))
-        return b64
+        return None
     else:
         if 'result' not in req.content:
             logger.info("Result not in response {}. Took {}s".format(
                 req.content, time() - start))
-            return b64
+            return None
         else:
             logger.info("All good, returning. Took {}s".format(time() - start))
             return loads(req.content)['result']
