@@ -33,8 +33,6 @@ def main():
     # filter_based = FilterBased(image)
     try:
         res = apply_filter(image)  # filter_based.apply_filter()
-        if compare_warped_to_original(image, res) >= 0.6:
-        res = filter_based.apply_filter()
         ratio = compare_warped_to_original(image, res)
         if  ratio >= 0.7:
             logger.info("Took {}s".format(time() - start))
