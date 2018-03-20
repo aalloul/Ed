@@ -9,12 +9,14 @@ from glob import glob
 
 
 url = "http://35.230.54.110:33330/correct_image"
-#url = "http://127.0.0.1:5000/correct_image"
-fname = "example_02.jpg"
+# url = "http://127.0.0.1:5000/correct_image"
+fname = "request_first_user_06.jpeg"
 with open(fname, "rb") as f:
     image = b64encode(f.read())
+    print("Read done")
 start = time()
 req = post(url,json={"image":image})
+print ("Post done")
 if 199 < req.status_code < 300:
     res = req.json()
     print ("Request took {} s".format(time() - start))

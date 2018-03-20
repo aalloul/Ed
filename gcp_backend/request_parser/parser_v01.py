@@ -4,6 +4,7 @@ from sys import stdout
 from base64 import b64decode
 from custom_exceptions.custom_exceptions import IncompleteRequestBody, \
     ImageDecodingException
+from correct_perspective import correct
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -87,7 +88,7 @@ class Parser(object):
             logger.error("Message was = {}".format(ex.message))
             raise ImageDecodingException(ex.message)
 
-        self.image = request["image"]
+        self.image = correct(request["image"])
 
     def _set_timestamp(self, request):
         if "timestamp" not in request:

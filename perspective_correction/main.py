@@ -34,13 +34,16 @@ def main():
     try:
         res = apply_filter(image)  # filter_based.apply_filter()
         if compare_warped_to_original(image, res) >= 0.6:
+        res = filter_based.apply_filter()
+        ratio = compare_warped_to_original(image, res)
+        if  ratio >= 0.7:
             logger.info("Took {}s".format(time() - start))
-            return jsonify({"result": encode_to_b64(res)})
+            logger.info("Ratio is {}".format(ratio))
+            return jsonify({"result": encode_to_b64(res), "ratio": ratio})
     except Exception as ex:
         logger.warning("FilterBased method did not work")
         logger.warning("Message = {}".format(ex))
-        return jsonify({"error": "No improvement possible"})
-
+        return jsonify({"error": "No improvement found" })
     # Method 2: This method is used as a last hope. It tries to find a
     # rectangle in the picture.
     # logger.info("2- Trying RectangleReconstruct method")

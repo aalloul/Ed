@@ -56,6 +56,14 @@ def request_automatic_translation(parsed_request, reporter):
     reporter.add_event("n_chars_image", len(parsed_ocr.full_text))
     reporter.add_extracted_text(parsed_ocr.ocr_resp)
 
+    if parsed_ocr.price_to_pay.amount is not None:
+        reporter.add_event("bill_found", "|".join(
+            map(str, parsed_ocr.price_to_pay.amount)
+        ))
+        reporter.add_event("accept_giro", parsed_ocr.price_to_pay.acceptgiro)
+    else:
+        reporter.add_event("bill_found", "0")
+
     logger.info("Call Translation service")
     start_translation = time()
     translator = AutomaticTranslator(parsed_request.get_input_language(),
@@ -74,7 +82,8 @@ def request_automatic_translation(parsed_request, reporter):
     reporter.add_input_html(input_html)
 
     email_start = time()
-    sg = Sendgrid(parsed_request, html_text, parsed_ocr.parsed_pages)
+    sg = Sendgrid(parsed_request, html_text, parsed_ocr.parsed_pages,
+                  price_to_pay=parsed_ocr.price_to_pay)
     status_code, body, headers = sg.send()
 
     if 200 <= status_code < 300:
@@ -92,13 +101,31 @@ def request_automatic_translation(parsed_request, reporter):
                          "headers = {}".format(status_code, body, headers))
         raise UnknownEmailException()
 
+def send_email(request, text, reporter):
+    email_start = time()
+    sg = Sendgrid(request, None, text=text)
+    status_code, body, headers = sg.send()
+    if 200 <= status_code < 300:
+        reporter.add_event("email_sent_in_sec", round(time() - email_start, 3))
+        return
+    else:
+        reporter.add_event("email_send_exception_status_code", status_code)
+        reporter.add_event("email_send_exception_body", body)
+        reporter.add_event("email_send_exception_headers", headers)
 
+        logger.exception("Email not sent with status code = {}, "
+                         "body = {}, "
+                         "headers = {}".format(status_code, body, headers))
+        raise UnknownEmailException()
 # Flask app
 app = Flask(__name__)
+
 
 @app.route('/request_translation', methods=['POST'])
 def translate():
     logger.info("Received a request")
+    reporter = None
+    parsed_request = None
 
     try:
         parsed_request = RequestParser(request.data).parse()
@@ -125,12 +152,22 @@ def translate():
         reporter.commit()
         logger.info("  -> Done")
         return ans
+    except NoTextFoundException as ex:
+        send_email(parsed_request, Sendgrid.NO_TEXT_FOUND, reporter)
+        if reporter is not None:
+            reporter.commit()
+        return custom_error(ex)
+
     except GenericSmailException as ex:
         logger.error("ex.__class__ {}".format(ex.__class__))
         logger.error("exception = {}".format(ex.message))
+        if reporter is not None:
+            reporter.commit()
         return custom_error(ex)
     except Exception as ex:
         logger.error(ex)
+        if reporter is not None:
+            reporter.commit()
         return custom_error(UnknownError(ex.message))
 
 
