@@ -86,7 +86,6 @@ class Naive(object):
     def get_scanned_version(self):
         e = self._find_edges()
         ctr = self._find_contours(e)
-
         if ctr is None:
             return None
 
@@ -102,36 +101,36 @@ class Naive(object):
             return wrp
 
 
-if __name__ == "__main__":
-    files = ["example_02.jpg", "example_03.jpg", "example_04.jpg",
-             "example_05.jpg", "example_06.jpg", "example_07.jpg",
-             "example_08.jpg", "example_09.jpg", "example_10.jpg",
-             "example_11.jpg"]
-
-    from cv2 import imread
-    image = imread("../fixtures/example_{}.jpg".format("02"))
-    naive = Naive(image, 900, threshold=0.4, border=True)
-    scan = naive.get_scanned_version()
-
-    from cv2 import imshow, waitKey, destroyAllWindows, drawContours, imwrite
-
-    if scan is not None:
-        imshow("Scan found",
-               imutils.resize(naive.original, height=650))
-        imshow("Scanned", imutils.resize(scan, height=650))
-        waitKey()
-    else:
-        imshow("No Scan found",
-               imutils.resize(naive.original, height=650))
-        waitKey()
-    destroyAllWindows()
+# if __name__ == "__main__":
+#     files = ["example_02.jpg", "example_03.jpg", "example_04.jpg",
+#              "example_05.jpg", "example_06.jpg", "example_07.jpg",
+#              "example_08.jpg", "example_09.jpg", "example_10.jpg",
+#              "example_11.jpg"]
+#
+#     from cv2 import imread
+#     image = imread("../fixtures/example_{}.png".format("01"))
+#     naive = Naive(image, 900, threshold=0.4, border=True)
+#     scan = naive.get_scanned_version()
+#
+#     from cv2 import imshow, waitKey, destroyAllWindows, drawContours, imwrite
+#
+    # if scan is not None:
+    #     imshow("Scan found",
+    #            imutils.resize(naive.original, height=650))
+    #     imshow("Scanned", imutils.resize(scan, height=650))
+    #     waitKey()
+    # else:
+    #     imshow("No Scan found",
+    #            imutils.resize(naive.original, height=650))
+    #     waitKey()
+    # destroyAllWindows()
     # e = naive._find_edges()
     # imshow("Dilated", e)
     # waitKey()
     # destroyAllWindows()
     #
     # ctr = naive._find_contours(e)
-    # drawContours(naive.image, [ctr], -1, [0, 255, 0])
+    # drawContours(naive.image, [scan], -1, [0, 255, 0])
     # imshow("Contours", naive.image)
     # waitKey()
     # destroyAllWindows()

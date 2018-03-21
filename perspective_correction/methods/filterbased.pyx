@@ -134,6 +134,7 @@ cdef get_bounding_box(np.ndarray im, int add_border=0, str sortby="contourArea")
             areas = map(contourArea, boxes)
         else:
             raise ValueError("Unknown value {} for sortby".format(sortby))
+
         return boxes[areas.index(max(areas))]
 
 cdef _find_correct_threshold(np.ndarray resized):
@@ -159,8 +160,7 @@ cdef _find_correct_threshold(np.ndarray resized):
 
 cdef read_image2(base64encoded):
     cdef str str_ = base64encoded.decode('base64')
-    cdef np.ndarray nparr = np.frombuffer(str_, np
-    .uint8)
+    cdef np.ndarray nparr = np.frombuffer(str_, np.uint8)
     return imdecode(nparr, IMREAD_COLOR)
 
 def read_image(b64):

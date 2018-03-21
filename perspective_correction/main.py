@@ -30,14 +30,18 @@ def main():
     # Method 1: Naive. Works fine when the page is put on, e.g., a table and
     # the picture shows clearly the 4 edges
     logger.info("1- Trying Filter based method with no border")
-    # filter_based = FilterBased(image)
     try:
+        logger.info("Apply filter")
         res = apply_filter(image)  # filter_based.apply_filter()
+        logger.info("Compare warped to original")
         ratio = compare_warped_to_original(image, res)
-        if  ratio >= 0.7:
-            logger.info("Took {}s".format(time() - start))
+        logger.info("Took {}s".format(time() - start))
+        if  ratio >= 0.5:
             logger.info("Ratio is {}".format(ratio))
             return jsonify({"result": encode_to_b64(res), "ratio": ratio})
+        else:
+            logger.info("Ratio is {} -- below threshold".format(ratio))
+            raise NoImprovementFound("Ratio is {} -- below threshold".format(ratio))
     except Exception as ex:
         logger.warning("FilterBased method did not work")
         logger.warning("Message = {}".format(ex))
@@ -84,4 +88,4 @@ def custom_error(e):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True  )
