@@ -73,6 +73,7 @@ class Ocr(object):
         else:
             logger.error("OCR answer with status "
                          "code = {}".format(response.status_code))
+            logger.error(("respose = {}".format(response.content)))
             raise UnknownOCRException("OCR Error")
 
     @staticmethod

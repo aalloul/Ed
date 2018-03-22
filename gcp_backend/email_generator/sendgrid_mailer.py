@@ -25,7 +25,7 @@ class Sendgrid(object):
                     "Your friends from Sm@il."
 
     def __init__(self, initial_request, html, text=None, parsed_ocr=None,
-                 human_translation=False, price_to_pay=()):
+                 human_translation=False, price_to_pay=None):
 
         logger.info("Initializing Sendgrid client")
         self.api_key = \
@@ -41,7 +41,8 @@ class Sendgrid(object):
         self.price_to_pay = price_to_pay
 
     def _get_subject(self):
-        if self.price_to_pay.amount is None:
+
+        if self.price_to_pay is None or self.price_to_pay.amount is None:
             return 'Smail - Your mail scanned, translated and ready for ' \
                    'archiving'
 
@@ -54,7 +55,7 @@ class Sendgrid(object):
     def _get_accept_giro_text(self, html=True):
         out = ""
 
-        if not self.price_to_pay.acceptgiro:
+        if self.price_to_pay is None or not self.price_to_pay.acceptgiro:
             return out
 
         if html:
@@ -83,7 +84,7 @@ class Sendgrid(object):
         return out
 
     def _get_bill_text(self):
-        if self.price_to_pay.amount is None:
+        if self.price_to_pay is None or self.price_to_pay.amount is None:
             out = ""
         elif self.price_to_pay.amount is not None and self.html is None:
             out = "Payment required:"
