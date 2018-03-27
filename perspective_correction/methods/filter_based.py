@@ -110,14 +110,9 @@ class FilterBased(object):
 
     @staticmethod
     def _get_box(contour):
-        from cv2 import arcLength, approxPolyDP
-        peri = arcLength(tuple(contour), True)
-        approx = approxPolyDP(tuple(contour), 0.10 * peri, True)
-        return contourArea(approx), approx
-
-        # rect = minAreaRect(contour)
-        # box = boxPoints(rect)
-        # return int0(box)
+        rect = minAreaRect(contour)
+        box = boxPoints(rect)
+        return int0(box), rect
 
     @staticmethod
     def box_area(contour):
@@ -166,104 +161,56 @@ class FilterBased(object):
         # return thebox
         # return four_point_transform(self.image, thebox * self.ratio)
 
+
+def crop_minAreaRect(img, rect):
+    from cv2 import transform
+
+    # rotate img
+    angle = rect[2]
+    rows,cols = img.shape[0], img.shape[1]
+    M = getRotationMatrix2D((cols/2,rows/2),angle,1)
+    img_rot = warpAffine(img,M,(cols,rows))
+
+    # rotate bounding box
+    rect0 = (rect[0], rect[1], 0.0)
+    box = boxPoints(rect)
+    pts = int0(transform(array([box]), M))[0]
+    pts[pts < 0] = 0
+
+    # crop
+    img_crop = img_rot[pts[1][1]:pts[0][1],
+                       pts[1][0]:pts[2][0]]
+
+    return img_crop
+
 if __name__ == "__main__":
-    from time import time
-    from cv2 import imshow, imread, waitKey, destroyAllWindows
+    from cv2 import imshow, imread, waitKey, destroyAllWindows, \
+        getRotationMatrix2D, warpAffine
+    im = imread("../fixtures/request_first_user_02.jpeg")
+    filterbased = FilterBased(im)
+    thresold = filterbased._find_correct_threshold()
 
-    # , "03", "04", "05", "06", "07", "08", "09", "10", "11"]:
-    # for ii in ["01"]:
-    #     start = time()
-    #     original_image = imread("../fixtures/example_{}.png".format(ii))
-    #     print("Reading image took {}s".format(time() - start))
-    #     new_start = time()
-    #     filterbased = FilterBased(original_image)
-    #     print("Instantiation of class took {}s".format(time() - new_start))
-    #     new_start = time()
-    #     warped = filterbased.apply_filter()
-    #     print("Filter apply took {}s".format(time() - new_start))
-    #     print("Total duration = {}s".format(time() - start))
-    #     imshow("Original", imutils.resize(original_image, height=500))
-    #     imshow("Scanned", imutils.resize(warped, height=500))
-    #     waitKey()
-    #     destroyAllWindows()
+    if thresold is None:
+        thebox = filterbased.get_bounding_box(filterbased.resized, add_border=True)
+    else:
+        thresholded = filterbased._apply_threshold(filterbased.resized, thresold,
+                                                255)
+    closed = filterbased.open_close(thresholded, MORPH_CLOSE, 5, 5)
+    zeroed = filterbased.zero_values(closed)
+    reopened = filterbased.open_close(zeroed, MORPH_OPEN, 40, 40)
+    reopened = reopened.astype(uint8)
 
-    from cv2 import cvtColor, COLOR_BGR2GRAY, HoughLines, line, imwrite
-    from numpy import pi, cos, sin
-    img =  imread("../fixtures/example_{}.png".format("01"))
-    gray = cvtColor(img, COLOR_BGR2GRAY)
-    edges = Canny(gray, 50, 150, apertureSize=3)
+    edges = Canny(reopened, 75, 200)
+    cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
+    boxes = map(FilterBased._get_box, cnts[1])
 
-    lines = HoughLines(edges, 1, pi / 180, 200)
-    for rho, theta in lines[0]:
-        a = cos(theta)
-        b = sin(theta)
-        x0 = a * rho
-        y0 = b * rho
-        x1 = int(x0 + 1000 * (-b))
-        y1 = int(y0 + 1000 * (a))
-        x2 = int(x0 - 1000 * (-b))
-        y2 = int(y0 - 1000 * (a))
+    areas = [contourArea(box) for box, _ in boxes]
+    thebox = boxes[areas.index(max(areas))]
+    fpt = four_point_transform(filterbased.image, thebox[0] * filterbased.ratio)
 
-        line(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
-
-    imwrite('houghlines3.jpg', img)
-
-    # from cv2 import rectangle
-    # warped = warped*filterbased.ratio
-    # warped = warped.astype(int)
-    # rectangle(filterbased.resized, tuple(warped[1]),tuple( warped[0]),
-    #           (0,255,0),3)
-    # imshow("resize", filterbased.resized)
-    # waitKey()
-    # destroyAllWindows()
-
-# from time import time
-#
-# original_image = imread("../fixtures/example_{}.jpg".format("02"))
-# start = time()
-# filterbased = FilterBased(original_image)
-# logger.info("Instantiated in {}".format(time() - start))
-#
-# start = time()
-# thresold = filterbased._find_correct_threshold()
-# logger.info("_find_correct_threshold in {}".format(time() - start))
-#
-# start = time()
-# thresholded = filterbased._apply_threshold(filterbased.resized, thresold, 255)
-# logger.info("_apply_threshold in {}".format(time() - start))
-#
-# start = time()
-# closed = filterbased.open_close(thresholded, MORPH_CLOSE, 5, 5)
-# logger.info("open_close in {}".format(time() - start))
-#
-# start = time()
-# zeroed = filterbased.zero_values(closed)
-# logger.info("zero_values in {}".format(time() - start))
-#
-# start = time()
-# reopened = filterbased.open_close(zeroed, MORPH_OPEN, 40, 40)
-# logger.info("open_close in {}".format(time() - start))
-#
-# reopened = reopened.astype(uint8)
-#
-# start = time()
-# thebox = filterbased.get_bounding_box(reopened, sortby=FilterBased.box_area)
-# logger.info("get_bounding_box in {}".format(time() - start))
-#
-# # edges = Canny(reopened, 75, 200)
-# #
-# #
-# # cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
-# #
-# # start = time()
-# # cnts = sorted(cnts[1], key=FilterBased.box_area, reverse=True)[0]
-# # box_ = FilterBased._get_box(cnts)
-# # logger.info("_get_box in {}".format(time() - start))
-# #
-# #
-# # cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
-# # start = time()
-# # boxes = map(FilterBased._get_box, cnts[1])
-# # areas = map(contourArea, boxes)
-# # box_ = boxes[areas.index(max(areas))]
-# # logger.info("_get_box in {}".format(time() - start))
+    cropped = crop_minAreaRect(filterbased.resized, thebox[1])
+    imshow("original", imutils.resize(im, height=650))
+    imshow("cropped", imutils.resize(cropped, height=650))
+    imshow("fpt", imutils.resize(fpt, height=650))
+    waitKey()
+    destroyAllWindows()
