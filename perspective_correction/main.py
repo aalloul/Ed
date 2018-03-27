@@ -1,47 +1,23 @@
 from __future__ import print_function
 from methods.rectangle_reconstruct import RectangleReconstruct
-from methods.filter_based import FilterBased
+# from methods.filter_based import FilterBased
+from methods.filterbased import apply_filter, read_image, \
+    compare_warped_to_original, encode_to_b64
 from flask import Flask, request, jsonify
 import logging
 from sys import stdout
 from time import time
 from json import loads
 from custom_exceptions.custom_exceptions import *
-from numpy import frombuffer, uint8
-from cv2 import imdecode, IMREAD_COLOR, imencode
-from base64 import b64encode
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 DEBUG = True
-
-
-# Some utility functions
-def read_image(base64encoded):
-    nparr = frombuffer(base64encoded.decode('base64'), uint8)
-    return imdecode(nparr, IMREAD_COLOR)
-
-
-def encode_to_b64(array):
-    _, im = imencode(".jpg", array)
-    return b64encode(im)
-
-
-def get_area(array):
-    return float(array.shape[0] * array.shape[1])
-
-
-def compare_warped_to_original(original, cropped):
-    original_area = get_area(original)
-    transformed_area = get_area(cropped)
-    return transformed_area / original_area
-
 
 # Flask app
 app = Flask(__name__)
-
 
 @app.route('/correct_image', methods=['POST'])
 def main():
@@ -54,14 +30,18 @@ def main():
     # Method 1: Naive. Works fine when the page is put on, e.g., a table and
     # the picture shows clearly the 4 edges
     logger.info("1- Trying Filter based method with no border")
-    filter_based = FilterBased(image)
     try:
-        res = filter_based.apply_filter()
+        logger.info("Apply filter")
+        res = apply_filter(image)  # filter_based.apply_filter()
+        logger.info("Compare warped to original")
         ratio = compare_warped_to_original(image, res)
-        if  ratio >= 0.7:
-            logger.info("Took {}s".format(time() - start))
+        logger.info("Took {}s".format(time() - start))
+        if  ratio >= 0.5:
             logger.info("Ratio is {}".format(ratio))
             return jsonify({"result": encode_to_b64(res), "ratio": ratio})
+        else:
+            logger.info("Ratio is {} -- below threshold".format(ratio))
+            raise NoImprovementFound("Ratio is {} -- below threshold".format(ratio))
     except Exception as ex:
         logger.warning("FilterBased method did not work")
         logger.warning("Message = {}".format(ex))
@@ -108,4 +88,4 @@ def custom_error(e):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True  )

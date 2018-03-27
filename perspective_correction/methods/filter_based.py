@@ -1,7 +1,8 @@
 from numpy import uint8, ones, int0, array, percentile, where, diff
 from cv2 import Canny, findContours, RETR_LIST, CHAIN_APPROX_SIMPLE, \
     threshold, boxPoints, MORPH_OPEN, contourArea, morphologyEx, MORPH_CLOSE, \
-    minAreaRect, THRESH_BINARY, copyMakeBorder, BORDER_CONSTANT
+    minAreaRect, THRESH_BINARY, copyMakeBorder, BORDER_CONSTANT, resize, \
+    INTER_AREA
 from methods.transform import four_point_transform
 import imutils
 import logging
@@ -35,7 +36,7 @@ class FilterBased(object):
 
         # Here we compute all percentile values, then find the one where the
         # slope changes significantly.
-        perc_ = percentile(closed_, range(5, 75))
+        perc_ = percentile(closed_, xrange(5, 75))
         perc_ = self._find_position(perc_)
 
         val = percentile(closed_.flatten(), perc_)
@@ -49,7 +50,7 @@ class FilterBased(object):
         deriv_1 = diff(perc_vals)
         position = None
         max_slope = where(deriv_1 == deriv_1.max())[0][0]
-        for _ in range(max_slope, len(deriv_1)):
+        for _ in xrange(max_slope, len(deriv_1)):
             slope = deriv_1[_]
             if slope >= 2:
                 pos += 1
@@ -78,16 +79,16 @@ class FilterBased(object):
 
         if x is not None:
             if st:
-                rng = range(0, length)
+                rng = xrange(0, length)
             else:
-                rng = range(image.shape[1] - length, image.shape[1])
+                rng = xrange(image.shape[1] - length, image.shape[1])
 
             return array([image[x, y_] for y_ in rng])
 
         if st:
-            rng = range(0, length)
+            rng = xrange(0, length)
         else:
-            rng = range(image.shape[0] - length, image.shape[0])
+            rng = xrange(image.shape[0] - length, image.shape[0])
         return array([image[x_, y] for x_ in rng])
 
     @staticmethod
@@ -111,7 +112,7 @@ class FilterBased(object):
     def _get_box(contour):
         rect = minAreaRect(contour)
         box = boxPoints(rect)
-        return int0(box)
+        return int0(box), rect
 
     @staticmethod
     def box_area(contour):
@@ -154,79 +155,62 @@ class FilterBased(object):
             zeroed = self.zero_values(closed)
             reopened = self.open_close(zeroed, MORPH_OPEN, 40, 40)
             reopened = reopened.astype(uint8)
-            thebox = self.get_bounding_box(reopened,
-                                           sortby="box_area")
-        return four_point_transform(self.image, thebox * self.ratio)
-
-# if __name__ == "__main__":
-#     from time import time
-#     from cv2 import imshow, imread, waitKey, destroyAllWindows
-#
-#     # , "03", "04", "05", "06", "07", "08", "09", "10", "11"]:
-#     for ii in ["02"]:
-#         start = time()
-#         original_image = imread("../fixtures/example_{}.jpg".format(ii))
-#         print("Reading image took {}s".format(time() - start))
-#         new_start = time()
-#         filterbased = FilterBased(original_image)
-#         print("Instantiation of class took {}s".format(time() - new_start))
-#         new_start = time()
-#         warped = filterbased.apply_filter()
-#         print("Filter apply took {}s".format(time() - new_start))
-#         print("Total duration = {}s".format(time() - start))
-#         imshow("Original", imutils.resize(original_image, height=500))
-#         imshow("Scanned", imutils.resize(warped, height=500))
-#         waitKey()
-#         destroyAllWindows()
+            return reopened
+            # thebox = self.get_bounding_box(reopened,
+            #                                sortby="box_area")
+        # return thebox
+        # return four_point_transform(self.image, thebox * self.ratio)
 
 
-# from time import time
-#
-# original_image = imread("../fixtures/example_{}.jpg".format("02"))
-# start = time()
-# filterbased = FilterBased(original_image)
-# logger.info("Instantiated in {}".format(time() - start))
-#
-# start = time()
-# thresold = filterbased._find_correct_threshold()
-# logger.info("_find_correct_threshold in {}".format(time() - start))
-#
-# start = time()
-# thresholded = filterbased._apply_threshold(filterbased.resized, thresold, 255)
-# logger.info("_apply_threshold in {}".format(time() - start))
-#
-# start = time()
-# closed = filterbased.open_close(thresholded, MORPH_CLOSE, 5, 5)
-# logger.info("open_close in {}".format(time() - start))
-#
-# start = time()
-# zeroed = filterbased.zero_values(closed)
-# logger.info("zero_values in {}".format(time() - start))
-#
-# start = time()
-# reopened = filterbased.open_close(zeroed, MORPH_OPEN, 40, 40)
-# logger.info("open_close in {}".format(time() - start))
-#
-# reopened = reopened.astype(uint8)
-#
-# start = time()
-# thebox = filterbased.get_bounding_box(reopened, sortby=FilterBased.box_area)
-# logger.info("get_bounding_box in {}".format(time() - start))
-#
-# # edges = Canny(reopened, 75, 200)
-# #
-# #
-# # cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
-# #
-# # start = time()
-# # cnts = sorted(cnts[1], key=FilterBased.box_area, reverse=True)[0]
-# # box_ = FilterBased._get_box(cnts)
-# # logger.info("_get_box in {}".format(time() - start))
-# #
-# #
-# # cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
-# # start = time()
-# # boxes = map(FilterBased._get_box, cnts[1])
-# # areas = map(contourArea, boxes)
-# # box_ = boxes[areas.index(max(areas))]
-# # logger.info("_get_box in {}".format(time() - start))
+def crop_minAreaRect(img, rect):
+    from cv2 import transform
+
+    # rotate img
+    angle = rect[2]
+    rows,cols = img.shape[0], img.shape[1]
+    M = getRotationMatrix2D((cols/2,rows/2),angle,1)
+    img_rot = warpAffine(img,M,(cols,rows))
+
+    # rotate bounding box
+    rect0 = (rect[0], rect[1], 0.0)
+    box = boxPoints(rect)
+    pts = int0(transform(array([box]), M))[0]
+    pts[pts < 0] = 0
+
+    # crop
+    img_crop = img_rot[pts[1][1]:pts[0][1],
+                       pts[1][0]:pts[2][0]]
+
+    return img_crop
+
+if __name__ == "__main__":
+    from cv2 import imshow, imread, waitKey, destroyAllWindows, \
+        getRotationMatrix2D, warpAffine
+    im = imread("../fixtures/request_first_user_02.jpeg")
+    filterbased = FilterBased(im)
+    thresold = filterbased._find_correct_threshold()
+
+    if thresold is None:
+        thebox = filterbased.get_bounding_box(filterbased.resized, add_border=True)
+    else:
+        thresholded = filterbased._apply_threshold(filterbased.resized, thresold,
+                                                255)
+    closed = filterbased.open_close(thresholded, MORPH_CLOSE, 5, 5)
+    zeroed = filterbased.zero_values(closed)
+    reopened = filterbased.open_close(zeroed, MORPH_OPEN, 40, 40)
+    reopened = reopened.astype(uint8)
+
+    edges = Canny(reopened, 75, 200)
+    cnts = findContours(edges, RETR_LIST, CHAIN_APPROX_SIMPLE)
+    boxes = map(FilterBased._get_box, cnts[1])
+
+    areas = [contourArea(box) for box, _ in boxes]
+    thebox = boxes[areas.index(max(areas))]
+    fpt = four_point_transform(filterbased.image, thebox[0] * filterbased.ratio)
+
+    cropped = crop_minAreaRect(filterbased.resized, thebox[1])
+    imshow("original", imutils.resize(im, height=650))
+    imshow("cropped", imutils.resize(cropped, height=650))
+    imshow("fpt", imutils.resize(fpt, height=650))
+    waitKey()
+    destroyAllWindows()

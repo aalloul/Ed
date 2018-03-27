@@ -134,6 +134,7 @@ cdef get_bounding_box(np.ndarray im, int add_border=0, str sortby="contourArea")
             areas = map(contourArea, boxes)
         else:
             raise ValueError("Unknown value {} for sortby".format(sortby))
+
         return boxes[areas.index(max(areas))]
 
 cdef _find_correct_threshold(np.ndarray resized):
@@ -157,22 +158,15 @@ cdef _find_correct_threshold(np.ndarray resized):
     logger.debug("Threshold value = {}".format(val))
     return val
 
-cdef read_image2(str b64):
-    import pybase64
-    # cdef np.ndarray nparr = np.frombuffer(pybase64.b64decode(b64), np.uint8)
-    return imdecode(np.frombuffer(pybase64.b64decode(b64), np.uint8), IMREAD_COLOR)
+cdef read_image2(base64encoded):
+    cdef str str_ = base64encoded.decode('base64')
+    cdef np.ndarray nparr = np.frombuffer(str_, np.uint8)
+    return imdecode(nparr, IMREAD_COLOR)
 
 def read_image(b64):
-    return read_image2(b64)
-    # import pybase64
-    # cdef np.ndarray nparr = np.frombuffer(pybase64.b64decode(b64), np.uint8)
-    # return imdecode(np.frombuffer(pybase64.b64decode(b64), np.uint8),
-    # IMREAD_COLOR)
-
-# def read_image(b64):
-#     cdef str str_ = b64.decode('base64')
-#     cdef np.ndarray nparr = np.frombuffer(str_, np.uint8)
-#     return imdecode(nparr, IMREAD_COLOR)
+    cdef str str_ = b64.decode('base64')
+    cdef np.ndarray nparr = np.frombuffer(str_, np.uint8)
+    return imdecode(nparr, IMREAD_COLOR)
 
 def apply_filter(np.ndarray image):
     cdef np.ndarray resized = resize2(image, height=500)

@@ -8,9 +8,10 @@ from time import time
 from glob import glob
 
 
-url = "http://35.230.54.110:33330/correct_image"
-# url = "http://127.0.0.1:5000/correct_image"
-fname = "request_first_user_06.jpeg"
+# url = "http://35.230.54.110:33330/correct_image"
+url = "http://127.0.0.1:5000/correct_image"
+#fname = "request_first_user_06.jpeg"
+fname = "example_01.png"
 with open(fname, "rb") as f:
     image = b64encode(f.read())
     print("Read done")
