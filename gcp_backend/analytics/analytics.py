@@ -8,6 +8,7 @@ from time import time
 from hashlib import sha1
 from base64 import b64decode
 from uuid import uuid4
+from datetime import datetime
 
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
@@ -49,7 +50,8 @@ class Analytics(object):
         self.storage_extracted_text = 'raw_text'
         self.storage_translated_text = 'translated_text'
         self.storage_html_input = "input_html"
-        self.file_name = uuid4()
+        self.file_name = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")+ "_" + \
+                         str(uuid4())
 
     @staticmethod
     def _load_secrets():

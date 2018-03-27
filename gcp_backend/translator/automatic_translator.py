@@ -112,7 +112,8 @@ class AutomaticTranslator(Translator):
         r = fetch(self.html_parser_url,
                   payload=dumps(b),
                   method=POST,
-                  headers={"Content-Type": "application/json"}
+                  headers={"Content-Type": "application/json"},
+                  deadline=60
                   )
 
         if r.status_code < 200 or r.status_code > 299:

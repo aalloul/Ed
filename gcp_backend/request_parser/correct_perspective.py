@@ -22,7 +22,8 @@ def _request_library(url, data):
             url,
             payload=data,
             method=POST,
-            headers=h
+            headers=h,
+            deadline=60
         )
 
 
@@ -35,12 +36,12 @@ def correct(b64):
     if req.status_code >= 300:
         logger.info("Received error from server {}, in {}s".format(
             req.content, time() - start))
-        return None
+        return b64
     else:
         if 'result' not in req.content:
             logger.info("Result not in response {}. Took {}s".format(
                 req.content, time() - start))
-            return None
+            return b64
         else:
             logger.info("All good, returning. Took {}s".format(time() - start))
             return loads(req.content)['result']
