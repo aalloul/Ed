@@ -19,6 +19,7 @@ DEBUG = True
 # Flask app
 app = Flask(__name__)
 
+
 @app.route('/correct_image', methods=['POST'])
 def main():
     logger.info("New image to crop!")
@@ -36,16 +37,21 @@ def main():
         logger.info("Compare warped to original")
         ratio = compare_warped_to_original(image, res)
         logger.info("Took {}s".format(time() - start))
-        if  ratio >= 0.5:
+        if ratio >= 0.5:
             logger.info("Ratio is {}".format(ratio))
             return jsonify({"result": encode_to_b64(res), "ratio": ratio})
         else:
             logger.info("Ratio is {} -- below threshold".format(ratio))
-            raise NoImprovementFound("Ratio is {} -- below threshold".format(ratio))
-    except Exception as ex:
+            raise NoImprovementFound(
+                "Ratio is {} -- below threshold".format(ratio))
+    except GenericImageCorrectionException as ex:
         logger.warning("FilterBased method did not work")
         logger.warning("Message = {}".format(ex))
-        return jsonify({"error": "No improvement found" })
+        return jsonify({"error": "No improvement found"})
+    except Exception as ex2:
+        logger.warning("Unexpected exception caught ")
+        logger.warning("Message = {}".format(ex2))
+        return jsonify({"error": "No improvement found"})
     # Method 2: This method is used as a last hope. It tries to find a
     # rectangle in the picture.
     # logger.info("2- Trying RectangleReconstruct method")
@@ -81,11 +87,5 @@ def main():
     #     return jsonify({"result": naive_method.encode_to_b64(scan)})
 
 
-@app.errorhandler(500)
-def custom_error(e):
-    logger.info("e = {}".format(e))
-    return jsonify(e.get_json()), 500
-
-
 if __name__ == "__main__":
-    app.run(debug=True  )
+    app.run(debug=True)

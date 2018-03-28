@@ -300,3 +300,6 @@ fastlane/report.xml
 Gemfile*
 fastlane/Pluginfile
 reworking_site.*
+perspective_correction/*.c
+perspective_correction/*.so
+
