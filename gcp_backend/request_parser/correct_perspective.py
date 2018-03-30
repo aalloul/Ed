@@ -10,7 +10,6 @@ logger.setLevel(logging.DEBUG)
 
 
 def _request_library(url, data):
-    h = {"Content-Type": "application/json"}
     if __name__ == "__main__":
         from requests import post
         return post(
@@ -22,7 +21,7 @@ def _request_library(url, data):
             url,
             payload=data,
             method=POST,
-            headers=h,
+            headers={"Content-Type": "application/json"},
             deadline=60
         )
 

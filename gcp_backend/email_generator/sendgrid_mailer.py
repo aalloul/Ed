@@ -16,7 +16,7 @@ class Sendgrid(object):
     """
 
     def __init__(self, initial_request, html, text=None, parsed_ocr=None,
-                 human_translation=False, price_to_pay=None):
+                 human_translation=False, price_to_pay=None, is_problem=False):
 
         logger.info("Initializing Sendgrid client")
         self.api_key = \
@@ -28,7 +28,7 @@ class Sendgrid(object):
         self.parsed_ocr = parsed_ocr
         self.DEBUG = False
         self.html = html
-        if self.html is not None:
+        if self.html is not None and not is_problem:
                 self.html += self.html_email_addendum()
         self.text = text
         self.price_to_pay = price_to_pay
@@ -224,12 +224,17 @@ class Sendgrid(object):
 
     @classmethod
     def no_text_found(cls):
-        with open("no_text_found.txt", "r") as f:
+        with open("no_text_found.html", "r") as f:
             return f.read()
 
     @classmethod
     def html_email_addendum(cls):
         with open("html_email_addendum.html", "r") as f:
+            return f.read()
+
+    @classmethod
+    def unexpected_error(cls):
+        with open("unexpected_error.html", "r") as f:
             return f.read()
 
 if __name__ == "__main__":

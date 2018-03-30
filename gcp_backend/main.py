@@ -22,7 +22,7 @@ DEBUG = True
 def request_human_translation(parsed_request, reporter):
     start = time()
 
-    sg = Sendgrid(parsed_request, human_translation=True)
+    sg = Sendgrid(parsed_request, None, human_translation=True)
     status_code, body, headers = sg.send()
 
     if 200 <= status_code < 300:
@@ -102,9 +102,10 @@ def request_automatic_translation(parsed_request, reporter):
                          "headers = {}".format(status_code, body, headers))
         raise UnknownEmailException("Unknwon Email exception")
 
-def send_email(request, text, reporter):
+
+def send_email(req, html, text, reporter):
     email_start = time()
-    sg = Sendgrid(request, None, text=text)
+    sg = Sendgrid(req, html, text=text, is_problem=True)
     status_code, body, headers = sg.send()
     if 200 <= status_code < 300:
         reporter.add_event("email_sent_in_sec", round(time() - email_start, 3))
@@ -118,6 +119,8 @@ def send_email(request, text, reporter):
                          "body = {}, "
                          "headers = {}".format(status_code, body, headers))
         raise UnknownEmailException()
+
+
 # Flask app
 app = Flask(__name__)
 
@@ -153,22 +156,26 @@ def translate():
         reporter.commit()
         logger.info("  -> Done")
         return ans
+
     except NoTextFoundException as ex:
         logger.error("Caught NoTextFoundException - Send email and exit")
-        send_email(parsed_request, Sendgrid.no_text_found(), reporter)
+        send_email(parsed_request, Sendgrid.no_text_found(), None, reporter)
         return custom_error(ex)
 
     except GenericSmailException as ex:
         logger.error("ex.__class__ {}".format(ex.__class__))
         logger.error("exception = {}".format(ex.message))
+        send_email(parsed_request, Sendgrid.unexpected_error(), None, reporter)
         return custom_error(ex)
 
     except Exception as ex:
         logger.error("Unexpected error")
         logger.error(ex)
+        send_email(parsed_request, Sendgrid.unexpected_error(), None, reporter)
         return custom_error(UnknownError(ex.message))
 
     finally:
+        logger.debug("Over and out")
         if reporter is not None:
             reporter.commit()
 

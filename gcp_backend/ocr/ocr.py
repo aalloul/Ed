@@ -23,6 +23,7 @@ class Ocr(object):
         self.api_key = "AIzaSyB5KLbSquVl7pYsYjVpCOhOsrqjYTbuf-8"
 
     def ocr(self):
+
         try:
             return self._ocr(self.image.get_image())
 
@@ -50,18 +51,18 @@ class Ocr(object):
             logger.error("Unexpected error {}. Re-raising".format(ex))
             raise
 
-    def _ocr(self, im):
+    def _ocr(self, im64):
         ans = self._get_ocr_answer(
-            self._get_payload(im)
+            self._get_payload(im64)
         )
         return OCRParser(ans, 0)
 
-    def _get_payload(self, image):
+    def _get_payload(self, im64):
         return {
             "requests": [
                 {
                     "image": {
-                        "content": image
+                        "content": im64
                     },
                     "features": [
                         {

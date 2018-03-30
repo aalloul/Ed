@@ -10,7 +10,7 @@ from user_image import UserImage
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 class Parser(object):
@@ -159,7 +159,12 @@ class Parser(object):
             "extract_reminder": self.get_extract_reminder(),
             "humman_translation_requested":
                 self.get_human_translation_requested(),
-            "user_id": self.get_user_id()
+            "user_id": self.get_user_id(),
+            "device": self.get_device(),
+            "language_detection": True if self.get_input_language() == "" else
+            False,
+            "image_cropped": False if self.image.corrected_perspective is
+                None else False
         }
 
     def get_request_summary(self):
@@ -177,11 +182,12 @@ class Parser(object):
             "language_detection": True if self.get_input_language() == "" else
             False,
             "image_cropped": False if self.image.corrected_perspective is
-                                       None else False
+                None else False
         }
 
     def __str__(self):
         return dumps(self.get_request_summary(), indent=4)
+
 
 if __name__ == "__main__":
     with open("/Users/adamalloul/Ed/gcp_backend/fixture/request_01.json",
