@@ -15,7 +15,7 @@ from custom_exceptions.custom_exceptions import NoTextFoundException, \
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 DEBUG = True
 
 
@@ -47,10 +47,10 @@ def request_automatic_translation(parsed_request, reporter):
     try:
         parsed_ocr = Ocr(parsed_request.get_image(),
                          parsed_request.get_input_language()).ocr_answer
-    except NoTextFoundException:
+    except NoTextFoundException as ex:
         logger.error("No text was found in the provided image")
         reporter.add_event("exception", "no_text_found_in_image")
-        raise
+        raise NoTextFoundException(ex.message)
 
     reporter.add_event("ocr_processing_time", round(time() - start_ocr, 3))
     reporter.add_event("n_chars_image", len(parsed_ocr.full_text))
@@ -99,7 +99,7 @@ def request_automatic_translation(parsed_request, reporter):
         logger.exception("Email not sent with status code = {}, "
                          "body = {}, "
                          "headers = {}".format(status_code, body, headers))
-        raise UnknownEmailException()
+        raise UnknownEmailException("Unknwon Email exception")
 
 def send_email(request, text, reporter):
     email_start = time()
@@ -153,25 +153,30 @@ def translate():
         logger.info("  -> Done")
         return ans
     except NoTextFoundException as ex:
+        logger.error("Caught NoTextFoundException - Send email and exit")
         send_email(parsed_request, Sendgrid.NO_TEXT_FOUND, reporter)
-        if reporter is not None:
-            reporter.commit()
         return custom_error(ex)
 
     except GenericSmailException as ex:
         logger.error("ex.__class__ {}".format(ex.__class__))
         logger.error("exception = {}".format(ex.message))
-        if reporter is not None:
-            reporter.commit()
         return custom_error(ex)
+
     except Exception as ex:
+        logger.error("Unexpected error")
         logger.error(ex)
+        return custom_error(UnknownError(ex.message))
+
+    finally:
         if reporter is not None:
             reporter.commit()
-        return custom_error(UnknownError(ex.message))
 
 
 @app.errorhandler(500)
 def custom_error(e):
-    logger.info("e = {}".format(e))
-    return jsonify(e.get_json()), 500
+    if isinstance(e, GenericSmailException):
+        logger.error("Generic Smail Exception")
+        return jsonify(e.get_json()), 500
+    else:
+        logger.error("Unexpected type ".format(type(e)))
+        return jsonify({"Error": 99999})

@@ -93,4 +93,7 @@ class UnknownEmailException(GenericSmailException):
 
 
 if __name__ == "__main__":
-    raise UnknownError("werewr")
+    try:
+        raise NoTextFoundException("werewr")
+    except NoTextFoundException as ex:
+        print(ex.get_json())

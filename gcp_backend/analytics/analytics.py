@@ -12,7 +12,7 @@ from datetime import datetime
 
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 class Analytics(object):
@@ -115,7 +115,7 @@ class Analytics(object):
         logger.info("Done")
 
     def upload_bq(self):
-        logger.debug('Event to report = {}'.format(
+        logger.info('Event to report = {}'.format(
             dumps(self._body, indent=4)
         ))
 
