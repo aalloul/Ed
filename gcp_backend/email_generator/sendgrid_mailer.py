@@ -14,35 +14,6 @@ class Sendgrid(object):
     """
 
     """
-    NO_TEXT_FOUND = "Dear user,\n\n" \
-                    "unfortunately we have not been able to decode your letter \
-                     and extract the text to translate from it. \n\n" \
-                    "May we please ask you to try again and please make sure" \
-                    " the image is not blurry and the text is readable?\n\n" \
-                    "If you need any assistance, please get in touch with us " \
-                    "through e-mail (smail.app.rocks@gmail.com) or via " \
-                    "Facebook (https://www.facebook.com/smailrocks).\n\n" \
-                    "Your friends from Sm@il."
-
-    HTML_EMAIL_ADDENDUM = """
-<h3> Please Note </h3>
-<p>To make the images look like a scan, we are currently trying a new
-    feature that crops automatically the pictures to only keep the letter.
-    As this feature is experimental, it might result in some incorrect
-    results. If this should happen, may we please ask you to retry submitting
-    a picture of your letter? This feature works best when the background is 
-    dark and the borders of the letter are visible.
-</p>
-<p>We apologize for any inconvenience this might cause.</p>
-<h3>Like the app?</h3>
-<p>If you like the app, we would be really grateful if you <b>shared</b> the app
-    with your friends. Please also don't hesitate to <b>rate</b> it on the <a href="https://play.google.com/store/apps/details?id=com.smail.app.android">Play Store</a> or <a href="https://itunes.apple.com/us/app/smail/id1342432447?mt=8">the App Store</a>.
-</p>
-<h3>Need assistance or want to talk with us?</h3>
-<p>We're available all the time through <b>e-mail</b> (smail.app.rocks@gmail.com)
-    and <b>Facebook messenger</b> (https://www.facebook.com/smailrocks/)
-</p>
-    """
 
     def __init__(self, initial_request, html, text=None, parsed_ocr=None,
                  human_translation=False, price_to_pay=None):
@@ -58,7 +29,7 @@ class Sendgrid(object):
         self.DEBUG = False
         self.html = html
         if self.html is not None:
-            self.html += self.HTML_EMAIL_ADDENDUM
+                self.html += self.html_email_addendum()
         self.text = text
         self.price_to_pay = price_to_pay
 
@@ -250,3 +221,17 @@ class Sendgrid(object):
 
         logger.info("Email sent")
         return response.status_code, response.body, response.headers
+
+    @classmethod
+    def no_text_found(cls):
+        with open("no_text_found.txt", "r") as f:
+            return f.read()
+
+    @classmethod
+    def html_email_addendum(cls):
+        with open("html_email_addendum.html", "r") as f:
+            return f.read()
+
+if __name__ == "__main__":
+    sg = Sendgrid(None, None, text=Sendgrid.no_text_found())
+    print(sg.text)

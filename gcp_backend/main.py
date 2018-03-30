@@ -45,8 +45,9 @@ def request_automatic_translation(parsed_request, reporter):
     start_ocr = time()
 
     try:
-        parsed_ocr = Ocr(parsed_request.get_image(),
-                         parsed_request.get_input_language()).ocr_answer
+        parsed_ocr = Ocr(parsed_request.image,
+                         parsed_request.get_input_language()).ocr()
+
     except NoTextFoundException as ex:
         logger.error("No text was found in the provided image")
         reporter.add_event("exception", "no_text_found_in_image")
@@ -137,7 +138,7 @@ def translate():
 
         reporter = Analytics(debug)
         reporter.add_request_summary(parsed_request.get_request_summary())
-        reporter.add_image(parsed_request.image)
+        reporter.add_image(parsed_request.image.get_image())
 
         logger.debug("Request = {}".format(parsed_request))
 
@@ -154,7 +155,7 @@ def translate():
         return ans
     except NoTextFoundException as ex:
         logger.error("Caught NoTextFoundException - Send email and exit")
-        send_email(parsed_request, Sendgrid.NO_TEXT_FOUND, reporter)
+        send_email(parsed_request, Sendgrid.no_text_found(), reporter)
         return custom_error(ex)
 
     except GenericSmailException as ex:

@@ -178,7 +178,7 @@ class OCRParser(object):
                 if symbol['property']['detectedBreak']['type'] == "HYPHEN":
                     w += "-"
                 elif symbol['property']['detectedBreak'][
-                        'type'] == "EOL_SURE_SPACE":
+                    'type'] == "EOL_SURE_SPACE":
                     w += "\n"
                 else:
                     w += " "
@@ -221,35 +221,34 @@ class OCRParser(object):
         return out_
 
 
-def sortkeypicker(keynames):
-    negate = set()
-    for i, k in enumerate(keynames):
-        if k[:1] == '-':
-            keynames[i] = k[1:]
-            negate.add(k[1:])
-
-    def getit(adict):
-        composite = [adict[_] for _ in keynames]
-        for ii, (key, val) in enumerate(zip(keynames, composite)):
-            if key in negate:
-                composite[ii] = -val
-        return composite
-
-    return getit
-
-
-
-def format_line(el):
-    return ["&nbs;" if line is None else
-     ["<tr><td>{}</td></tr>".format(_) for _ in line]
-     for line in el
-     ]
-    # if el is None:
-    #     return "&nbsp;"
-    # return ["<tr><td>{}</td></tr>".format(_) for _ in el.split("\n")]
-
-
 if __name__ == "__main__":
+
+    def sortkeypicker(keynames):
+        negate = set()
+        for i, k in enumerate(keynames):
+            if k[:1] == '-':
+                keynames[i] = k[1:]
+                negate.add(k[1:])
+
+        def getit(adict):
+            composite = [adict[_] for _ in keynames]
+            for ii, (key, val) in enumerate(zip(keynames, composite)):
+                if key in negate:
+                    composite[ii] = -val
+            return composite
+
+        return getit
+
+
+    def format_line(el):
+        return ["&nbs;" if line is None else
+                ["<tr><td>{}</td></tr>".format(_) for _ in line]
+                for line in el
+                ]
+        # if el is None:
+        #     return "&nbsp;"
+        # return ["<tr><td>{}</td></tr>".format(_) for _ in el.split("\n")]
+
 
     def get_orientation(i):
         image = Image.open(BytesIO(i))
@@ -308,15 +307,3 @@ if __name__ == "__main__":
     #
     # table_list = table.tolist()
     # table_list2 = [format_line(el) for el in table_list]
-
-
-
-
-
-
-
-
-
-
-
-

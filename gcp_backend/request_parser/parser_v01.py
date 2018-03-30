@@ -5,6 +5,7 @@ from base64 import b64decode
 from custom_exceptions.custom_exceptions import IncompleteRequestBody, \
     ImageDecodingException
 from correct_perspective import correct
+from user_image import UserImage
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -82,13 +83,11 @@ class Parser(object):
             raise IncompleteRequestBody("image not found in request")
 
         try:
-            b64decode(request['image'])
+            self.image = UserImage(request['image'])
         except Exception as ex:
             logger.error("Caught an exception while decoding image")
             logger.error("Message was = {}".format(ex.message))
             raise ImageDecodingException(ex.message)
-
-        self.image = correct(request["image"])
 
     def _set_timestamp(self, request):
         if "timestamp" not in request:
@@ -135,9 +134,6 @@ class Parser(object):
     def get_human_translation_requested(self):
         return self.human_translation_requested
 
-    def get_image(self):
-        return self.image
-
     def get_timestamp(self):
         return self.timestamp
 
@@ -179,8 +175,16 @@ class Parser(object):
             "user_id": self.get_user_id(),
             "device": self.get_device(),
             "language_detection": True if self.get_input_language() == "" else
-            False
+            False,
+            "image_cropped": False if self.image.corrected_perspective is
+                                       None else False
         }
 
     def __str__(self):
         return dumps(self.get_request_summary(), indent=4)
+
+if __name__ == "__main__":
+    with open("/Users/adamalloul/Ed/gcp_backend/fixture/request_01.json",
+              "r") as f:
+        req = loads(f.read())
+    parser = Parser(req)
