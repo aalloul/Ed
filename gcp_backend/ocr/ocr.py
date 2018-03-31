@@ -4,6 +4,7 @@ from sys import stdout
 from ocr_parser import OCRParser
 from custom_exceptions.custom_exceptions import UnknownOCRException, \
     NoTextFoundException
+from json import dumps
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -83,7 +84,8 @@ class Ocr(object):
             self.api_key,
             payload=dumps(payload),
             method=POST,
-            headers={"Content-Type": "application/json"}
+            headers={"Content-Type": "application/json"},
+            deadline=60
         )
 
         logger.info("Response status code = {}".format(response.status_code))
@@ -97,7 +99,7 @@ class Ocr(object):
 
 
 if __name__ == "__main__":
-    from json import load, dumps
+    from json import load
 
     with open("/Users/adamalloul/TNT/downloads/translation_request.json",
               "r") as f:

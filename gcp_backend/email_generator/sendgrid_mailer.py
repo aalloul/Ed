@@ -154,7 +154,7 @@ class Sendgrid(object):
     def _build_attachment(self):
         logger.info("Add attachment")
         attachment = mail.Attachment()
-        attachment.content = (self.initial_request.get_image())
+        attachment.content = (self.initial_request.image.get_image())
         attachment.type = "application/jpg"
         attachment.filename = "scanned_document.jpg"
         attachment.disposition = "attachment"
@@ -213,7 +213,7 @@ class Sendgrid(object):
         try:
             sg = sendgrid.SendGridAPIClient(apikey=self.api_key)
             response = sg.client.mail.send.post(
-                request_body=self._build_message().get())
+                request_body=self._build_message().get(), deadline=60)
         except Exception as ex:
             logger.error("Error!!! {}".format(ex))
             logger.error(ex.message)
@@ -224,17 +224,17 @@ class Sendgrid(object):
 
     @classmethod
     def no_text_found(cls):
-        with open("no_text_found.html", "r") as f:
+        with open("email_generator/no_text_found.html", "r") as f:
             return f.read()
 
     @classmethod
     def html_email_addendum(cls):
-        with open("html_email_addendum.html", "r") as f:
+        with open("email_generator/html_email_addendum.html", "r") as f:
             return f.read()
 
     @classmethod
     def unexpected_error(cls):
-        with open("unexpected_error.html", "r") as f:
+        with open("email_generator/unexpected_error.html", "r") as f:
             return f.read()
 
 if __name__ == "__main__":

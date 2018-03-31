@@ -14,7 +14,8 @@ logger.setLevel(logging.INFO)
 class UserImage(object):
     def __init__(self, input_b64, dryrun=False, result_=None):
         self.input_b64 = self._parse_input(input_b64)
-        self.corrected_perspective = correct(self.input_b64, dryrun, result_)
+        self.corrected_perspective = correct(self.input_b64, dryrun=True,
+                                             result_=None)
 
     def _parse_input(self, b64):
         t = self.b64_to_image(b64)
