@@ -10,7 +10,6 @@ logger.setLevel(logging.DEBUG)
 
 
 def _request_library(url, data):
-    h = {"Content-Type": "application/json"}
     if __name__ == "__main__":
         from requests import post
         return post(
@@ -22,26 +21,30 @@ def _request_library(url, data):
             url,
             payload=data,
             method=POST,
-            headers=h,
+            headers={"Content-Type": "application/json"},
             deadline=60
         )
 
 
-def correct(b64):
+def correct(b64, dryrun=False, result_=None):
     _url = "http://35.230.54.110:33330/correct_image"
     logger.info("Request persppective correction started")
+
+    if dryrun:
+        # For debugging purposes
+        return result_
 
     start = time()
     req = _request_library(_url, dumps({"image": b64}))
     if req.status_code >= 300:
         logger.info("Received error from server {}, in {}s".format(
             req.content, time() - start))
-        return b64
+        return None
     else:
         if 'result' not in req.content:
             logger.info("Result not in response {}. Took {}s".format(
                 req.content, time() - start))
-            return b64
+            return None
         else:
             logger.info("All good, returning. Took {}s".format(time() - start))
             return loads(req.content)['result']

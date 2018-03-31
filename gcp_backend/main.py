@@ -15,14 +15,14 @@ from custom_exceptions.custom_exceptions import NoTextFoundException, \
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.ERROR)
 DEBUG = True
 
 
 def request_human_translation(parsed_request, reporter):
     start = time()
 
-    sg = Sendgrid(parsed_request, human_translation=True)
+    sg = Sendgrid(parsed_request, None, human_translation=True)
     status_code, body, headers = sg.send()
 
     if 200 <= status_code < 300:
@@ -45,12 +45,13 @@ def request_automatic_translation(parsed_request, reporter):
     start_ocr = time()
 
     try:
-        parsed_ocr = Ocr(parsed_request.get_image(),
-                         parsed_request.get_input_language()).ocr_answer
-    except NoTextFoundException:
+        parsed_ocr = Ocr(parsed_request.image,
+                         parsed_request.get_input_language()).ocr()
+
+    except NoTextFoundException as ex:
         logger.error("No text was found in the provided image")
         reporter.add_event("exception", "no_text_found_in_image")
-        raise
+        raise NoTextFoundException(ex.message)
 
     reporter.add_event("ocr_processing_time", round(time() - start_ocr, 3))
     reporter.add_event("n_chars_image", len(parsed_ocr.full_text))
@@ -99,11 +100,12 @@ def request_automatic_translation(parsed_request, reporter):
         logger.exception("Email not sent with status code = {}, "
                          "body = {}, "
                          "headers = {}".format(status_code, body, headers))
-        raise UnknownEmailException()
+        raise UnknownEmailException("Unknwon Email exception")
 
-def send_email(request, text, reporter):
+
+def send_email(req, html, text, reporter):
     email_start = time()
-    sg = Sendgrid(request, None, text=text)
+    sg = Sendgrid(req, html, text=text, is_problem=True)
     status_code, body, headers = sg.send()
     if 200 <= status_code < 300:
         reporter.add_event("email_sent_in_sec", round(time() - email_start, 3))
@@ -117,6 +119,8 @@ def send_email(request, text, reporter):
                          "body = {}, "
                          "headers = {}".format(status_code, body, headers))
         raise UnknownEmailException()
+
+
 # Flask app
 app = Flask(__name__)
 
@@ -137,7 +141,7 @@ def translate():
 
         reporter = Analytics(debug)
         reporter.add_request_summary(parsed_request.get_request_summary())
-        reporter.add_image(parsed_request.image)
+        reporter.add_image(parsed_request.image.get_image())
 
         logger.debug("Request = {}".format(parsed_request))
 
@@ -152,26 +156,35 @@ def translate():
         reporter.commit()
         logger.info("  -> Done")
         return ans
+
     except NoTextFoundException as ex:
-        send_email(parsed_request, Sendgrid.NO_TEXT_FOUND, reporter)
-        if reporter is not None:
-            reporter.commit()
+        logger.error("Caught NoTextFoundException - Send email and exit")
+        send_email(parsed_request, Sendgrid.no_text_found(), None, reporter)
         return custom_error(ex)
 
     except GenericSmailException as ex:
         logger.error("ex.__class__ {}".format(ex.__class__))
         logger.error("exception = {}".format(ex.message))
-        if reporter is not None:
-            reporter.commit()
+        send_email(parsed_request, Sendgrid.unexpected_error(), None, reporter)
         return custom_error(ex)
+
     except Exception as ex:
+        logger.error("Unexpected error")
         logger.error(ex)
+        send_email(parsed_request, Sendgrid.unexpected_error(), None, reporter)
+        return custom_error(UnknownError(ex.message))
+
+    finally:
+        logger.debug("Over and out")
         if reporter is not None:
             reporter.commit()
-        return custom_error(UnknownError(ex.message))
 
 
 @app.errorhandler(500)
 def custom_error(e):
-    logger.info("e = {}".format(e))
-    return jsonify(e.get_json()), 500
+    if isinstance(e, GenericSmailException):
+        logger.error("Generic Smail Exception")
+        return jsonify(e.get_json()), 500
+    else:
+        logger.error("Unexpected type ".format(type(e)))
+        return jsonify({"Error": 99999})

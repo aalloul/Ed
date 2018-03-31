@@ -12,7 +12,7 @@ from datetime import datetime
 
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 class Analytics(object):
@@ -115,7 +115,7 @@ class Analytics(object):
         logger.info("Done")
 
     def upload_bq(self):
-        logger.debug('Event to report = {}'.format(
+        logger.info('Event to report = {}'.format(
             dumps(self._body, indent=4)
         ))
 
@@ -205,7 +205,7 @@ class Analytics(object):
         if self._storage_token is None:
             self._storage_token = self._refresh_token(self.storage_scope)
 
-        logger.info("Token = {}".format(self._storage_token))
+        logger.debug("Token = {}".format(self._storage_token))
         rpc = create_rpc(deadline=300)  # TODO Change this to acceptable delay
 
         url = "https://www.googleapis.com/upload/storage/v1/b/{bucket}" \
@@ -235,7 +235,7 @@ class Analytics(object):
         if self._storage_token is None:
             self._storage_token = self._refresh_token(self.storage_scope)
 
-        logger.info("Token = {}".format(self._storage_token))
+        logger.debug("Token = {}".format(self._storage_token))
         rpc = create_rpc(deadline=300)  # TODO Change this to acceptable delay
 
         url = "https://www.googleapis.com/upload/storage/v1/b/{bucket}" \
@@ -266,7 +266,7 @@ class Analytics(object):
         if self._storage_token is None:
             self._storage_token = self._refresh_token(self.storage_scope)
 
-        logger.info("Token = {}".format(self._storage_token))
+        logger.debug("Token = {}".format(self._storage_token))
         rpc = create_rpc(deadline=300)  # TODO Change this to acceptable delay
 
         url = "https://www.googleapis.com/upload/storage/v1/b/{bucket}" \

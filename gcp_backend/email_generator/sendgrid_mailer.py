@@ -14,18 +14,9 @@ class Sendgrid(object):
     """
 
     """
-    NO_TEXT_FOUND = "Dear user,\n\n" \
-                    "unfortunately we have not been able to decode your letter \
-                     and extract the text to translate from it. \n\n" \
-                    "May we please ask you to try again and please make sure" \
-                    " the image is not blurry. and the text is readable?\n\n" \
-                    "If you need any assistance, please get in touch with us " \
-                    "through e-mail (smail.app.rocks@gmail.com) or via " \
-                    "Facebook (https://www.facebook.com/smailrocks).\n\n" \
-                    "Your friends from Sm@il."
 
     def __init__(self, initial_request, html, text=None, parsed_ocr=None,
-                 human_translation=False, price_to_pay=None):
+                 human_translation=False, price_to_pay=None, is_problem=False):
 
         logger.info("Initializing Sendgrid client")
         self.api_key = \
@@ -37,6 +28,8 @@ class Sendgrid(object):
         self.parsed_ocr = parsed_ocr
         self.DEBUG = False
         self.html = html
+        if self.html is not None and not is_problem:
+                self.html += self.html_email_addendum()
         self.text = text
         self.price_to_pay = price_to_pay
 
@@ -161,7 +154,7 @@ class Sendgrid(object):
     def _build_attachment(self):
         logger.info("Add attachment")
         attachment = mail.Attachment()
-        attachment.content = (self.initial_request.get_image())
+        attachment.content = (self.initial_request.image.get_image())
         attachment.type = "application/jpg"
         attachment.filename = "scanned_document.jpg"
         attachment.disposition = "attachment"
@@ -220,7 +213,7 @@ class Sendgrid(object):
         try:
             sg = sendgrid.SendGridAPIClient(apikey=self.api_key)
             response = sg.client.mail.send.post(
-                request_body=self._build_message().get())
+                request_body=self._build_message().get(), deadline=60)
         except Exception as ex:
             logger.error("Error!!! {}".format(ex))
             logger.error(ex.message)
@@ -228,3 +221,22 @@ class Sendgrid(object):
 
         logger.info("Email sent")
         return response.status_code, response.body, response.headers
+
+    @classmethod
+    def no_text_found(cls):
+        with open("email_generator/no_text_found.html", "r") as f:
+            return f.read()
+
+    @classmethod
+    def html_email_addendum(cls):
+        with open("email_generator/html_email_addendum.html", "r") as f:
+            return f.read()
+
+    @classmethod
+    def unexpected_error(cls):
+        with open("email_generator/unexpected_error.html", "r") as f:
+            return f.read()
+
+if __name__ == "__main__":
+    sg = Sendgrid(None, None, text=Sendgrid.no_text_found())
+    print(sg.text)
