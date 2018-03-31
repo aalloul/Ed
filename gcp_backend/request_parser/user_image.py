@@ -14,8 +14,8 @@ logger.setLevel(logging.INFO)
 class UserImage(object):
     def __init__(self, input_b64, dryrun=False, result_=None):
         self.input_b64 = self._parse_input(input_b64)
-        self.corrected_perspective = correct(self.input_b64, dryrun=True,
-                                             result_=None)
+        self.corrected_perspective = correct(self.input_b64, dryrun=dryrun,
+                                             result_=result_)
 
     def _parse_input(self, b64):
         t = self.b64_to_image(b64)
@@ -64,12 +64,10 @@ class UserImage(object):
 
     @staticmethod
     def image_to_64(img):
-        in_mem_file = BytesIO()
-        img.save(in_mem_file, format="JPEG")
-        # reset file pointer to start
-        in_mem_file.seek(0)
-        img_bytes = in_mem_file.read()
-        return base64.b64encode(img_bytes)
+        from cStringIO import StringIO
+        buff = StringIO()
+        img.save(buff, format="JPEG")
+        return base64.b64encode(buff.getvalue())
 
     @staticmethod
     def b64_to_image(b64):
@@ -87,8 +85,7 @@ class UserImage(object):
 
 if __name__ == "__main__":
     from json import load
+
     with open("/Users/adamalloul/Ed/gcp_backend/fixture/request_01.json",
               "r") as f:
         input_image = load(f)['image']
-
-    user_image = UserImage(input_image, dryrun=True, result_=None)
