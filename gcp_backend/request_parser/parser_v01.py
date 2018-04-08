@@ -31,8 +31,6 @@ class Parser(object):
         logger.debug("_set_output_language done")
         self._set_human_translation_requested(request)
         logger.debug("_set_human_translation_requested")
-        self._set_image(request)
-        logger.debug("_set_image")
         self._set_timestamp(request)
         logger.debug("_set_timestamp")
         self._set_device(request)
@@ -42,6 +40,8 @@ class Parser(object):
         self._set_user_id(request)
         logger.debug("_set_user_id")
         self._set_extract_reminder(request)
+        self._set_image(request)
+        logger.debug("_set_image")
         logger.debug("Request parsing done")
 
     def _set_output(self, request):

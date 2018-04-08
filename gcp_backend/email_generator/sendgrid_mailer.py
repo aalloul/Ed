@@ -237,6 +237,11 @@ class Sendgrid(object):
         with open("email_generator/unexpected_error.html", "r") as f:
             return f.read()
 
+    @classmethod
+    def no_image_found(cls):
+        with open("email_generator/no_image_found.html", "r") as f:
+            return f.read()
+
 if __name__ == "__main__":
     sg = Sendgrid(None, None, text=Sendgrid.no_text_found())
     print(sg.text)

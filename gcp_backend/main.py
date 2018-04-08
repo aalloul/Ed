@@ -10,7 +10,8 @@ from sys import stdout
 from analytics.analytics import Analytics
 from time import time
 from custom_exceptions.custom_exceptions import NoTextFoundException, \
-    UnknownError, UnknownEmailException, GenericSmailException
+    UnknownError, UnknownEmailException, GenericSmailException, \
+    ImageDecodingException
 
 # Logging
 logging.basicConfig(stream=stdout, format='%(asctime)s %(message)s')
@@ -162,6 +163,11 @@ def translate():
         send_email(parsed_request, Sendgrid.no_text_found(), None, reporter)
         return custom_error(ex)
 
+    except ImageDecodingException as ex:
+        logger.error("Caught a ImageDecodingException")
+        send_email(parsed_request, Sendgrid.no_image_found(), None, reporter)
+        return custom_error(ex)
+
     except GenericSmailException as ex:
         logger.error("ex.__class__ {}".format(ex.__class__))
         logger.error("exception = {}".format(ex.message))
@@ -178,6 +184,8 @@ def translate():
         logger.debug("Over and out")
         if reporter is not None:
             reporter.commit()
+            del parsed_request
+            del reporter
 
 
 @app.errorhandler(500)
