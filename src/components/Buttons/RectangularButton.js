@@ -8,13 +8,13 @@ const styles = {
     fontSize: 22,
   },
   button: {
+    alignItems: 'center',
     backgroundColor: '#50D2C2',
-    height: 38,
+    display: 'flex',
+    justifyContent: 'center',
     marginTop: 25,
-    paddingBottom: 5,
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: 5,
   },
 };
 
