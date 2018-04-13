@@ -18,6 +18,14 @@ const styles = StyleSheet.create({
   buttonsWrapper: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  thanksTextOnSharing: {
+    fontSize: 20,
+    marginTop: 25,
+    textAlign: 'center',
+    width: 200,
   },
   container: {
     flex: 1,
@@ -39,6 +47,16 @@ class SuccessScreen extends PureComponent {
     title: "Success",
     ...headerStyle,
   };
+
+  constructor() {
+    super();
+
+    this.state = {
+      heartsShared: false,
+    };
+
+    this.shareTheHearts = this.shareTheHearts.bind(this);
+  }
 
   componentDidMount() {
     if (this._confettiView) {
@@ -71,7 +89,6 @@ class SuccessScreen extends PureComponent {
     const shareLinkContent = {
       contentType: 'link',
       contentUrl: "https://www.smail.rocks",
-      message: 'I found a cool app. It translates physical mails and converts them into emails. Definitely must-have for those who live abroad!',
     };
 
     ShareDialog
@@ -81,12 +98,29 @@ class SuccessScreen extends PureComponent {
         if (result.isCancelled) {
           console.log('Share operation was cancelled');
         } else {
+          this.setState({
+            heartsShared: true,
+          });
           console.log('Share was successful with postId');
         }
       },
       (error) => {
         console.log('Share failed with error: ' + error.message);
       });
+  }
+
+  getSharingHearts() {
+    if (this.state.heartsShared) {
+      return <Text style={styles.thanksTextOnSharing}>Thanks for sharing. We appreciate it!</Text>;
+    }
+
+    return (
+      <RectangularButton
+        accessibilityLabel="Share your &hearts; with your friends"
+        onPress={this.shareTheHearts}
+        title="Share the &hearts;"
+      />
+    );
   }
 
   render() {
@@ -114,11 +148,7 @@ class SuccessScreen extends PureComponent {
             onPress={this.setStorageAndRestart}
             title="Scan more"
           />
-          <RectangularButton
-            accessibilityLabel="Share your &hearts; with your friends"
-            onPress={this.shareTheHearts}
-            title="Share the &hearts;"
-          />
+          { this.getSharingHearts() }
         </View>
       </View>
     );
