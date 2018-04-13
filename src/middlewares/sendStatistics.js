@@ -43,7 +43,7 @@ export default function sendStatistics({ getState, dispatch }) {
     // for now the only way we can catch app starting the APP_START action
     // so we use it to send the Home screen to GA
     if (action.type === APP_START) {
-      // tracker.trackScreenView(currentScreen);
+      tracker.trackScreenView(currentScreen);
     }
 
     statisticsRequest.screen = currentScreen;
@@ -51,16 +51,16 @@ export default function sendStatistics({ getState, dispatch }) {
     if (nextScreen !== currentScreen) {
       // avoid queue actions because they keeps old screen
       if (!action.queue) {
-        // tracker.trackScreenView(nextScreen);
+        tracker.trackScreenView(nextScreen);
       }
 
       // send statistics about the current screen
       // current - the one that was before the action of transition to the new(next) screen
       // it's done, to be able to send "screen_end" time
-      // sendStatisticsRequest({
-      //   ...statisticsRequest,
-      //   screen_end: Date.now()
-      // });
+      sendStatisticsRequest({
+        ...statisticsRequest,
+        screen_end: Date.now()
+      });
 
       statisticsRequest.screen_start = Date.now();
       statisticsRequest.screen = nextScreen;
@@ -69,7 +69,7 @@ export default function sendStatistics({ getState, dispatch }) {
     }
 
     // now send statistics about the new(next) screen
-    // sendStatisticsRequest(statisticsRequest);
+    sendStatisticsRequest(statisticsRequest);
 
     return result;
   }
