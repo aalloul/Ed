@@ -70,8 +70,8 @@ class SuccessScreen extends PureComponent {
   shareTheHearts() {
     const shareLinkContent = {
       contentType: 'link',
-      contentUrl: "https://smail.rocks",
-      contentDescription: 'I found a cool app. It translates physical mails and converts them into emails. Definitely must-have for those who live abroad!',
+      contentUrl: "https://www.smail.rocks",
+      message: 'I found a cool app. It translates physical mails and converts them into emails. Definitely must-have for those who live abroad!',
     };
 
     ShareDialog

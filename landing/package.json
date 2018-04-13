@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "yarn copy-images && x0 dev src/App.js -o",
-    "build": "yarn copy-images && x0 build src/App.js --out-dir public --static --cssLibrary=glamorous",
+    "build": "x0 build src/App.js --out-dir public --static --cssLibrary=glamorous",
     "serve": "yarn build && serve public -p 3000",
     "deploy": "yarn build && firebase deploy",
     "copy-images": "copy ./src/img ./public/img"
