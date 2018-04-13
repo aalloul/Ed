@@ -101,7 +101,7 @@ android {
         applicationId "com.smail.app.android"
         minSdkVersion 16
         multiDexEnabled true
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 10
         versionName "1.0"
         ndk {
@@ -162,6 +162,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-fbsdk')
+    compile "com.facebook.android:facebook-android-sdk:4.22.1"
     compile (project(':react-native-google-analytics-bridge')) {
         exclude group: "com.google.android.gms"
     }
@@ -174,21 +176,21 @@ dependencies {
         exclude group: "com.google.android.gms"
     }
     compile (project(':react-native-camera')) {
-      exclude group: "com.google.android.gms"
+        exclude group: "com.google.android.gms"
     }
     compile project(':react-native-fetch-blob')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile ("com.google.android.gms:play-services-vision:11.8.0") {
-      force = true;
+        force = true;
     }
     compile ("com.google.android.gms:play-services-auth:11.8.0") {
-      force = true;
+        force = true;
     }
     compile ("com.google.android.gms:play-services-analytics:11.8.0") {
         force = true
     }
-    compile "com.facebook.react:react-native:+"
+    compile "com.facebook.react:react-native:0.49.5"
 }
 
 apply plugin: "com.google.gms.google-services"

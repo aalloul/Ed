@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="com.android.vending.BILLING" />
 
-
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="27" />
@@ -32,6 +31,10 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+      <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
+      <provider android:authorities="com.facebook.app.FacebookContentProvider524123631296536"
+          android:name="com.facebook.FacebookContentProvider"
+          android:exported="true" />
     </application>
 
 </manifest>

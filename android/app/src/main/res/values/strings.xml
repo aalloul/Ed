@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SMail</string>
     <string name="RNB_GOOGLE_PLAY_LICENSE_KEY">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq2N69784fPW5RmQwLun0j4SJ7W7lB/I+kihNwG19Mn4ax9yoh1OLLXQsoO9cwVvG+9EKiPSrkT3/Zne2WfajW1AZ53S0TBKKnjbBrXKogPfO7d1a5pj/U+OlOvIpToociX+rGiCCeM4J8I3ScgS4qznths5ROPuFs4IKi/pxIyiumEumpGRkAu4HgBoWGaS4H0xJnqUuodO4iVt5LZR98Gf+Glagts12zraZjMSHdAZruqPajS3AypUJDox7ZJSItnssEQ0mO+qXEn5bVF5/tLL0c+UBs4N/ANBSo089kL2tx7Jr0ah9FXXVz+BngRWih0yPfCMdjQ3VK8PHh6xnAwIDAQAB</string>
+    <string name="facebook_app_id">524123631296536</string>
 
 
 </resources>

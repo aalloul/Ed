@@ -7,19 +7,24 @@ import Confetti from 'react-native-confetti';
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
+import { ShareDialog } from 'react-native-fbsdk';
 
 import { headerStyle } from '../../common/navigationHelpers';
 
 const styles = StyleSheet.create({
+  bold: {
+    fontWeight: "bold",
+  },
+  buttonsWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-  },
-  bold: {
-    fontWeight: "bold",
   },
   image: {
     height: 115,
@@ -62,6 +67,28 @@ class SuccessScreen extends PureComponent {
       .then(() => RNRestart.Restart());
   }
 
+  shareTheHearts() {
+    const shareLinkContent = {
+      contentType: 'link',
+      contentUrl: "https://smail.rocks",
+      contentDescription: 'I found a cool app. It translates physical mails and converts them into emails. Definitely must-have for those who live abroad!',
+    };
+
+    ShareDialog
+      .canShow(shareLinkContent)
+      .then((canShow) => canShow && ShareDialog.show(shareLinkContent))
+      .then((result) => {
+        if (result.isCancelled) {
+          console.log('Share operation was cancelled');
+        } else {
+          console.log('Share was successful with postId');
+        }
+      },
+      (error) => {
+        console.log('Share failed with error: ' + error.message);
+      });
+  }
+
   render() {
     const { email, language } = this.props;
 
@@ -78,15 +105,21 @@ class SuccessScreen extends PureComponent {
         <Image source={require('./TickIcon.png')} style={styles.image} />
         <SecondaryText>
           <Text style={styles.bold}>{this.computeLanguageLabel(language)}</Text> translation{"\n"}
-          will be sent to{"\n"}
+          is sent to{"\n"}
           <Text style={styles.bold}>{email}</Text>{"\n"}
-          in five minutes
         </SecondaryText>
-        <RectangularButton
-          accessibilityLabel="Continue scanning the paper mails"
-          onPress={this.setStorageAndRestart}
-          title="Scan more"
-        />
+        <View style={styles.buttonsWrapper}>
+          <RectangularButton
+            accessibilityLabel="Continue scanning the paper mails"
+            onPress={this.setStorageAndRestart}
+            title="Scan more"
+          />
+          <RectangularButton
+            accessibilityLabel="Share your &hearts; with your friends"
+            onPress={this.shareTheHearts}
+            title="Share the &hearts;"
+          />
+        </View>
       </View>
     );
   }

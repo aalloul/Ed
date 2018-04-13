@@ -45,6 +45,7 @@
 		DF50577A33131967F6FB80B5 /* libPods-mailapprn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77371A64BA3E874983B02303 /* libPods-mailapprn.a */; };
 		E86F8AFA1B9E46669D2F3A06 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78B573B6465640D3A3E92FAC /* CoreData.framework */; };
 		61F653C347004552960BF045 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 821DE63F58DF4FAFA6070778 /* libRNCamera.a */; };
+		17FDD3A3A39F4566AD35CB1E /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BABB5B5D47524684A1ACD908 /* libRCTFBSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -383,6 +384,8 @@
 		F9613E8C1B5C4784A3EDE0A2 /* RCTRestart.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTRestart.xcodeproj; path = "../node_modules/react-native-restart/ios/RCTRestart.xcodeproj"; sourceTree = "<group>"; };
 		59586443289F4B78A79BD4CD /* RNCamera.xcodeproj */ = {isa = PBXFileReference; name = "RNCamera.xcodeproj"; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		821DE63F58DF4FAFA6070778 /* libRNCamera.a */ = {isa = PBXFileReference; name = "libRNCamera.a"; path = "libRNCamera.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		CDF0F72EF5AB4023889C85FD /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; name = "RCTFBSDK.xcodeproj"; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		BABB5B5D47524684A1ACD908 /* libRCTFBSDK.a */ = {isa = PBXFileReference; name = "libRCTFBSDK.a"; path = "libRCTFBSDK.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -420,6 +423,7 @@
 				0E6AB3A5B0B2462793B4CDB8 /* libz.tbd in Frameworks */,
 				41FF7513D5984FBC91447F5C /* libsqlite3.0.tbd in Frameworks */,
 				61F653C347004552960BF045 /* libRNCamera.a in Frameworks */,
+				17FDD3A3A39F4566AD35CB1E /* libRCTFBSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,6 +653,7 @@
 				EB3A25DA3C02496890A58B3D /* InAppUtils.xcodeproj */,
 				5DCF1CDC58B44D9FBA08D434 /* RCTGoogleAnalyticsBridge.xcodeproj */,
 				59586443289F4B78A79BD4CD /* RNCamera.xcodeproj */,
+				CDF0F72EF5AB4023889C85FD /* RCTFBSDK.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1262,12 +1267,14 @@
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 				);
 				INFOPLIST_FILE = mailapprn/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/mailapprn\"",
 					"\"$(SRCROOT)/mailapprn\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1310,12 +1317,14 @@
 					"$(SRCROOT)/../node_modules/react-native-in-app-utils/InAppUtils",
 					"$(SRCROOT)/../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/**",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 				);
 				INFOPLIST_FILE = mailapprn/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/mailapprn\"",
 					"\"$(SRCROOT)/mailapprn\"",
 				);
 				OTHER_LDFLAGS = (
