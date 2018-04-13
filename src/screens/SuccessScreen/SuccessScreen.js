@@ -101,7 +101,6 @@ class SuccessScreen extends PureComponent {
           this.setState({
             heartsShared: true,
           });
-          console.log('Share was successful with postId');
         }
       },
       (error) => {
@@ -148,7 +147,7 @@ class SuccessScreen extends PureComponent {
             onPress={this.setStorageAndRestart}
             title="Scan more"
           />
-          { this.getSharingHearts() }
+          {this.getSharingHearts()}
         </View>
       </View>
     );
