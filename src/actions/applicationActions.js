@@ -1,4 +1,5 @@
 import { generateTranslationRequest } from '../common/requestDataHelpers';
+import { ShareDialog } from 'react-native-fbsdk';
 
 const MAIN_FLOW_QUEUE = 'MAIN_FLOW_QUEUE';
 
@@ -16,6 +17,10 @@ export const CHANGE_LANGUAGE = 'CHANGE_LANGUAGE';
 export const SELECT_TRANSLATION = 'SELECT_TRANSLATION';
 export const CHANGE_EMAIL = 'CHANGE_EMAIL';
 export const LOAD_STORED_USER_STATE = 'LOAD_STORED_USER_STATE';
+
+export const SHARE_DIALOG_PROMISE = 'SHARE_DIALOG_PROMISE';
+export const SHARE_DIALOG_RESOLVE = 'SHARE_DIALOG_RESOLVE';
+export const SHARE_DIALOG_REJECT = 'SHARE_DIALOG_REJECT';
 
 export const SEND_LETTER_PROMISE = 'SEND_LETTER_PROMISE';
 export const SEND_LETTER_RESOLVE = 'SEND_LETTER_RESOLVE';
@@ -145,5 +150,36 @@ export function changeEmail(email) {
   return {
     type: CHANGE_EMAIL,
     email,
+  };
+}
+
+export function openShareDialogRoutine() {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      dispatch({ type: SHARE_DIALOG_PROMISE });
+
+      const shareLinkContent = {
+        contentType: 'link',
+        contentUrl: "https://www.smail.rocks",
+      };
+
+      ShareDialog
+        .canShow(shareLinkContent)
+        .then((canShow) => canShow && ShareDialog.show(shareLinkContent))
+        .then((result) => {
+            if (result.isCancelled) {
+              dispatch({ type: SHARE_DIALOG_REJECT });
+              reject();
+            } else {
+              dispatch({ type: SHARE_DIALOG_RESOLVE });
+              resolve();
+            }
+          },
+          (error) => {
+            console.log('Share failed with error: ' + error.message);
+            dispatch({ type: SHARE_DIALOG_REJECT });
+            reject();
+          });
+    });
   };
 }

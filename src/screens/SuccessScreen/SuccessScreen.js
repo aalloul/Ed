@@ -7,9 +7,9 @@ import Confetti from 'react-native-confetti';
 import PrimaryText from '../../components/Texts/PrimaryText';
 import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
-import { ShareDialog } from 'react-native-fbsdk';
 
 import { headerStyle } from '../../common/navigationHelpers';
+import { openShareDialogRoutine } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
   bold: {
@@ -86,26 +86,8 @@ class SuccessScreen extends PureComponent {
   }
 
   shareTheHearts() {
-    const shareLinkContent = {
-      contentType: 'link',
-      contentUrl: "https://www.smail.rocks",
-    };
-
-    ShareDialog
-      .canShow(shareLinkContent)
-      .then((canShow) => canShow && ShareDialog.show(shareLinkContent))
-      .then((result) => {
-        if (result.isCancelled) {
-          console.log('Share operation was cancelled');
-        } else {
-          this.setState({
-            heartsShared: true,
-          });
-        }
-      },
-      (error) => {
-        console.log('Share failed with error: ' + error.message);
-      });
+    this.props.openShareDialog()
+      .then(() => this.setState({ heartsShared: true }));
   }
 
   getSharingHearts() {
@@ -161,4 +143,10 @@ const mapStateToProps = ({ application }) => ({
   email: application.email,
 });
 
-export default connect(mapStateToProps)(SuccessScreen);
+const mapDispatchToProps = dispatch => ({
+  openShareDialog(email) {
+    return dispatch(openShareDialogRoutine(email));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SuccessScreen);

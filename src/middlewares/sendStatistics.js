@@ -2,6 +2,7 @@ import { generateBasicStatisticsRequest } from '../common/requestDataHelpers';
 import { APP_START, SCREEN_START, screenStart } from '../actions/statisticsActions';
 import { getCurrentRouteName } from '../common/navigationHelpers';
 import { GoogleAnalyticsTracker, GoogleAnalyticsSettings } from "react-native-google-analytics-bridge";
+import { SHARE_DIALOG_PROMISE, SHARE_DIALOG_REJECT, SHARE_DIALOG_RESOLVE } from '../actions/applicationActions';
 
 GoogleAnalyticsSettings.setDispatchInterval(3);
 
@@ -30,7 +31,7 @@ function sendStatisticsRequest(statisticsRequest) {
 
 export default function sendStatistics({ getState, dispatch }) {
   return next => (action) => {
-    if (action.type === SCREEN_START) {
+    if (action.type === SCREEN_START || action.queue) {
       return next(action);
     }
 
@@ -44,6 +45,21 @@ export default function sendStatistics({ getState, dispatch }) {
     // so we use it to send the Home screen to GA
     if (action.type === APP_START) {
       tracker.trackScreenView(currentScreen);
+    }
+
+    if (action.type === SHARE_DIALOG_PROMISE) {
+      tracker.trackEvent('Share_dialog', 'Opened');
+      console.log('Share_dialog opened');
+    }
+
+    if (action.type === SHARE_DIALOG_RESOLVE) {
+      tracker.trackEvent('Share_dialog', 'Sent');
+      console.log('Share_dialog sent');
+    }
+
+    if (action.type === SHARE_DIALOG_REJECT) {
+      tracker.trackEvent('Share_dialog', 'Failed or cancelled');
+      console.log('Share_dialog failed or cancelled');
     }
 
     statisticsRequest.screen = currentScreen;

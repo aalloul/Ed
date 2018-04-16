@@ -182,10 +182,10 @@ dependencies {
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile ("com.google.android.gms:play-services-vision:11.8.0") {
-        force = true;
+        force = true
     }
     compile ("com.google.android.gms:play-services-auth:11.8.0") {
-        force = true;
+        force = true
     }
     compile ("com.google.android.gms:play-services-analytics:11.8.0") {
         force = true

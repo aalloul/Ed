@@ -21,6 +21,12 @@ allprojects {
     configurations.all {
         resolutionStrategy {
             eachDependency { DependencyResolveDetails details ->
+                def requested = details.requested
+
+                if (requested.group == 'com.google.android.gms') {
+                    details.useVersion '11.8.0'
+                }
+
                 if (details.requested.group == 'com.facebook.react' && details.requested.name == 'react-native') {
                     details.useVersion "0.49.5" // Your real React Native version here
                 }
