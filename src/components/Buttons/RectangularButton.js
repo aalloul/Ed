@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ActivityIndicator, Text, TouchableHighlight, ViewPropTypes } from 'react-native';
+import { ActivityIndicator, Text, TouchableHighlight } from 'react-native';
 
 const styles = {
   title: {
@@ -8,13 +8,15 @@ const styles = {
     fontSize: 22,
   },
   button: {
+    alignItems: 'center',
     backgroundColor: '#50D2C2',
-    height: 38,
+    display: 'flex',
+    justifyContent: 'center',
+    marginLeft: 10,
+    marginRight: 10,
     marginTop: 25,
-    paddingBottom: 5,
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: 5,
   },
 };
 

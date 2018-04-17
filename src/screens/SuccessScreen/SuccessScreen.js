@@ -9,17 +9,30 @@ import SecondaryText from '../../components/Texts/SecondaryText';
 import RectangularButton from '../../components/Buttons/RectangularButton';
 
 import { headerStyle } from '../../common/navigationHelpers';
+import { openShareDialogRoutine } from '../../actions/applicationActions';
 
 const styles = StyleSheet.create({
+  bold: {
+    fontWeight: "bold",
+  },
+  buttonsWrapper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  thanksTextOnSharing: {
+    fontSize: 20,
+    marginTop: 25,
+    textAlign: 'center',
+    width: 200,
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-  },
-  bold: {
-    fontWeight: "bold",
   },
   image: {
     height: 115,
@@ -34,6 +47,16 @@ class SuccessScreen extends PureComponent {
     title: "Success",
     ...headerStyle,
   };
+
+  constructor() {
+    super();
+
+    this.state = {
+      heartsShared: false,
+    };
+
+    this.shareTheHearts = this.shareTheHearts.bind(this);
+  }
 
   componentDidMount() {
     if (this._confettiView) {
@@ -62,6 +85,25 @@ class SuccessScreen extends PureComponent {
       .then(() => RNRestart.Restart());
   }
 
+  shareTheHearts() {
+    this.props.openShareDialog()
+      .then(() => this.setState({ heartsShared: true }));
+  }
+
+  getSharingHearts() {
+    if (this.state.heartsShared) {
+      return <Text style={styles.thanksTextOnSharing}>Thanks for sharing. We appreciate it!</Text>;
+    }
+
+    return (
+      <RectangularButton
+        accessibilityLabel="Share your &hearts; with your friends"
+        onPress={this.shareTheHearts}
+        title="Share the &hearts;"
+      />
+    );
+  }
+
   render() {
     const { email, language } = this.props;
 
@@ -78,15 +120,17 @@ class SuccessScreen extends PureComponent {
         <Image source={require('./TickIcon.png')} style={styles.image} />
         <SecondaryText>
           <Text style={styles.bold}>{this.computeLanguageLabel(language)}</Text> translation{"\n"}
-          will be sent to{"\n"}
+          is sent to{"\n"}
           <Text style={styles.bold}>{email}</Text>{"\n"}
-          in five minutes
         </SecondaryText>
-        <RectangularButton
-          accessibilityLabel="Continue scanning the paper mails"
-          onPress={this.setStorageAndRestart}
-          title="Scan more"
-        />
+        <View style={styles.buttonsWrapper}>
+          <RectangularButton
+            accessibilityLabel="Continue scanning the paper mails"
+            onPress={this.setStorageAndRestart}
+            title="Scan more"
+          />
+          {this.getSharingHearts()}
+        </View>
       </View>
     );
   }
@@ -99,4 +143,10 @@ const mapStateToProps = ({ application }) => ({
   email: application.email,
 });
 
-export default connect(mapStateToProps)(SuccessScreen);
+const mapDispatchToProps = dispatch => ({
+  openShareDialog(email) {
+    return dispatch(openShareDialogRoutine(email));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SuccessScreen);

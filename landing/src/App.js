@@ -19,6 +19,13 @@ export default props => (
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={props.description} />
 
+    <meta property="og:url" content="https://www.smail.rocks" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={props.title} />
+    <meta property="og:description" content={props.description} />
+    <meta property="og:image" content="https://www.smail.rocks/img/favicons/mstile-310x310.png" />
+    <meta property="fb:app_id" content="524123631296536" />
+
     <Favicons />
 
     <style dangerouslySetInnerHTML={{
