@@ -3,15 +3,6 @@ package com.smail.app.android;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
-import org.reactnative.camera.RNCameraPackage;
-import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
-import com.idehub.Billing.InAppBillingBridgePackage;
-import com.avishayil.rnrestart.ReactNativeRestartPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.reactlibrary.googlesignin.RNGoogleSignInPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -20,6 +11,12 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.appevents.AppEventsLogger;
+import org.reactnative.camera.RNCameraPackage;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
+import com.idehub.Billing.InAppBillingBridgePackage;
+import com.avishayil.rnrestart.ReactNativeRestartPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.reactlibrary.googlesignin.RNGoogleSignInPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,8 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
         new InAppBillingBridgePackage(),
         new ReactNativeRestartPackage(),
         new RNDeviceInfo(),
-        new RNGoogleSignInPackage(),
-        new RNFetchBlobPackage()
+        new RNGoogleSignInPackage()
       );
     }
 
