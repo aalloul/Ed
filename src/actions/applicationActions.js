@@ -60,7 +60,7 @@ export function takePhotoRoutine(camera) {
     callback: (next, dispatch) => {
       dispatch(takePhotoPromise());
 
-      const options = { base64: true };
+      const options = { base64: true , forceUpOrientation: true, fixOrientation: true};
 
       return camera
         .takePictureAsync(options)

@@ -45,6 +45,7 @@ class Sendgrid(object):
         else:
             return "Sm@il - Your scanned mail - /!\ Invoice found /!\ "
 
+
     def _get_accept_giro_text(self, html=True):
         out = ""
 
@@ -65,7 +66,7 @@ class Sendgrid(object):
             out += "</ul>"
         else:
             out += """This amount can be paid through the Acceptgiro system.
-                         Simply connect to your bank account and transfer the 
+                         Simply connect to your bank account and transfer the
                          above"""
             out += """ amount using the following details:\n"""
             out += "   - Beneficiary = {}\n".format(self.price_to_pay.sender)
@@ -88,7 +89,7 @@ class Sendgrid(object):
 
         else:
             out = """<h2>Invoice found</h2>
-                    <p>It seems that you are required to make a payment of 
+                    <p>It seems that you are required to make a payment of
                     <b>{} Euros. </b>.</p>""".format(max(
                 self.price_to_pay.amount))
             out += self._get_accept_giro_text(True)
@@ -166,45 +167,16 @@ class Sendgrid(object):
         logger.debug("Building content for human translation")
         logger.debug("self.initial_request.get_email() = ".format(
             self.initial_request.get_email()))
-        message = """Dear translator, 
-        
-        user with e-mail address {} requires a human translation for the 
+        message = """Dear translator,
+
+        user with e-mail address {} requires a human translation for the
         attached document!
-        
+
         Thanks!
         """.format(self.initial_request.get_email())
 
         return message
 
-    def _get_content_for_automatic_translations(self):
-        logger.debug("Building content for automatic translation")
-
-        message = """Dear user,
-        
-        please find attached a scan of the mail you created a few minutes 
-        earlier. Below you can also find the original text extracted 
-        automatically and its translation to English.
-        
-        English version:
-        
-        {}
-        
-        Original version
-        
-        {}
-        
-        Your friends @ Smail!
-        """.format(self._get_english_version(), self._get_original_version())
-        logger.debug("Content built (50 chars) = {}".format(message[0:50]))
-        return message
-
-    def _get_english_version(self):
-        logger.info("Extracting English version")
-        return "\n".join([w['translation'] for w in self.parsed_ocr[1]])
-
-    def _get_original_version(self):
-        logger.info("Extracting original version")
-        return "\n".join([w['word'] for w in self.parsed_ocr[1]])
 
     def send(self):
         if self.DEBUG:

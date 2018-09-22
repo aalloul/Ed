@@ -174,7 +174,7 @@ class OCRParser(object):
             ys += [s['y'] for s in symbol['boundingBox']['vertices'] if 'y'
                    in s]
 
-            if "detectedBreak" in symbol['property']:
+            if 'property' in symbol and "detectedBreak" in symbol['property']:
                 if symbol['property']['detectedBreak']['type'] == "HYPHEN":
                     w += "-"
                 elif symbol['property']['detectedBreak'][
